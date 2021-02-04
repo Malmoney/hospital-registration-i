@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!--mysql开始-->
+	<classPathEntry
+			location="F:\MavenRepository\mysql\mysql-connector-java\8.0.21\mysql-connector-java-8.0.21.jar" />
+	<context id="master" targetRuntime="MyBatis3">
+		<!-- 数据库url，用户名和密码 -->
+		<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+						connectionURL="jdbc:mysql://localhost:3306/registration?serverTimezone=Asia/Shanghai"
+						userId="root" password="root" >
+			<property name="nullCatalogMeansCurrent" value="true" />
+		</jdbcConnection>
+		<!--		<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+						connectionURL="jdbc:mysql://127.0.0.1:3306/wogo?serverTimezone=UTC"
+						userId="root" password="root" >-->
+	<!--mysql结束-->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+
+		<!-- 生成模型的包名和位置 -->
+		<javaModelGenerator targetPackage="com.liurq.com.liurq.server.model"
+			targetProject="src/main/java">
+			<property name="enableSubPackages" value="false" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- 生成映射文件的包名和位置 -->
+		<sqlMapGenerator targetPackage="com.liurq.com.liurq.server.dao.mapper"
+			targetProject="src/main/java">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<!-- 生成DAO的包名和位置 -->
+		<javaClientGenerator targetPackage="com.liurq.com.liurq.server.dao"
+			targetProject="src/main/java" type="XMLMAPPER">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<!-- 生成的表名 -->
+<!--		<table schema="registration" tableName="tb_user" domainObjectName="User">
+		</table>
+		<table schema="registration" tableName="tb_user_patient" domainObjectName="Patient">
+		</table>
+		<table schema="registration" tableName="tb_department" domainObjectName="Department">
+		</table>
+		<table schema="registration" tableName="tb_hospital" domainObjectName="Hospital">
+		</table>
+		<table schema="registration" tableName="tr_hospital_department" domainObjectName="HospitalDepartment">
+		</table>
+		<table schema="registration" tableName="tb_knowledge" domainObjectName="Knowledge">
+		</table>
+		<table schema="registration" tableName="tb_doctor" domainObjectName="Doctor">
+		</table>
+		<table schema="registration" tableName="tr_department_doctor" domainObjectName="DepartmentDoctor">
+		</table>
+		<table schema="registration" tableName="tr_major" domainObjectName="Major">
+		</table>
+		<table schema="registration" tableName="td_tag" domainObjectName="Tag">
+		</table>
+		<table schema="registration" tableName="td_illness" domainObjectName="Illness">
+		</table>
+		<table schema="registration" tableName="tr_tag_relevance" domainObjectName="TagRelevance">
+		</table>
+		<table schema="registration" tableName="tb_doctor_visit" domainObjectName="DoctorVisit">
+		</table>
+		<table schema="registration" tableName="tb_user_registration" domainObjectName="UserRegistration">
+		</table>
+		<table schema="registration" tableName="tb_user_log" domainObjectName="UserLog">
+		</table>-->
+		<table schema="registration" tableName="tb_hospital" domainObjectName="Hospital">
+			<columnOverride column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+		</table>
+
+	</context>
+</generatorConfiguration>

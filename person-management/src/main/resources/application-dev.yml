@@ -1,0 +1,23 @@
+server:
+  port: 9010
+spring:
+  application:
+    name: common-item
+  rabbitmq:
+    host: 192.168.8.130
+    username: admin
+    password: buyi
+    port: 5672
+    virtual-host: /
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bz_shop?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+
+# 配置注册中心地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.8.129:8761/eureka/
