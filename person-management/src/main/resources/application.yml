@@ -10,3 +10,5 @@ spring:
     name: common-redis
   redis:
     host: localhost
+
+
