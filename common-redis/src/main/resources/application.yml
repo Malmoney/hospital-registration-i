@@ -1,0 +1,13 @@
+server:
+  port: 9050
+  servlet:
+    context-path: /redis
+spring:
+  redis:
+    host: localhost
+  application:
+    name: common-redis
+eureka:
+  client:
+    service-url:
+      deafultZone: http://loalhost:8761/eureka

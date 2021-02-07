@@ -1,6 +1,6 @@
 spring:
   application:
-    name: eureka-com.liurq.server
+    name: eureka-server
 server:
   port: 8761
 

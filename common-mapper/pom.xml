@@ -11,10 +11,6 @@
 
     <artifactId>common-mapper</artifactId>
 
-    <properties>
-        <druid.version>1.0.9</druid.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.liurq</groupId>
@@ -26,18 +22,20 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>${druid.version}</version>
+            <version>${druid-version}</version>
         </dependency>
         <!--mybatis-->
+        <!--MyBatis And Spring Integration Starter-->
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>1.2.2</version>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${spring-mybats-version}</version>
         </dependency>
+        <!-- MyBatis -->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.2.8</version>
+            <version>${mybatis-version}</version>
         </dependency>
 
         <!--代码生成器依赖-->
@@ -94,5 +92,20 @@
                 </dependencies>
             </plugin>
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>
