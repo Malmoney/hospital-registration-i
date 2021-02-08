@@ -12,14 +12,14 @@
 </head>
 <body>
 <div>
-    <form action="/login">
+    <form action="/person/server/login/userLogin" method="post">
 
         <p>
-            手机号：<input type="text" name="username" id="username">
+            手机号：<input type="text" name="userPhone" id="userPhone">
         </p>
         <p>
             <div style="width: 550px">
-            验证码：<input type="number" name="password" id="password">
+            验证码：<input type="number" name="authCode" id="authCode">
                 <div id="getNumberButton" onclick="getNumber()">获取短信验证码</div>
             </div>
         </p>
@@ -32,17 +32,14 @@
 <script src="js/jquery-1.9.1.js"></script>
 <script>
     function getNumber() {
-        var reqInfo={
-            username:$("#username").val(),
-            password:""
-        }
+
         $.ajax({
             type:"post",
             url:"/person/server/login/getNumber",
-            data:reqInfo,
-            contentType:"application/json;charset=utf-8",
+            data:{"userPhone":$("#userPhone").val()},
+           //contentType:"application/json;charset=utf-8",
             success:function(data){
-                $("#password").val(data.rspData);
+                $("#authCode").val(data.rspData);
             },error:function(data){
 
             }

@@ -13,16 +13,9 @@ public interface LoginService {
 
     /**
      * 获取验证码
-     * @param username
+     * @param userPhone
      * @return
      */
-    RspInfo getNumber(String username);
-
-    /**
-     * 用户登录逻辑
-     * @param req
-     * @return
-     */
-    RspInfo toMain(LoginReq req);
+    RspInfo getNumber(String userPhone);
 
 }

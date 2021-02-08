@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liurq.com.liurq.server.dao.UserMapper" >
+<mapper namespace="com.liurq.server.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.liurq.server.model.User" >
     <!--
       WARNING - @mbggenerated
@@ -425,4 +425,12 @@
       bak_code2 = #{bakCode2,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="string">
+    select
+        <include refid="Base_Column_List" />
+    from tb_user u
+    where u.user_phone = #{userPhone}
+        and u.status = '0'
+  </select>
 </mapper>

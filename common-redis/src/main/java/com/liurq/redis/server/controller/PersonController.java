@@ -2,10 +2,7 @@ package com.liurq.redis.server.controller;
 
 import com.liurq.redis.server.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -23,14 +20,18 @@ public class PersonController {
 
 
     @RequestMapping(value = "/setAuthCode")
-    public int setAuthCode(@RequestParam @NotEmpty String username, @RequestParam @NotEmpty String code){
-        return this.personService.setAuthCode(username,code);
+    public int setAuthCode(@RequestParam @NotEmpty String userPhone, @RequestParam @NotEmpty String code){
+        return this.personService.setAuthCode(userPhone,code);
     }
 
-    @GetMapping("/redis/person/server/getAuthCode")
-    String getAuthCode(@RequestParam String username){
-        return personService.getAuthCode(username);
+    @RequestMapping("/getAuthCode")
+    public String getAuthCode(@RequestParam String userPhone){
+        return personService.getAuthCode(userPhone);
     }
 
+    @PostMapping("/removeAuthCode")
+    public void removeAuthCode(@RequestParam String userPhone){
+        this.personService.removeAuthCode(userPhone);
+    }
 
 }

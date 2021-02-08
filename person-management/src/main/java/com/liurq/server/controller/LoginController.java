@@ -8,6 +8,9 @@ import com.liurq.server.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -25,22 +28,14 @@ public class LoginController {
 
     /**
      * 获取验证码
-     * @param username
+     * @param userPhone
      * @return
      */
     @RequestMapping(value = "/getNumber")
-    public RspInfo getNumber( @Valid String username) {
-        return loginService.getNumber(username);
+    public RspInfo getNumber( @Valid String userPhone) {
+        return loginService.getNumber(userPhone);
     }
 
-    /**
-     * 用户登录
-     * @param reqInfo
-     * @return
-     */
-    @RequestMapping(value = "/userLogin")
-    public RspInfo login( @Valid LoginReq reqInfo) {
-        return loginService.toMain(reqInfo);
-    }
+
 
 }

@@ -7,10 +7,12 @@ import com.liurq.server.service.LoginService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
@@ -22,8 +24,10 @@ import java.util.Random;
  * @Desc:
  **/
 @Service
-public class LoginServiceImpl implements LoginService, UserDetailsService {
+public class LoginServiceImpl implements LoginService,UserDetailsService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private PersonRedisFeignClient personRedisFeignClient;
@@ -35,38 +39,26 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
      * @return
      */
     @Override
-    public RspInfo getNumber(String username) {
+    public RspInfo getNumber(String userPhone) {
 
         Random random = new Random();
         int num = random.nextInt(8999)+1000;
-        int i = personRedisFeignClient.setAuthCode(username,num+"");
+        int i = personRedisFeignClient.setAuthCode(userPhone,num+"");
         if (i<=0){
             return RspInfo.fail("获取失败，请重试");
         }
         return RspInfo.success(num);
     }
 
-    /**
-     * 用户登录逻辑
-     * @param req
-     * @return
-     */
-    @Override
-    public RspInfo toMain(LoginReq req) {
-        String username = req.getUsername();
-        String password = req.getPassword();
-        String authCode = personRedisFeignClient.getAuthCode(username);
 
-        if (StringUtils.isEmpty(authCode)||!password.equals(authCode)){
-            return RspInfo.fail("验证码错误或已失效");
+    @Override
+    public UserDetails loadUserByUsername(String userPhone) throws UsernameNotFoundException {
+        String authCode = personRedisFeignClient.getAuthCode(userPhone);
+        if (StringUtils.isEmpty(authCode)){
+            throw new UsernameNotFoundException("验证码错误或已失效");
         }
+        String pwd = passwordEncoder.encode(authCode);
 
-        return RspInfo.success("");
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return new User(username,"",null);
+        return new User(userPhone,pwd,AuthorityUtils.commaSeparatedStringToAuthorityList(""));
     }
 }

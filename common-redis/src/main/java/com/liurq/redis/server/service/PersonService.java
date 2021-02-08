@@ -12,12 +12,19 @@ public interface PersonService {
      * 设置验证码
      * @return
      */
-    int setAuthCode(String username,String code);
+    int setAuthCode(String userPhone,String code);
 
     /**
      * 获取缓存中的用户验证码
-     * @param username
+     * @param userPhone
      * @return
      */
-    String getAuthCode(String username);
+    String getAuthCode(String userPhone);
+
+    /**
+     * 移除验证码
+     * @param userPhone
+     * @return
+     */
+    void removeAuthCode(String userPhone);
 }

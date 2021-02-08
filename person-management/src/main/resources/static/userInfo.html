@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div style="width: 400px;margin-left: 400px">
+    <p>
+    姓名: <input type="text" name="userName" id="userName">
+    </p>
+    <p>
+    身份证号：<input type="text" name="userIdCard" id="userIdCard">
+    </p>
+    <p>
+    手机号：<input type="text" name="userPhone" id="userPhone">
+    </p>
+    <p>
+    现居地：
+    <select name="" id="province">
+        <option selected value="0">请选择省份</option>
+        <option value="山西省">山西</option>
+        <option value="河北省">河北</option>
+    </select>
+    <select name="" id="city">
+        <option selected value="0">请选择城市</option>
+        <option value="太原市">太原</option>
+        <option value="石家庄市">石家庄</option>
+    </select>
+    <select name="" id="area">
+        <option selected value="0">请选择区县</option>
+        <option value="小店区">小店区</option>
+        <option value="迎泽区">迎泽区</option>
+    </select>
+    </p>
+    <p>
+    详细地址：<input type="text" name="user_address">
+    </p>
+    <p>
+        <button id="save_button">提交</button>
+    </p>
+</div>
+
+</body>
+<style>
+    input,select{
+        float: right;
+    }
+</style>
+<script src="js/jquery-1.9.1.js"></script>
+<script>
+    $(function(){
+        $("#save_button").click(function(){
+            let user={
+                userName:$("#userName").val(),
+                user_id_card:$("#userIdCard").val(),
+                userPhone:$("#userPhone").val(),
+                user_address:$("#province").val()+$("#city").val()+$("#area").val()+$("#user_address").val(),
+            }
+            $.ajax({
+                url:"",
+                method:"post",
+                data:user,
+                success:function(data){
+
+                },error:function(data){
+
+                }
+            });
+        });
+    });
+</script>
+</html>
