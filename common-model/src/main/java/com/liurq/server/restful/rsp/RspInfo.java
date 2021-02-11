@@ -1,7 +1,5 @@
 package com.liurq.server.restful.rsp;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.apache.logging.log4j.ThreadContext;
 
 import java.io.Serializable;
@@ -11,32 +9,11 @@ import java.io.Serializable;
  * @Date:2021-02-07
  * @Desc:
  **/
-@ApiModel(
-        description = "通用返回报文信息"
-)
 public class RspInfo<T> implements Serializable {
     private static final long serialVersionUID = 1L;
-    @ApiModelProperty(
-            value = "日志标识",
-            required = true,
-            position = 5
-    )
     private String rspLogId;
-    @ApiModelProperty(
-            value = "返回代码",
-            required = true,
-            position = 10
-    )
     private String rspCode;
-    @ApiModelProperty(
-            value = "返回备注",
-            position = 20
-    )
     private String rspDesc;
-    @ApiModelProperty(
-            value = "返回内容",
-            position = 30
-    )
     private T rspData;
 
 

@@ -2,6 +2,7 @@ package com.liurq.server.service;
 
 import com.liurq.server.restful.req.person.LoginReq;
 import com.liurq.server.restful.rsp.RspInfo;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @Author:hyz
@@ -17,5 +18,12 @@ public interface LoginService {
      * @return
      */
     RspInfo getNumber(String userPhone);
+
+    /**
+     * 跳往主页
+     * @param user
+     * @return
+     */
+    RspInfo toMain(UserDetails user);
 
 }

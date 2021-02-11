@@ -1,9 +1,11 @@
 package com.liurq.server.service.impl;
 
+import com.liurq.server.dao.UserMapper;
 import com.liurq.server.feign.PersonRedisFeignClient;
 import com.liurq.server.restful.req.person.LoginReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.service.LoginService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,16 +33,20 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
 
     @Autowired
     private PersonRedisFeignClient personRedisFeignClient;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 获取验证码
      *
-     * @param username
+     * @param userPhone
      * @return
      */
     @Override
     public RspInfo getNumber(String userPhone) {
-
+        if (StringUtils.isEmpty(userPhone)){
+            return RspInfo.fail("手机号不可为空");
+        }
         Random random = new Random();
         int num = random.nextInt(8999)+1000;
         int i = personRedisFeignClient.setAuthCode(userPhone,num+"");
@@ -50,6 +56,29 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
         return RspInfo.success(num);
     }
 
+    /**
+     * 跳往主页
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public RspInfo toMain(UserDetails user) {
+        //获取认证用户信息
+        String userPhone = user.getUsername();
+
+        //移除redis中的验证码
+        personRedisFeignClient.removeAuthCode(userPhone);
+        //向redis中存储Token
+
+        //查询数据库
+        com.liurq.server.model.User u = userMapper.selectByUserPhone(userPhone);
+        if (ObjectUtils.isNotEmpty(u)){
+            return RspInfo.success(u);
+        }
+
+        return RspInfo.success(null);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String userPhone) throws UsernameNotFoundException {
@@ -61,4 +90,5 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
 
         return new User(userPhone,pwd,AuthorityUtils.commaSeparatedStringToAuthorityList(""));
     }
+
 }

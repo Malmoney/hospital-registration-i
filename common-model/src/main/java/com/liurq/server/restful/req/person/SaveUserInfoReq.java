@@ -1,6 +1,5 @@
 package com.liurq.server.restful.req.person;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -12,7 +11,6 @@ import java.io.Serializable;
  * @Desc:
  **/
 @Data
-@ApiModel(description = "保存用户信息请求")
 public class SaveUserInfoReq implements Serializable {
 
 

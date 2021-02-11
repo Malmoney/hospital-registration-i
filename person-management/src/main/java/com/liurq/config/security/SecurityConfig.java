@@ -1,6 +1,7 @@
 package com.liurq.config.security;
 
 import com.liurq.server.handler.LoginSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+
     //配置spring security的登录路径以及自定义登录逻辑
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -26,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("authCode")
                 .loginPage("/login.html")
                 .loginProcessingUrl("/server/login/userLogin")
-                //.successForwardUrl("/server/login/toMain");//post请求，需要编写控制器跳转页面
-                .successHandler(new LoginSuccessHandler());
+                .successForwardUrl("/server/login/toMain");//post请求，需要编写控制器跳转页面
+                //.successHandler(loginSuccessHandler);
 
         http.authorizeRequests()
                 .antMatchers("/login.html","/js/**","/server/login/getNumber","/login").permitAll()

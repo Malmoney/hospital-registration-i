@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * @Author:hyz
  * @Date:2021-02-08
- * @Desc:
+ * @Desc: 自定义登录Handler，已失效
  **/
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -26,21 +26,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private PersonRedisFeignClient personRedisFeignClient;
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse rsp, Authentication a) throws IOException, ServletException {
-        //获取认证用户信息
-        User user = (User) a.getPrincipal();
-        String userPhone = user.getUsername();
 
-        //移除redis中的验证码
-        personRedisFeignClient.removeAuthCode(userPhone);
-        //向redis中存储Token
-
-        //查询数据库
-        com.liurq.server.model.User u = userMapper.selectByUserPhone(userPhone);
-        if (ObjectUtils.isEmpty(u)){
-            rsp.sendRedirect("/person/userInfo.html");
-        }
-        rsp.sendRedirect("/person/main.html");
     }
 }

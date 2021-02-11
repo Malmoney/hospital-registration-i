@@ -16,6 +16,10 @@ spring:
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
-
+key:
+  redis:
+    person:
+      authcode: "person::authcode:"
+      authToken: "person::token:"
 
 

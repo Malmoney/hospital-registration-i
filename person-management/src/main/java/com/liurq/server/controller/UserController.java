@@ -4,6 +4,7 @@ import com.liurq.server.restful.req.person.SaveUserInfoReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class UserController {
 
     @RequestMapping("/saveUserInfo")
     public RspInfo SaveUserInfo(SaveUserInfoReq req){
-        userService.saveUserInfo();
+        return userService.saveUserInfo(req);
     }
 
 

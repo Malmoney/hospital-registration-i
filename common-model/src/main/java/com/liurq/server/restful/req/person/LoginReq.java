@@ -1,7 +1,5 @@
 package com.liurq.server.restful.req.person;
 
-import com.liurq.server.restful.req.ReqBody;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -11,8 +9,7 @@ import javax.validation.constraints.NotEmpty;
  * @Date:2021-02-07
  * @Desc:
  **/
-@ApiModel(description = "登录请求")
-public class LoginReq extends ReqBody {
+public class LoginReq  {
     private static final long serialVersionUID = 1L;
 
     @NotEmpty
