@@ -1,4 +1,4 @@
-package com.liurq.server.restful.req.person;
+package com.liurq.server.restful.req.system.user;
 
 import lombok.Data;
 
@@ -12,8 +12,6 @@ import java.io.Serializable;
  **/
 @Data
 public class SaveUserInfoReq implements Serializable {
-
-
     private static final long serialVersionUID = 1L;
 
     @NotEmpty

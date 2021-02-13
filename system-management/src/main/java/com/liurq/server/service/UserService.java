@@ -1,6 +1,6 @@
 package com.liurq.server.service;
 
-import com.liurq.server.restful.req.person.SaveUserInfoReq;
+import com.liurq.server.restful.req.system.user.SaveUserInfoReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import org.springframework.security.core.userdetails.UserDetails;
 

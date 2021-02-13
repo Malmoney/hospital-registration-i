@@ -2,13 +2,10 @@ package com.liurq.server.service.impl;
 
 import com.liurq.server.dao.UserMapper;
 import com.liurq.server.feign.PersonRedisFeignClient;
-import com.liurq.server.restful.req.person.LoginReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.service.LoginService;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Random;
 
 /**

@@ -1,15 +1,14 @@
-package com.liurq.server.restful.req.person;
-
-import lombok.Data;
+package com.liurq.server.restful.req.system;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 /**
  * @Author:hyz
  * @Date:2021-02-07
  * @Desc:
  **/
-public class LoginReq  {
+public class LoginReq implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotEmpty

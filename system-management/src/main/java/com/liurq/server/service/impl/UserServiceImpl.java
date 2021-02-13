@@ -5,7 +5,7 @@ import com.liurq.server.dao.UserMapper;
 import com.liurq.server.feign.PersonRedisFeignClient;
 import com.liurq.server.model.Patient;
 import com.liurq.server.model.User;
-import com.liurq.server.restful.req.person.SaveUserInfoReq;
+import com.liurq.server.restful.req.system.user.SaveUserInfoReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.service.UserService;
 import com.liurq.util.IDCardUtil;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.IdGenerator;
 
 import java.util.Date;
 

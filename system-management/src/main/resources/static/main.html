@@ -16,6 +16,17 @@
 <div id="hospitalRecommendInfo">
     <div style=" width:100px;height:20px;margin-top: 50px">
         <span style="font-size: 20px;"><b>推荐医院：</b></span>
+        <div>根据城市选择:
+            <select name="city" id="query_city">
+                <option value="0">--请选择--</option>
+                <option selected value="太原">太原</option>
+                <option value="长治">长治</option>
+            </select>
+        </div>
+    </div>
+    <div class="hospitalItem" data-id="">
+        <img src="" alt="">
+
     </div>
 </div>
 
@@ -23,6 +34,11 @@
 <script src="/system/js/jquery-1.9.1.js"></script>
 <script>
     $(function () {
+
+        $("#query_city").change(function () {
+            initHospitalInfo();
+        });
+
         $.ajax({
             url:"/system/server/user/getUserInfo",
             type:"post",
@@ -34,9 +50,11 @@
                 }
             }
         });
+
     });
     function init(){
         initDepartmentInfo();
+        initHospitalInfo();
     }
     function initDepartmentInfo() {
         $.ajax({
@@ -46,7 +64,30 @@
                 if (data.rspData != null){
                     let departmentInfos=data.rspData;
                     for (var i =0;i<departmentInfos.length;i++){
+
                         $("#departmentInfo").append(`<div class="departmentItem" data-id="`+departmentInfos[i].departmentId+`">`+departmentInfos[i].departmentName+`</div>`);
+                    }
+                }
+            }
+        });
+    }
+    function initHospitalInfo() {
+        let selectHospitalReq={
+            city:$('#query_city').val()
+        }
+
+        $.ajax({
+            url:"/system/server/hospital/selectHospital",
+            type:"post",
+            data: selectHospitalReq,
+            success:function (data) {
+                if (data.rspData != null){
+                    let hospitalInfos=data.rspData;
+                    for (var i =0;i<hospitalInfos.length;i++){
+                        $("#hospitalRecommendInfo").append(`    <div class="hospitalItem" data-id="`+hospitalInfos[i].hospitalId+`">
+                                                            <img src="" alt="">
+`+hospitalInfos[i].hospitalName+`
+                                                        </div>`);
                     }
                 }
             }

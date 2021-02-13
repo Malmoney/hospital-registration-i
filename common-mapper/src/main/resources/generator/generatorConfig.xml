@@ -73,12 +73,12 @@
 		<table schema="registration" tableName="tb_hospital" domainObjectName="Hospital">
 			<columnOverride column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
 		</table>
-		<table schema="registration" tableName="tr_hospital_guide" domainObjectName="HospitalGuide">
-		</table>
-		<table schema="registration" tableName="tr_hospital_type" domainObjectName="HospitalType">
-		</table>
-		<table schema="registration" tableName="tb_type" domainObjectName="Type">
-		</table>
+<!--		<table schema="registration" tableName="tr_hospital_guide" domainObjectName="HospitalGuide">-->
+<!--		</table>-->
+<!--		<table schema="registration" tableName="tr_hospital_type" domainObjectName="HospitalType">-->
+<!--		</table>-->
+<!--		<table schema="registration" tableName="tb_type" domainObjectName="Type">-->
+<!--		</table>-->
 
 
 	</context>
