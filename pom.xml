@@ -6,7 +6,7 @@
     <modules>
         <module>eureka-server</module>
         <module>zuul-server</module>
-        <module>person-management</module>
+        <module>system-management</module>
         <module>registration</module>
         <module>intelligent-recommend</module>
         <module>common-model</module>

@@ -21,20 +21,20 @@
 
 
 		<!-- 生成模型的包名和位置 -->
-		<javaModelGenerator targetPackage="com.liurq.com.liurq.server.model"
+		<javaModelGenerator targetPackage="com.liurq.server.model"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="false" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 
 		<!-- 生成映射文件的包名和位置 -->
-		<sqlMapGenerator targetPackage="com.liurq.com.liurq.server.dao.mapper"
+		<sqlMapGenerator targetPackage="com.liurq.server.dao"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 
 		<!-- 生成DAO的包名和位置 -->
-		<javaClientGenerator targetPackage="com.liurq.com.liurq.server.dao"
+		<javaClientGenerator targetPackage="com.liurq.server.dao"
 			targetProject="src/main/java" type="XMLMAPPER">
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
@@ -73,6 +73,13 @@
 		<table schema="registration" tableName="tb_hospital" domainObjectName="Hospital">
 			<columnOverride column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
 		</table>
+		<table schema="registration" tableName="tr_hospital_guide" domainObjectName="HospitalGuide">
+		</table>
+		<table schema="registration" tableName="tr_hospital_type" domainObjectName="HospitalType">
+		</table>
+		<table schema="registration" tableName="tb_type" domainObjectName="Type">
+		</table>
+
 
 	</context>
 </generatorConfiguration>

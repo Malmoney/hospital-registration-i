@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预约挂号</title>
+</head>
+<body>
+
+<div></div>
+<div id="departmentInfo">
+    <div style=" width:100px;height:20px;">
+        <span style="font-size: 20px;"><b>选择科室：</b></span>
+    </div>
+    <br>
+</div>
+<div id="hospitalRecommendInfo">
+    <div style=" width:100px;height:20px;margin-top: 50px">
+        <span style="font-size: 20px;"><b>推荐医院：</b></span>
+    </div>
+</div>
+
+</body>
+<script src="/system/js/jquery-1.9.1.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            url:"/system/server/user/getUserInfo",
+            type:"post",
+            success:function (data) {
+                if (data.rspData == null){
+                    window.location.href="/system/userInfo.html";
+                }else{
+                    init();
+                }
+            }
+        });
+    });
+    function init(){
+        initDepartmentInfo();
+    }
+    function initDepartmentInfo() {
+        $.ajax({
+            url:"/system/server/department/selectAllDepartment",
+            type:"post",
+            success:function (data) {
+                if (data.rspData != null){
+                    let departmentInfos=data.rspData;
+                    for (var i =0;i<departmentInfos.length;i++){
+                        $("#departmentInfo").append(`<div class="departmentItem" data-id="`+departmentInfos[i].departmentId+`">`+departmentInfos[i].departmentName+`</div>`);
+                    }
+                }
+            }
+        });
+    }
+</script>
+<style>
+    .departmentItem{
+        width: 50px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        margin-left: 20px;
+        background-color: aqua;
+        float: left;
+    }
+
+    .departmentItem:hover{
+        transform:scale(1.2);
+    }
+
+</style>
+</html>

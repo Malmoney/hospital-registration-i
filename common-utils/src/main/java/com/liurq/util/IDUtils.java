@@ -26,6 +26,15 @@ public class IDUtils {
 
 	/**
 	 * 生成id
+	 */
+	public static String genUUId() {
+		//取当前时间的长整形值包含毫秒
+		return UUID.randomUUID().toString().replace("-", "");
+	}
+
+
+	/**
+	 * 生成id
 	 * @return
 	 */
 	public static long genItemId() {
