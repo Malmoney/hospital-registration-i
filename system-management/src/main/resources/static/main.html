@@ -6,7 +6,9 @@
 </head>
 <body>
 
-<div></div>
+<div id="searchDiv" style="width: 100%;height: 20px;background-color: azure">
+搜索
+</div>
 <div id="departmentInfo">
     <div style=" width:100px;height:20px;">
         <span style="font-size: 20px;"><b>选择科室：</b></span>
@@ -24,21 +26,17 @@
             </select>
         </div>
     </div>
-    <div class="hospitalItem" data-id="">
-        <img src="" alt="">
-
-    </div>
 </div>
-
 </body>
 <script src="/system/js/jquery-1.9.1.js"></script>
 <script>
     $(function () {
-
         $("#query_city").change(function () {
             initHospitalInfo();
         });
-
+        $("#searchDiv").click(function () {
+            window.location.href="/system/search.html";
+        })
         $.ajax({
             url:"/system/server/user/getUserInfo",
             type:"post",

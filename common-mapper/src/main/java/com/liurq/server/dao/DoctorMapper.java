@@ -3,6 +3,9 @@ package com.liurq.server.dao;
 import com.liurq.server.model.Doctor;
 import com.liurq.server.model.DoctorExample;
 import java.util.List;
+
+import com.liurq.server.restful.req.system.hospital.SelectDoctorReq;
+import com.liurq.server.restful.rsp.hospital.SelectDoctorRsp;
 import org.apache.ibatis.annotations.Param;
 
 public interface DoctorMapper {
@@ -93,4 +96,7 @@ public interface DoctorMapper {
      * @mbggenerated Wed Feb 03 19:23:50 CST 2021
      */
     int updateByPrimaryKey(Doctor record);
+
+    List<SelectDoctorRsp> selectDoctor(SelectDoctorReq req);
+
 }

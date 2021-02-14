@@ -1,5 +1,7 @@
 package com.liurq.server.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.liurq.server.dao.HospitalMapper;
 import com.liurq.server.model.Hospital;
 import com.liurq.server.model.HospitalExample;
@@ -33,19 +35,26 @@ public class HospitalServiceImpl implements HospitalService {
      * @return
      */
     @Override
-    public RspInfo<List<Hospital>> selectHospital(SelectHospitalReq req) {
+    public RspInfo<PageInfo<Hospital>> selectHospital(SelectHospitalReq req) {
         String city = req.getCity();
-
+        String hospitalName = req.getHospitalName();
         HospitalExample example = new HospitalExample();
         HospitalExample.Criteria criteria = example.createCriteria();
+        //根据城市
         if(!StringUtils.isEmpty(city)){
             criteria.andHospitalCityEqualTo(city);
         }
+        //根据名称
+        if(!StringUtils.isEmpty(hospitalName)){
+            criteria.andHospitalNameLike(hospitalName);
+        }
         criteria.andParentIdEqualTo("0");
+        PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<Hospital> result = hospitalMapper.selectByExample(example);
         if (ObjectUtils.isEmpty(result)){
-            return RspInfo.success(new ArrayList<>());
+            result = new ArrayList<>();
         }
-        return RspInfo.success(result);
+        PageInfo<Hospital> pageInfo = new PageInfo<>(result);
+        return RspInfo.success(pageInfo);
     }
 }

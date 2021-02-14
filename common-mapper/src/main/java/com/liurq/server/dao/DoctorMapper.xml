@@ -395,4 +395,63 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where doctor_id = #{doctorId,jdbcType=VARCHAR}
   </update>
+  
+  <resultMap id="SelectDoctorMap" type="com.liurq.server.restful.rsp.hospital.SelectDoctorRsp">
+    <association property="doctor" javaType="com.liurq.server.model.Doctor">
+      <id column="doctor_id" property="doctorId" jdbcType="VARCHAR" />
+      <result column="doctor_name" property="doctorName" jdbcType="VARCHAR" />
+      <result column="doctor_sex" property="doctorSex" jdbcType="VARCHAR" />
+      <result column="doctor_work_age" property="doctorWorkAge" jdbcType="INTEGER" />
+      <result column="doctor_level" property="doctorLevel" jdbcType="VARCHAR" />
+      <result column="doctor_feedback_rate" property="doctorFeedbackRate" jdbcType="VARCHAR" />
+      <result column="doctor_registration_count" property="doctorRegistrationCount" jdbcType="INTEGER" />
+      <result column="doctor_image" property="doctorImage" jdbcType="VARCHAR" />
+      <result column="doctor_phone" property="doctorPhone" jdbcType="VARCHAR" />
+    </association>
+    <association property="department" javaType="com.liurq.server.model.Department">
+      <id column="department_id" property="departmentId" jdbcType="VARCHAR" />
+      <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
+      <result column="department_image" property="departmentImage" jdbcType="VARCHAR" />
+    </association>
+    <association property="hospital" javaType="com.liurq.server.model.Hospital">
+      <id column="hospital_id" jdbcType="VARCHAR" property="hospitalId" />
+      <result column="hospital_name" jdbcType="VARCHAR" property="hospitalName" />
+      <result column="hospital_address" jdbcType="VARCHAR" property="hospitalAddress" />
+      <result column="hospital_city" jdbcType="VARCHAR" property="hospitalCity" />
+      <result column="hospital_country" jdbcType="VARCHAR" property="hospitalCountry" />
+      <result column="hospital_province" jdbcType="VARCHAR" property="hospitalProvince" />
+      <result column="hospital_image" jdbcType="VARCHAR" property="hospitalImage" />
+      <result column="hospital_level" jdbcType="VARCHAR" property="hospitalLevel" />
+      <result column="hospital_level_name" jdbcType="VARCHAR" property="hospitalLevelName" />
+      <result column="hospital_phone" jdbcType="VARCHAR" property="hospitalPhone" />
+      <result column="hospital_order_count" jdbcType="BIGINT" property="hospitalOrderCount" />
+      <result column="remark" jdbcType="VARCHAR" property="remark" />
+      <result column="haschild" jdbcType="VARCHAR" property="haschild" />
+      <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    </association>
+  </resultMap>
+  
+  <select id="selectDoctor" parameterType="com.liurq.server.restful.req.system.hospital.SelectDoctorReq" resultMap="SelectDoctorMap">
+    select
+        d.*
+        ,de.*
+        ,hos.*
+    from tb_doctor d
+        left Join tr_department_doctor ded on ded.doctor_id = d.doctor_id
+        LEFT JOIN tb_department de on de.department_id = ded.department_id
+        LEFT JOIN tb_hospital hos on hos.hospital_id = ded.hospital_id
+    where d.`status` = '0'
+        and ded.deleted ='0'
+        and de.`status`='0'
+        and hos.`status`='0'
+    <if test="doctorName != null and doctorName !='' ">
+        and d.doctor_name like CONCAT('%',#{doctorName,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="departmentId != null and departmentId !='' ">
+      and de.department_id = #{departmentId,jdbcType=VARCHAR}
+    </if>
+    <if test="city != null and city !='' ">
+      and hos.hospital_city = #{city,jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>

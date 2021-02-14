@@ -1,5 +1,6 @@
 package com.liurq.server.service;
 
+import com.github.pagehelper.PageInfo;
 import com.liurq.server.model.Hospital;
 import com.liurq.server.restful.req.system.hospital.SelectHospitalReq;
 import com.liurq.server.restful.rsp.RspInfo;
@@ -18,6 +19,5 @@ public interface HospitalService {
      * @param req
      * @return
      */
-    RspInfo<List<Hospital>> selectHospital(SelectHospitalReq req);
-
+    RspInfo<PageInfo<Hospital>> selectHospital(SelectHospitalReq req);
 }

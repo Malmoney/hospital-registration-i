@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="searchDiv">
+        <input type="text" name="search" id="search_input" placeholder="搜索医院，医生">
+        <button id="search_button">搜索</button>
+    </div>
+    <div>
+        <div  class="active tag" id="hospital_tag">
+            医院
+        </div>
+        <div class="tag" id="doctor_tag">
+            医生
+        </div>
+    </div>
+    <div id="condition">
+        城市: <select name="query_city" id="query_city">
+            <option value="太原">太原</option>
+            <option value="长治">长治</option>
+        </select>
+        <div id="query_department_div">
+            科室: <select name="query_department" id="query_department">
+                <option value="骨科">骨科</option>
+                <option value="牙科">牙科</option>
+            </select>
+        </div>
+    </div>
+</body>
+<script src="/system/js/jquery-1.9.1.js"></script>
+<script>
+    $(function () {
+
+        $("#query_department_div").hide();
+
+        //绑定当前页面事件
+        $("#doctor_tag").click(function () {
+            $("#hospital_tag").removeClass("active");
+            $("#doctor_tag").addClass("active");
+            $("#query_department_div").show();//隐藏科室查询条件
+        })
+        //绑定当前页面事件
+        $("#hospital_tag").click(function () {
+            $("#doctor_tag").removeClass("active");
+            $("#hospital_tag").addClass("active");
+            $("#query_department_div").hide();//隐藏科室查询条件
+        })
+
+        //根据当前页面事件调用不同查询接口
+        $("#search_button").click(function () {
+            let flag = $("#doctor_tag").hasClass("active");
+            if (flag){
+                selectDoctor();
+            }else{
+                selectHospital();
+            }
+        });
+        //根据条件查询医院
+        function selectHospital() {
+            let searchText = $("#search_input").val().trim();
+            let city = $("#query_city").val();
+            let req={
+                hospitalName:searchText,
+                city:city
+            }
+            $.ajax({
+                url:"/system/server/hospital/selectHospital",
+                type:"post",
+                data:req,
+                success:function (data) {
+                    if (data.rspData == null){
+                        console(data.rspData);
+                    }
+                }
+            });
+        }
+        //根据条件查询医生
+        function selectDoctor() {
+            let searchText = $("#search_input").val().trim();
+            let departmentId = $("#query_department").val();
+            let city = $("#query_city").val();
+            let req={
+                doctorName:searchText,
+                departmentId:departmentId,
+                city:city,
+                pageNum:1,
+                pageSize:10
+            }
+            $.ajax({
+                url:"/system/server/doctor/selectDoctorInfo",
+                type:"post",
+                data:req,
+                success:function (data) {
+                    if (data.rspData == null){
+                        console(data.rspData);
+                    }
+                }
+            });
+        }
+    })
+</script>
+<style>
+    .tag{
+        width: 100px;
+        height: 20px;
+        float: left;
+        font-size: 20px;
+        margin-left: 10px;
+        background-color: aqua;
+    }
+</style>
+</html>
