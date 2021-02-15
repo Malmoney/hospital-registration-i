@@ -3,6 +3,10 @@ package com.liurq.server.dao;
 import com.liurq.server.model.Hospital;
 import com.liurq.server.model.HospitalExample;
 import java.util.List;
+
+import com.liurq.server.restful.req.system.hospital.SelectHospitalByDepartmentReq;
+import com.liurq.server.restful.req.system.hospital.SelectHospitalReq;
+import com.liurq.server.restful.rsp.hospital.SelectHospitalRsp;
 import org.apache.ibatis.annotations.Param;
 
 public interface HospitalMapper {
@@ -93,4 +97,6 @@ public interface HospitalMapper {
      * @mbggenerated Sat Feb 13 18:45:57 CST 2021
      */
     int updateByPrimaryKey(Hospital record);
+
+    List<SelectHospitalRsp> selectHospitalByDepartment(SelectHospitalByDepartmentReq req);
 }

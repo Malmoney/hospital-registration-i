@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ch">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -41,12 +41,20 @@
             $("#hospital_tag").removeClass("active");
             $("#doctor_tag").addClass("active");
             $("#query_department_div").show();//隐藏科室查询条件
+            //判断搜索条件是否为空，不为空则调用查询
+            if($("#search_input").val().trim() != ''){
+                selectDoctor();
+            }
         })
         //绑定当前页面事件
         $("#hospital_tag").click(function () {
             $("#doctor_tag").removeClass("active");
             $("#hospital_tag").addClass("active");
             $("#query_department_div").hide();//隐藏科室查询条件
+            //判断搜索条件是否为空，不为空则调用查询
+            if($("#search_input").val().trim() != ''){
+                selectHospital();
+            }
         })
 
         //根据当前页面事件调用不同查询接口

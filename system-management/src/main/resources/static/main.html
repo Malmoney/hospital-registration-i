@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ch">
 <head>
     <meta charset="UTF-8">
     <title>预约挂号</title>
@@ -31,19 +31,46 @@
 <script src="/system/js/jquery-1.9.1.js"></script>
 <script>
     $(function () {
+        //城市改变，调用查询医院接口
         $("#query_city").change(function () {
             initHospitalInfo();
         });
+        //前往搜索页面
         $("#searchDiv").click(function () {
             window.location.href="/system/search.html";
         })
+        //选择科室后跳往医院名单
+        $("#departmentInfo").on("click",".departmentItem",function(){
+            let id =$(this).attr("data-id");
+            let req={
+                city:$('#query_city').val(),
+                departmentId:id,
+
+                pageNum:1,
+                pageSize:10
+            }
+            $.ajax({
+                url:"/system/server/hospital/selectHospitalByDepartment",
+                type:"post",
+                data:req,
+                success:function (data) {
+                    if (data.rspData == null){
+                    }else{
+                    }
+                }
+            });
+        })
+
+        //进入首页页面初始化
         $.ajax({
             url:"/system/server/user/getUserInfo",
             type:"post",
             success:function (data) {
                 if (data.rspData == null){
+                    //如果用户没有填写基本信息，则进行填写
                     window.location.href="/system/userInfo.html";
                 }else{
+                    //用户已完善信息，查询首页数据
                     init();
                 }
             }
@@ -54,6 +81,7 @@
         initDepartmentInfo();
         initHospitalInfo();
     }
+    //查询科室信息
     function initDepartmentInfo() {
         $.ajax({
             url:"/system/server/department/selectAllDepartment",
@@ -69,9 +97,13 @@
             }
         });
     }
+    //查询医院信息
     function initHospitalInfo() {
         let selectHospitalReq={
-            city:$('#query_city').val()
+            city:$('#query_city').val(),
+
+            pageNum:1,
+            pageSize:10
         }
 
         $.ajax({

@@ -505,4 +505,40 @@
       parent_id = #{parentId,jdbcType=VARCHAR}
     where hospital_id = #{hospitalId,jdbcType=VARCHAR}
   </update>
+  <resultMap id="selectHospitalByDepartmentMap" type="com.liurq.server.restful.rsp.hospital.SelectHospitalRsp">
+    <association property="hospital" javaType="com.liurq.server.model.Hospital">
+      <id column="hospital_id" jdbcType="VARCHAR" property="hospitalId" />
+      <result column="hospital_name" jdbcType="VARCHAR" property="hospitalName" />
+      <result column="hospital_address" jdbcType="VARCHAR" property="hospitalAddress" />
+      <result column="hospital_city" jdbcType="VARCHAR" property="hospitalCity" />
+      <result column="hospital_country" jdbcType="VARCHAR" property="hospitalCountry" />
+      <result column="hospital_province" jdbcType="VARCHAR" property="hospitalProvince" />
+      <result column="hospital_image" jdbcType="VARCHAR" property="hospitalImage" />
+      <result column="hospital_level" jdbcType="VARCHAR" property="hospitalLevel" />
+      <result column="hospital_level_name" jdbcType="VARCHAR" property="hospitalLevelName" />
+      <result column="hospital_phone" jdbcType="VARCHAR" property="hospitalPhone" />
+      <result column="hospital_order_count" jdbcType="BIGINT" property="hospitalOrderCount" />
+      <result column="remark" jdbcType="VARCHAR" property="remark" />
+      <result column="haschild" jdbcType="VARCHAR" property="haschild" />
+      <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    </association>
+    <association property="hospitalType" javaType="com.liurq.server.model.HospitalType">
+      <id column="id" property="id" jdbcType="VARCHAR" />
+      <result column="hospital_id" property="hospitalId" jdbcType="VARCHAR" />
+      <result column="type_id" property="typeId" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <select id="selectHospitalByDepartment" parameterType="com.liurq.server.restful.req.system.hospital.SelectHospitalReq" resultMap="selectHospitalByDepartmentMap">
+    select
+        h.*
+        ,ty.*
+    from tb_hospital h
+        INNER JOIN tr_hospital_department de on de.hospital_id = h.hospital_id
+        LEFT JOIN tr_hospital_type ty on ty.hospital_id = h.hospital_id
+    where h.hospital_city = #{city,jdbcType=VARCHAR}
+        and de.department_id = #{departmentId,jdbcType=VARCHAR}
+        and de.`status` = '0'
+        and ty.`status` = '0'
+        and h.`status`='0'
+  </select>
 </mapper>

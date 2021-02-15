@@ -40,7 +40,7 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
      */
     @Override
     public RspInfo getNumber(String userPhone) {
-        if (StringUtils.isEmpty(userPhone)){
+        if (StringUtils.isBlank(userPhone)){
             return RspInfo.fail("手机号不可为空");
         }
         Random random = new Random();
@@ -56,7 +56,7 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userPhone) throws UsernameNotFoundException {
         String authCode = personRedisFeignClient.getAuthCode(userPhone);
-        if (StringUtils.isEmpty(authCode)){
+        if (StringUtils.isBlank(authCode)){
             throw new UsernameNotFoundException("验证码错误或已失效");
         }
         String pwd = passwordEncoder.encode(authCode);

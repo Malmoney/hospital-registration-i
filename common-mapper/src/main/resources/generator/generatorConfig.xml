@@ -60,8 +60,6 @@
 		</table>
 		<table schema="registration" tableName="td_tag" domainObjectName="Tag">
 		</table>
-		<table schema="registration" tableName="td_illness" domainObjectName="Illness">
-		</table>
 		<table schema="registration" tableName="tr_tag_relevance" domainObjectName="TagRelevance">
 		</table>
 		<table schema="registration" tableName="tb_doctor_visit" domainObjectName="DoctorVisit">
@@ -70,16 +68,19 @@
 		</table>
 		<table schema="registration" tableName="tb_user_log" domainObjectName="UserLog">
 		</table>-->
-		<table schema="registration" tableName="tb_hospital" domainObjectName="Hospital">
-			<columnOverride column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
-		</table>
+<!--		<table schema="registration" tableName="tb_hospital" domainObjectName="Hospital">-->
+<!--			<columnOverride column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--		</table>-->
 <!--		<table schema="registration" tableName="tr_hospital_guide" domainObjectName="HospitalGuide">-->
 <!--		</table>-->
 <!--		<table schema="registration" tableName="tr_hospital_type" domainObjectName="HospitalType">-->
 <!--		</table>-->
 <!--		<table schema="registration" tableName="tb_type" domainObjectName="Type">-->
 <!--		</table>-->
-
+<!--		<table schema="registration" tableName="tr_department_illness" domainObjectName="DepartmentIllness">-->
+<!--		</table>-->
+		<table schema="registration" tableName="tb_illness" domainObjectName="Illness">
+		</table>
 
 	</context>
 </generatorConfiguration>

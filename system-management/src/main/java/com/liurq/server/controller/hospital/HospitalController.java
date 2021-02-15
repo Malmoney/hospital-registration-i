@@ -2,8 +2,10 @@ package com.liurq.server.controller.hospital;
 
 import com.github.pagehelper.PageInfo;
 import com.liurq.server.model.Hospital;
+import com.liurq.server.restful.req.system.hospital.SelectHospitalByDepartmentReq;
 import com.liurq.server.restful.req.system.hospital.SelectHospitalReq;
 import com.liurq.server.restful.rsp.RspInfo;
+import com.liurq.server.restful.rsp.hospital.SelectHospitalRsp;
 import com.liurq.server.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,11 @@ public class HospitalController {
     @RequestMapping("/selectHospital")
     public RspInfo<PageInfo<Hospital>> selectHospital(@Valid SelectHospitalReq req){
         return hospitalService.selectHospital(req);
+    }
+
+    @RequestMapping("/selectHospitalByDepartment")
+    public RspInfo<PageInfo<SelectHospitalRsp>> selectHospitalByDepartment(@Valid SelectHospitalByDepartmentReq req){
+        return hospitalService.selectHospitalByDepartment(req);
     }
 
 }
