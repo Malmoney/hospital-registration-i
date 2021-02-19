@@ -1,0 +1,22 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://182.92.213.249:8761/eureka/
+spring:
+  application:
+    name: person-management
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rm-bp1i2ivwv45745tt1uo.mysql.rds.aliyuncs.com:3306/registration?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8&useSSL=false
+    username: buyi
+    password: Lps19980318
+    type: com.alibaba.druid.pool.DruidDataSource
+  main:
+    allow-bean-definition-overriding: true
+key:
+  redis:
+    person:
+      authcode: "person::authcode:"
+      authToken: "person::token:"
+
+

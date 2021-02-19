@@ -1,0 +1,14 @@
+spring:
+  redis:
+    host: 127.0.0.1
+  application:
+    name: common-redis
+eureka:
+  client:
+    service-url:
+      defaultZone: http://47.99.164.233:8761/eureka
+key:
+  redis:
+    person:
+      authcode: "person::authcode:"
+      authToken: "person::token:"

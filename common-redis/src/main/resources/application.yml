@@ -3,16 +3,5 @@ server:
   servlet:
     context-path: /redis
 spring:
-  redis:
-    host: localhost
-  application:
-    name: common-redis
-eureka:
-  client:
-    service-url:
-      deafultZone: http://loalhost:8761/eureka
-key:
-  redis:
-    person:
-      authcode: "person::authcode:"
-      authToken: "person::token:"
+  profiles:
+    active: dev
