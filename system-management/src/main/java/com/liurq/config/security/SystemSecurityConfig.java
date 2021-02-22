@@ -1,5 +1,7 @@
 package com.liurq.config.security;
 
+import com.liurq.server.handler.AjaxAccessDeniedHandler;
+import com.liurq.server.handler.AjaxAuthenticationEntryPoint;
 import com.liurq.server.handler.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,16 +22,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @Order(90)
 public class SystemSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    @Autowired
     private LoginSuccessHandler loginSuccessHandler;
 
+    @Autowired
+    private AjaxAccessDeniedHandler accessDeniedHandler;
+    @Autowired
+    private AjaxAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
     private LoginFilter loginFilter;
 
     //配置spring security的登录路径以及自定义登录逻辑
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.formLogin()
+        http//.anonymous().disable()//禁用匿名用户
+                .formLogin()
                 .usernameParameter("userPhone")
                 .passwordParameter("authCode")
                 .loginPage("/login.html")
@@ -39,10 +47,14 @@ public class SystemSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.successHandler(loginSuccessHandler);
 
         http.authorizeRequests()
-                .antMatchers("/login.html","/js/**","/server/login/getNumber","/login").permitAll()
-                .anyRequest().authenticated();//
+                //.antMatchers("/main.html","/login.html","/js/**","/server/login/getNumber","/login").permitAll()
+                .anyRequest().access("@myauthorityservice.hasPermission(request,authentication)")
 
-        //http.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .httpBasic().authenticationEntryPoint(authenticationEntryPoint);//未登录
+        //权限不足
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+        http.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.csrf().disable();//关闭csrf防护
     }

@@ -22,5 +22,7 @@ key:
     person:
       authcode: "person::authcode:"
       authToken: "person::token:"
+security:
+  openUrl: /**/*.html,/system/js/**,/system/server/login/getNumber
 
 

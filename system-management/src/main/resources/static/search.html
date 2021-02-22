@@ -31,9 +31,14 @@
     </div>
 </body>
 <script src="/system/js/jquery-1.9.1.js"></script>
+<script src="/system/js/jquery-params.js"></script>
 <script>
-    $(function () {
+    let header={
+        Authorization:""
+    }
 
+    $(function () {
+        header.Authorization = $.query.get("token");
         $("#query_department_div").hide();
 
         //绑定当前页面事件
@@ -79,8 +84,19 @@
                 type:"post",
                 data:req,
                 success:function (data) {
-                    if (data.rspData == null){
-                        console(data.rspData);
+                    console.log(data);
+                    if (data.rspCode=='301'){
+                        console.log("未登录")
+                    }
+                    if (data.rspCode =='300'){
+                        console.log("权限不足")
+                    }
+                },error:function (data){
+                    if (data.status=='-888'){
+                        console.log("未登录")
+                    }
+                    if (data.status =='-999'){
+                        console.log("权限不足")
                     }
                 }
             });
@@ -102,8 +118,11 @@
                 type:"post",
                 data:req,
                 success:function (data) {
-                    if (data.rspData == null){
-                        console(data.rspData);
+                    if (data.rspCode=='301'){
+                        console.log("未登录")
+                    }
+                    if (data.rspCode =='300'){
+                        console.log("权限不足")
                     }
                 }
             });

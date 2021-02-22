@@ -16,6 +16,15 @@ public class RspInfo<T> implements Serializable {
     private String rspDesc;
     private T rspData;
 
+    @Override
+    public String toString() {
+        return "RspInfo{" +
+                "rspLogId='" + rspLogId + '\'' +
+                ", rspCode='" + rspCode + '\'' +
+                ", rspDesc='" + rspDesc + '\'' +
+                ", rspData=" + rspData +
+                '}';
+    }
 
     public RspInfo() {
         this.rspLogId=ThreadContext.get("logId");

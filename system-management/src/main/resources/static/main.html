@@ -29,19 +29,20 @@
 </div>
 </body>
 <script src="/system/js/jquery-1.9.1.js"></script>
+<script src="/system/js/jquery-params.js"></script>
 <script>
-    var header={
-        Authorization:"123123"
+    let header={
+        Authorization:""
     }
     $(function () {
-
+        header.Authorization = $.query.get("token");
         //城市改变，调用查询医院接口
         $("#query_city").change(function () {
             initHospitalInfo();
         });
         //前往搜索页面
         $("#searchDiv").click(function () {
-            window.location.href="/system/search.html";
+            window.location.href="/system/search.html"+"?token="+header.Authorization;
         })
         //选择科室后跳往医院名单
         $("#departmentInfo").on("click",".departmentItem",function(){
@@ -54,6 +55,7 @@
                 pageSize:10
             }
             $.ajax({
+                heades:header,
                 url:"/system/server/hospital/selectHospitalByDepartment",
                 type:"post",
                 data:req,
@@ -73,7 +75,7 @@
             success:function (data) {
                 if (data.rspData == null){
                     //如果用户没有填写基本信息，则进行填写
-                    window.location.href="/system/userInfo.html";
+                    window.location.href="/system/userInfo.html"+"?token="+header.Authorization;
                 }else{
                     //用户已完善信息，查询首页数据
                     init();
