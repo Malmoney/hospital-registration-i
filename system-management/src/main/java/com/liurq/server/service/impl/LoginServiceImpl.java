@@ -61,7 +61,7 @@ public class LoginServiceImpl implements LoginService,UserDetailsService {
         }
         String pwd = passwordEncoder.encode(authCode);
 
-        return new User(userPhone,pwd,AuthorityUtils.commaSeparatedStringToAuthorityList(""));
+        return new User(userPhone,pwd,AuthorityUtils.commaSeparatedStringToAuthorityList("test,admin"));
     }
 
 }

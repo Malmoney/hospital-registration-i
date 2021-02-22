@@ -2,6 +2,8 @@ package com.liurq.server.handler;
 
 import com.liurq.server.dao.UserMapper;
 import com.liurq.server.feign.PersonRedisFeignClient;
+import com.liurq.util.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -28,7 +30,20 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private UserMapper userMapper;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse rsp, Authentication a) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse rsp, Authentication a) throws IOException {
+        //获取认证用户信息
+        User user = (User) a.getPrincipal();
+        String userPhone = user.getUsername();
+        //移除redis中的验证码
+        personRedisFeignClient.removeAuthCode(userPhone);
+        //向redis中存储Token
+        personRedisFeignClient.setUser(user,"123123");
+        //查询数据库
+        com.liurq.server.model.User u = userMapper.selectByUserPhone(userPhone);
+        if (ObjectUtils.isEmpty(u)){
+            rsp.sendRedirect("/system/userInfo.html");
+        }
+        rsp.sendRedirect("/system/main.html");
 
     }
 }

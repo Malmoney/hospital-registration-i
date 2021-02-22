@@ -1,5 +1,8 @@
 package com.liurq.redis.server.service;
 
+
+import org.springframework.security.core.userdetails.User;
+
 /**
  * @Author:hyz
  * @Date:2021-02-07
@@ -27,4 +30,19 @@ public interface PersonService {
      * @return
      */
     void removeAuthCode(String userPhone);
+
+    /**
+     * 根据token获取用户信息
+     * @param token
+     * @return
+     */
+    User getUser(String token);
+
+    /**
+     * 根据token存放用户
+     * @param user
+     * @param token
+     * @return
+     */
+    void setUser(User user, String token);
 }

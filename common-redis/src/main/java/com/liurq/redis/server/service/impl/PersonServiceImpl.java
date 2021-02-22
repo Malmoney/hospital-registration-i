@@ -4,6 +4,7 @@ import com.liurq.redis.server.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -61,5 +62,28 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void removeAuthCode(String userPhone) {
         redisTemplate.delete(personAuthcodeKey+userPhone);
+    }
+
+    /**
+     * 根据token获取用户信息
+     *
+     * @param token
+     * @return
+     */
+    @Override
+    public User getUser(String token) {
+        return  (User)redisTemplate.opsForValue().get(personAuthTokenKey + token);
+    }
+
+    /**
+     * 根据token存放用户
+     *
+     * @param user
+     * @param token
+     * @return
+     */
+    @Override
+    public void setUser(User user, String token) {
+        redisTemplate.opsForValue().set(personAuthTokenKey+token,user,7,TimeUnit.DAYS);
     }
 }

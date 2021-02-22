@@ -12,7 +12,7 @@
 </head>
 <body>
 <div>
-    <form action="/system/server/login/userLogin" method="post">
+<!--    <form action="/system/server/login/userLogin" method="post">-->
 
         <p>
             手机号：<input type="text" name="userPhone" id="userPhone">
@@ -24,9 +24,9 @@
             </div>
         </p>
         <p>
-            <button>登录</button>
+            <button onclick="userLogin()">登录</button>
         </p>
-    </form>
+<!--    </form>-->
 </div>
 </body>
 <script src="js/jquery-1.9.1.js"></script>
@@ -38,6 +38,27 @@
             url:"/system/server/login/getNumber",
             data:{"userPhone":$("#userPhone").val()},
            //contentType:"application/json;charset=utf-8",
+            success:function(data){
+                $("#authCode").val(data.rspData);
+            },error:function(data){
+
+            }
+        })
+    }
+    function userLogin(){
+        let req={
+            userPhone:$("#userPhone").val(),
+            authCode:$("#authCode").val(),
+        }
+        let header={
+            Authorization:"123123"
+        }
+        $.ajax({
+            headers:header,
+            type:"post",
+            url:"/system/server/login/userLogin",
+            data:req,
+            //contentType:"application/json;charset=utf-8",
             success:function(data){
                 $("#authCode").val(data.rspData);
             },error:function(data){
