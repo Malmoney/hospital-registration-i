@@ -71,8 +71,8 @@ public class PersonServiceImpl implements PersonService {
      * @return
      */
     @Override
-    public User getUser(String token) {
-        return  (User)redisTemplate.opsForValue().get(personAuthTokenKey + token);
+    public Object getUser(String token) {
+        return  (Object)redisTemplate.opsForValue().get(personAuthTokenKey + token);
     }
 
     /**
@@ -83,7 +83,7 @@ public class PersonServiceImpl implements PersonService {
      * @return
      */
     @Override
-    public void setUser(User user, String token) {
+    public void setUser(Object user, String token) {
         redisTemplate.opsForValue().set(personAuthTokenKey+token,user,7,TimeUnit.DAYS);
     }
 }

@@ -36,7 +36,7 @@ public interface PersonService {
      * @param token
      * @return
      */
-    User getUser(String token);
+    Object getUser(String token);
 
     /**
      * 根据token存放用户
@@ -44,5 +44,5 @@ public interface PersonService {
      * @param token
      * @return
      */
-    void setUser(User user, String token);
+    void setUser(Object user, String token);
 }

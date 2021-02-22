@@ -21,10 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Order(90)
 public class SystemSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private LoginSuccessHandler loginSuccessHandler;
 
-    @Autowired
     private LoginFilter loginFilter;
 
     //配置spring security的登录路径以及自定义登录逻辑
@@ -36,14 +34,15 @@ public class SystemSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("authCode")
                 .loginPage("/login.html")
                 .loginProcessingUrl("/server/login/userLogin")
-                //.successForwardUrl("/server/login/toMain");//post请求，需要编写控制器跳转页面
-                .successHandler(loginSuccessHandler);
+                //post请求，需要编写控制器跳转页面
+                .successForwardUrl("/server/login/toMain");
+                //.successHandler(loginSuccessHandler);
 
         http.authorizeRequests()
                 .antMatchers("/login.html","/js/**","/server/login/getNumber","/login").permitAll()
                 .anyRequest().authenticated();//
 
-        http.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.csrf().disable();//关闭csrf防护
     }

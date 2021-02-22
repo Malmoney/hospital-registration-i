@@ -43,7 +43,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (ObjectUtils.isEmpty(u)){
             rsp.sendRedirect("/system/userInfo.html");
         }
-        rsp.sendRedirect("/system/main.html");
+        rsp.sendRedirect("/server/login/toMain");
 
     }
 }

@@ -41,7 +41,7 @@ public class PersonController {
      * @return
      */
     @PostMapping("/getUser")
-    public User getUser(@RequestParam String token){
+    public Object getUser(@RequestParam String token){
         return this.personService.getUser(token);
     }
 
@@ -51,7 +51,7 @@ public class PersonController {
      * @param token
      */
     @PostMapping("/setUser")
-    public void setUser(@RequestBody User user, @RequestParam String token){
+    public void setUser(@RequestBody Object user, @RequestParam String token){
          this.personService.setUser(user,token);
     }
 

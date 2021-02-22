@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +30,6 @@ import java.util.Map;
  * @Date:2021-02-20
  * @Desc:
  **/
-@Component
 public class LoginFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -40,11 +41,28 @@ public class LoginFilter extends OncePerRequestFilter {
         String token = req.getHeader("Authorization");
         if(!StringUtils.isBlank(token)){
             //查询redis，获取token
-            User user =  personRedisFeignClient.getUser(token);
-            if (!ObjectUtils.isEmpty(user)){
+            Map userMap =  (Map)personRedisFeignClient.getUser(token);
+
+            if (!ObjectUtils.isEmpty(userMap)){
+                ArrayList<Map> authorities = (ArrayList<Map>)userMap.get("authorities");
+                String str = "";
+                for (Map map : authorities){
+                    str +=  map.get("authority")+",";
+                }
+                User user = new User(
+                        (String)userMap.get("username"),
+                        "1213",
+                        (boolean)userMap.get("enabled"),
+                        (boolean)userMap.get("accountNonExpired"),
+                        (boolean)userMap.get("credentialsNonExpired"),
+                        (boolean)userMap.get("accountNonLocked"),
+                        AuthorityUtils.commaSeparatedStringToAuthorityList(str)
+                );
+                TokenAuthentication tokenAuthentication = new TokenAuthentication(token);
                 UsernamePasswordAuthenticationToken authentication  = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                 //设置为已认证
-                SecurityContextHolder.getContext().setAuthentication(authentication );
+                SecurityContextHolder.getContext().setAuthentication(tokenAuthentication );
                 //放行
                 filterChain.doFilter(req,rsp);
             }else{

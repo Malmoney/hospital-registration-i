@@ -35,7 +35,7 @@ public interface PersonRedisFeignClient {
      * @return
      */
     @PostMapping("/redis/person/server/getUser")
-    User getUser(@RequestParam("token") String token);
+    Object getUser(@RequestParam("token") String token);
 
     /**
      * 根据token存储用户信息
@@ -43,6 +43,6 @@ public interface PersonRedisFeignClient {
      * @param token
      */
     @PostMapping("/redis/person/server/setUser")
-    void setUser(@RequestBody User user, @RequestParam("token") String token);
+    void setUser(@RequestBody Object user, @RequestParam("token") String token);
 
 }

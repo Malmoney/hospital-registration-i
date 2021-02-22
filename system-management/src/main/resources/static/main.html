@@ -30,7 +30,11 @@
 </body>
 <script src="/system/js/jquery-1.9.1.js"></script>
 <script>
+    var header={
+        Authorization:"123123"
+    }
     $(function () {
+
         //城市改变，调用查询医院接口
         $("#query_city").change(function () {
             initHospitalInfo();
@@ -63,6 +67,7 @@
 
         //进入首页页面初始化
         $.ajax({
+            headers:header,
             url:"/system/server/user/getUserInfo",
             type:"post",
             success:function (data) {
@@ -84,6 +89,7 @@
     //查询科室信息
     function initDepartmentInfo() {
         $.ajax({
+            headers:header,
             url:"/system/server/department/selectAllDepartment",
             type:"post",
             success:function (data) {
@@ -101,12 +107,12 @@
     function initHospitalInfo() {
         let selectHospitalReq={
             city:$('#query_city').val(),
-
             pageNum:1,
             pageSize:10
         }
 
         $.ajax({
+            headers:header,
             url:"/system/server/hospital/selectHospital",
             type:"post",
             data: selectHospitalReq,
