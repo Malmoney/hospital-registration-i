@@ -92,11 +92,14 @@
                         console.log("权限不足")
                     }
                 },error:function (data){
-                    if (data.status=='-888'){
-                        console.log("未登录")
-                    }
-                    if (data.status =='-999'){
-                        console.log("权限不足")
+                    if(data.status == 301){
+                        let rsp = eval('('+data.responseText+')');
+                        if (rsp.rspCode=='-888'){
+                            window.location.href="/system/login.html"
+                        }
+                        if (data.rspCode =='-999'){
+                            alert("权限不足");
+                        }
                     }
                 }
             });

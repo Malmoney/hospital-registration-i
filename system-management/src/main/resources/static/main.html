@@ -55,11 +55,13 @@
                 pageSize:10
             }
             $.ajax({
-                heades:header,
+                headers:header,
                 url:"/system/server/hospital/selectHospitalByDepartment",
                 type:"post",
                 data:req,
                 success:function (data) {
+                    console.log("aaa")
+                    console.log(data)
                     if (data.rspData == null){
                     }else{
                     }
