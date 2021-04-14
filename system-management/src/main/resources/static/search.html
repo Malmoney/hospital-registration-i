@@ -34,7 +34,8 @@
 <script src="/system/js/jquery-params.js"></script>
 <script>
     let header={
-        Authorization:""
+        Authorization:"",
+        "Content-Type":"application/json;charset=utf-8"
     }
 
     $(function () {
@@ -80,17 +81,12 @@
                 city:city
             }
             $.ajax({
+                headers:header,
                 url:"/system/server/hospital/selectHospital",
                 type:"post",
-                data:req,
+                data:JSON.stringify(req),
                 success:function (data) {
-                    console.log(data);
-                    if (data.rspCode=='301'){
-                        console.log("未登录")
-                    }
-                    if (data.rspCode =='300'){
-                        console.log("权限不足")
-                    }
+
                 },error:function (data){
                     if(data.status == 301){
                         let rsp = eval('('+data.responseText+')');
@@ -117,7 +113,7 @@
                 pageSize:10
             }
             $.ajax({
-                url:"/system/server/doctor/selectDoctorInfo",
+                url:"/system/server/doctor/selectDoctor",
                 type:"post",
                 data:req,
                 success:function (data) {
@@ -126,6 +122,16 @@
                     }
                     if (data.rspCode =='300'){
                         console.log("权限不足")
+                    }
+                },error:function (data){
+                    if(data.status == 301){
+                        let rsp = eval('('+data.responseText+')');
+                        if (rsp.rspCode=='-888'){
+                            window.location.href="/system/login.html"
+                        }
+                        if (data.rspCode =='-999'){
+                            alert("权限不足");
+                        }
                     }
                 }
             });

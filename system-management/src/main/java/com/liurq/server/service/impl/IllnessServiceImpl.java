@@ -2,8 +2,7 @@ package com.liurq.server.service.impl;
 
 import com.liurq.server.dao.IllnessMapper;
 import com.liurq.server.model.Illness;
-import com.liurq.server.restful.req.system.hospital.DepartmentIdReq;
-import com.liurq.server.restful.rsp.RspInfo;
+import com.liurq.server.restful.req.hospital.DepartmentIdReq;
 import com.liurq.server.service.IllnessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

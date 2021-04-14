@@ -1,6 +1,5 @@
 package com.liurq.server.restful.rsp;
 
-import org.apache.logging.log4j.ThreadContext;
 
 import java.io.Serializable;
 
@@ -11,7 +10,6 @@ import java.io.Serializable;
  **/
 public class RspInfo<T> implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String rspLogId;
     private String rspCode;
     private String rspDesc;
     private T rspData;
@@ -19,15 +17,13 @@ public class RspInfo<T> implements Serializable {
     @Override
     public String toString() {
         return "RspInfo{" +
-                "rspLogId='" + rspLogId + '\'' +
-                ", rspCode='" + rspCode + '\'' +
-                ", rspDesc='" + rspDesc + '\'' +
-                ", rspData=" + rspData +
+                "\"rspCode\":\"" + rspCode + '\"' +
+                ", \"rspDesc\":\"" + rspDesc + '\"' +
+                ", \"rspData\":\"" + rspData +'\"'+
                 '}';
     }
 
     public RspInfo() {
-        this.rspLogId=ThreadContext.get("logId");
         this.rspCode = RspConstants.SUCCESS;
         this.rspDesc = "success";
     }
@@ -45,7 +41,6 @@ public class RspInfo<T> implements Serializable {
     }
 
     public RspInfo(String rspCode, String rspDesc, T rspData) {
-        this.rspLogId=ThreadContext.get("logId");
         this.rspCode = RspConstants.SUCCESS;
         this.rspDesc = "success";
         this.rspCode = rspCode;
@@ -62,14 +57,6 @@ public class RspInfo<T> implements Serializable {
         return this;
     }
 
-    public String getRspLogId() {
-        return this.rspLogId;
-    }
-
-    public RspInfo<T> setRspLogId(String rspLogId) {
-        this.rspLogId = rspLogId;
-        return this;
-    }
 
     public String getRspCode() {
         return this.rspCode;

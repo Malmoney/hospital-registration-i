@@ -2,6 +2,16 @@ server:
   port: 9000
   servlet:
     context-path: /system
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   profiles:
     active: dev
+  messages:
+    encoding: UTF-8
+logging:
+  config: classpath:log4j2/log4j2-spring.xml

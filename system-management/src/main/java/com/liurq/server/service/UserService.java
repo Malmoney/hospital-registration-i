@@ -1,8 +1,8 @@
 package com.liurq.server.service;
 
-import com.liurq.server.restful.req.system.user.SaveUserInfoReq;
+import com.liurq.server.model.User;
+import com.liurq.server.restful.req.user.SaveUserInfoReq;
 import com.liurq.server.restful.rsp.RspInfo;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @Author:hyz
@@ -20,9 +20,9 @@ public interface UserService {
 
     /**
      * 跳往主页
-     * @param user
+     * @param userPhone
      * @return
      */
-    RspInfo getUserInfo(UserDetails user);
+    User getUserInfo(String userPhone);
 
 }

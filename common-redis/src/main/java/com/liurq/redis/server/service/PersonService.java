@@ -1,7 +1,6 @@
 package com.liurq.redis.server.service;
 
 
-import org.springframework.security.core.userdetails.User;
 
 /**
  * @Author:hyz
@@ -36,7 +35,7 @@ public interface PersonService {
      * @param token
      * @return
      */
-    Object getUser(String token);
+    String getUser(String token);
 
     /**
      * 根据token存放用户
@@ -44,5 +43,5 @@ public interface PersonService {
      * @param token
      * @return
      */
-    void setUser(Object user, String token);
+    void setUser(String userPhone, String token);
 }

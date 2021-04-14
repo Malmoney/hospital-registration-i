@@ -10,86 +10,78 @@
         <!--这个输出控制台的配置-->
         <console name="Console" target="SYSTEM_OUT">
             <!--输出日志的格式-->
-            <PatternLayout charset="UTF-8" pattern="[LOGID:%X{logId}] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] - %l - %m%n"/>
+            <PatternLayout charset="UTF-8" pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] - %l - %m%n"/>
         </console>
         <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
-        <File name="log" fileName="log/test.log" append="false">
-            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
-        </File>
+        <!--        <File name="log" fileName="log/test.log" append="false">
+                    <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+                </File>-->
         <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，
         则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
-        <RollingFile name="RollingFileInfo" fileName="log/info.log"
-                     filePattern="log/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="RollingFileInfo" fileName="log/system/info.log"
+                     filePattern="log/system/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
-                <ThresholdFilter level="ALL" onMatch="ACCEPT" onMismatch="DENY"/>
-<!--                 <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/> -->
+                <!--                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>-->
+                <ThresholdFilter level="info" />
+                <!--                 <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/> -->
             </Filters>
-            <PatternLayout charset="UTF-8" pattern="[LOGID:%X{logId}] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] - %l - %m%n"/>
+            <PatternLayout charset="UTF-8" pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] - %l - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="10240 MB"/>
             </Policies>
         </RollingFile>
- 
+
         <!--<RollingFile name="RollingFileWarn" fileName="log/warn.log"-->
-                     <!--filePattern="log/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">-->
-            <!--<Filters>-->
-                <!--<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>-->
-                <!--<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>-->
-            <!--</Filters>-->
-            <!--<PatternLayout charset="UTF-8" pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] - %l - %m%n"/>-->
-            <!--<Policies>-->
-                <!--<TimeBasedTriggeringPolicy/>-->
-                <!--<SizeBasedTriggeringPolicy size="10240 MB"/>-->
-            <!--</Policies>-->
-            <!--&lt;!&ndash; DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 &ndash;&gt;-->
-            <!--<DefaultRolloverStrategy max="20"/>-->
+        <!--filePattern="log/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">-->
+        <!--<Filters>-->
+        <!--<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>-->
+        <!--<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+        <!--</Filters>-->
+        <!--<PatternLayout charset="UTF-8" pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] - %l - %m%n"/>-->
+        <!--<Policies>-->
+        <!--<TimeBasedTriggeringPolicy/>-->
+        <!--<SizeBasedTriggeringPolicy size="10240 MB"/>-->
+        <!--</Policies>-->
+        <!--&lt;!&ndash; DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 &ndash;&gt;-->
+        <!--<DefaultRolloverStrategy max="20"/>-->
         <!--</RollingFile>-->
- 
-        <RollingFile name="RollingFileError" fileName="log/error.log"
-                     filePattern="log/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+
+        <RollingFile name="RollingFileError" fileName="log/system/error.log"
+                     filePattern="log/system/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="ERROR"/>
-            <PatternLayout charset="UTF-8" pattern="[LOGID:%X{logId}] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] - %l - %m%n"/>
+            <PatternLayout charset="UTF-8" pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] - %l - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="10240 MB"/>
             </Policies>
         </RollingFile>
- 
+
     </appenders>
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
     <loggers>
         <!--过滤掉spring和hibernate的一些无用的debug信息-->
-        <logger name="org.springframework" level="Error"></logger>
-        <logger name="io.lettuce.core" level="Error"></logger>
-        <logger name="org.apache.shiro" level="Error"></logger>
-        <logger name="com.zaxxer" level="Error"></logger>
-        <logger name="org.apache.kafka" level="Error"></logger>
-        <logger name="org.hibernate.validator" level="Error"></logger>
-<!--        <logger name="com.mongodb.diagnostics" level="Error" additivity="true">-->
-<!--            <AppenderRef ref="Console" />-->
-<!--        </logger>-->
+        <!--        <logger name="org.springframework" level="Error"></logger>-->
+        <!--        <logger name="io.lettuce.core" level="Error"></logger>-->
+        <!--        <logger name="org.apache.shiro" level="Error"></logger>-->
+        <!--        <logger name="com.zaxxer" level="Error"></logger>-->
+        <!--        <logger name="org.apache.kafka" level="Error"></logger>-->
+        <!--        <logger name="org.hibernate.validator" level="Error"></logger>&ndash;&gt;-->
+        <!--        <logger name="com.mongodb.diagnostics" level="Error" additivity="true">-->
+        <!--            <AppenderRef ref="Console" />-->
+        <!--        </logger>-->
         <!--mongodb loggers-->
-        <logger name="org.mongodb.driver.cluster" level="INFO"/>
-        <logger name="org.mongodb.driver.connection" level="INFO"/>
-        <logger name="org.mongodb.driver.protocol.insert" level="INFO"/>
-        <logger name="org.mongodb.driver.protocol.delete" level="INFO"/>
-        <logger name="org.mongodb.driver.protocol.query" level="INFO"/>
-        <logger name="org.mongodb.driver.protocol.getmore" level="INFO"/>
-        <logger name="org.mongodb.driver.protocol.command" level="INFO"/>
-        <logger name="org.mongodb.driver.protocol.uri" level="INFO"/>
-        <logger name="org.mongodb.driver.protocol.management" level="INFO"/>
 
-        <logger name="com.netflix.discovery" level="Error"></logger>
-        <logger name="org.apache.http" level="Error"></logger>
+        <!--<logger name="com.netflix.discovery" level="Error"></logger>-->
+        <!--        <logger name="org.apache.http" level="Error"></logger>-->
         <logger name="org.redisson.connection" level="Error"></logger>
-        <root level="Debug">
+        <root level="info">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileInfo"/>
-            <!--<appender-ref ref="RollingFileWarn"/>-->
+            <!--            <appender-ref ref="RollingFileWarn"/>-->
             <appender-ref ref="RollingFileError"/>
         </root>
     </loggers>
- 
+
 </configuration>

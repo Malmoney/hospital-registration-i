@@ -49,8 +49,14 @@
     }
 </style>
 <script src="js/jquery-1.9.1.js"></script>
+<script src="/system/js/jquery-params.js"></script>
 <script>
+    let header={
+        Authorization:"",
+        "Content-Type" : "application/json;charset=utf-8"
+    }
     $(function(){
+        header.Authorization = $.query.get("token");
         $("#save_button").click(function(){
             let user={
                 userName:$("#userName").val(),
@@ -59,13 +65,22 @@
                 address:$("#province").val()+$("#city").val()+$("#area").val()+$("#userAddress").val(),
             }
             $.ajax({
+                headers:header,
                 url:"/system/server/user/saveUserInfo",
                 method:"post",
-                data:user,
+                data:JSON.stringify(user),
                 success:function(data){
-                    window.location.href="/system/main.html"
-                },error:function(data){
-
+                    window.location.href="/system/main.html"+"?token="+header.Authorization;
+                },error:function (data){
+                    if(data.status == 301){
+                        let rsp = eval('('+data.responseText+')');
+                        if (rsp.rspCode=='-888'){
+                            window.location.href="/system/login.html"
+                        }
+                        if (data.rspCode =='-999'){
+                            alert("权限不足");
+                        }
+                    }
                 }
             });
         });

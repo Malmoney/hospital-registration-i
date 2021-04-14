@@ -1,4 +1,4 @@
-package com.liurq.server.restful.req.system.hospital;
+package com.liurq.server.restful.req.hospital;
 
 import lombok.Data;
 

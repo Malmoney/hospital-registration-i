@@ -1,7 +1,6 @@
 package com.liurq.server.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +25,7 @@ public interface PersonRedisFeignClient {
     @PostMapping("/redis/person/server/getAuthCode")
     String getAuthCode(@RequestParam("userPhone") String userPhone);
 
-    @PostMapping("/redis/person/server/getAuthCode")
+    @PostMapping("/redis/person/server/removeAuthCode")
     void removeAuthCode(@RequestParam("userPhone") String userPhone);
 
     /**
@@ -35,7 +34,7 @@ public interface PersonRedisFeignClient {
      * @return
      */
     @PostMapping("/redis/person/server/getUser")
-    Object getUser(@RequestParam("token") String token);
+    String getUser(@RequestParam("token") String token);
 
     /**
      * 根据token存储用户信息
@@ -43,6 +42,6 @@ public interface PersonRedisFeignClient {
      * @param token
      */
     @PostMapping("/redis/person/server/setUser")
-    void setUser(@RequestBody Object user, @RequestParam("token") String token);
+    void setUser(@RequestParam("userPhone") String userPhone, @RequestParam("token") String token);
 
 }

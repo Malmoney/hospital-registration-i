@@ -93,4 +93,12 @@ public interface DepartmentMapper {
      * @mbggenerated Wed Feb 03 19:23:50 CST 2021
      */
     int updateByPrimaryKey(Department record);
+
+    /**
+     * 根据hospitalId查询医院科室关联信息
+     * @param hospitalId
+     * @return
+     */
+    List<Department> selectByHospitalId(String hospitalId);
+
 }

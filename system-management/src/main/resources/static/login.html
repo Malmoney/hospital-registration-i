@@ -21,6 +21,7 @@
             <div style="width: 550px">
             验证码：<input type="number" name="authCode" id="authCode">
                 <div id="getNumberButton" onclick="getNumber()">获取短信验证码</div>
+            <span id="login_tips" style="color: red;"></span>
             </div>
         </p>
         <p>
@@ -31,13 +32,13 @@
 </body>
 <script src="js/jquery-1.9.1.js"></script>
 <script>
+
     function getNumber() {
 
         $.ajax({
             type:"post",
             url:"/system/server/login/getNumber",
             data:{"userPhone":$("#userPhone").val()},
-           //contentType:"application/json;charset=utf-8",
             success:function(data){
                 $("#authCode").val(data.rspData);
             },error:function(data){
@@ -48,21 +49,20 @@
     function userLogin(){
         let req={
             userPhone:$("#userPhone").val(),
-            authCode:$("#authCode").val(),
+            authCode:$("#authCode").val()
         }
         $.ajax({
+            headers:{"Content-Type":"application/json;charset=utf-8"},
             type:"post",
             url:"/system/server/login/userLogin",
-            data:req,
+            data: JSON.stringify(req),
             success:function(data){
-                //$("#authCode").val(data.rspData);
-                if(data.rspData == 999){
-                    window.location.href="/system/userInfo.html";
+                if(data.rspCode != "0000" || data.rspData == "2001"){
+                    $("#login_tips").text("手机号或验证码不正确！");
                 }else{
-                    window.location.href="/system/main.html"+"?token="+data.rspData;
+                    let token = data.rspData;
+                    window.location.href="/system/main.html"+"?token="+token;
                 }
-            },error:function(data){
-
             }
         })
     }

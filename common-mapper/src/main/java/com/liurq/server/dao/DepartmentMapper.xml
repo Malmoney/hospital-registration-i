@@ -331,4 +331,12 @@
       bak_code2 = #{bakCode2,jdbcType=VARCHAR}
     where department_id = #{departmentId,jdbcType=VARCHAR}
   </update>
+  <select id="selectByHospitalId" resultMap="BaseResultMap" parameterType="string">
+    select distinct
+      d.*
+    from tr_hospital_department a
+        left join tb_department d on d.department_id = a.hospital_id
+    where a.status = '0'
+      and a.hospital_id = #{hospitalId,jdbcType=VARCHAR}
+  </select>
 </mapper>

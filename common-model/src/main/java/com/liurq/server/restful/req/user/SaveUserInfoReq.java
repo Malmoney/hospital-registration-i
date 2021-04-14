@@ -1,4 +1,4 @@
-package com.liurq.server.restful.req.system.user;
+package com.liurq.server.restful.req.user;
 
 import lombok.Data;
 

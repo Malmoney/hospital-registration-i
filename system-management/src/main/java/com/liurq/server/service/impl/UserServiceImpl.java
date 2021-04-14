@@ -5,14 +5,13 @@ import com.liurq.server.dao.UserMapper;
 import com.liurq.server.feign.PersonRedisFeignClient;
 import com.liurq.server.model.Patient;
 import com.liurq.server.model.User;
-import com.liurq.server.restful.req.system.user.SaveUserInfoReq;
+import com.liurq.server.restful.req.user.SaveUserInfoReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.service.UserService;
 import com.liurq.util.IDCardUtil;
 import com.liurq.util.IDUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +42,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public RspInfo saveUserInfo(SaveUserInfoReq req) {
+
+        if(!ObjectUtils.isEmpty(userMapper.selectByUserPhone(req.getUserPhone()))){
+            return RspInfo.fail("用户已存在");
+        }
 
         //插入用户信息表
         String sex = IDCardUtil.getSex(req.getUserIdCard());
@@ -85,26 +88,12 @@ public class UserServiceImpl implements UserService {
     /**
      * 跳往主页
      *
-     * @param user
+     * @param userPhone
      * @return
      */
     @Override
-    public RspInfo getUserInfo(UserDetails user) {
-        //获取认证用户信息
-        String userPhone = user.getUsername();
-
-        //移除redis中的验证码
-        personRedisFeignClient.removeAuthCode(userPhone);
-        //向redis中存储Token
-
-        //查询数据库
-        com.liurq.server.model.User u = userMapper.selectByUserPhone(userPhone);
-        if (ObjectUtils.isNotEmpty(u)){
-            return RspInfo.success(u);
-        }
-
-        return RspInfo.success(null);
+    public User getUserInfo(String userPhone) {
+        return userMapper.selectByUserPhone(userPhone);
     }
-
 
 }

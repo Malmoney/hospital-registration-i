@@ -2,7 +2,6 @@ package com.liurq.redis.server.controller;
 
 import com.liurq.redis.server.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
@@ -41,18 +40,18 @@ public class PersonController {
      * @return
      */
     @PostMapping("/getUser")
-    public Object getUser(@RequestParam String token){
+    public String getUser(@RequestParam String token){
         return this.personService.getUser(token);
     }
 
     /**
      * 根据token存储用户信息
-     * @param user
+     * @param userPhone
      * @param token
      */
     @PostMapping("/setUser")
-    public void setUser(@RequestBody Object user, @RequestParam String token){
-         this.personService.setUser(user,token);
+    public void setUser(@RequestParam String userPhone, @RequestParam String token){
+         this.personService.setUser(userPhone,token);
     }
 
 }

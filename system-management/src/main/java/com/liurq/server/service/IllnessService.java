@@ -1,7 +1,7 @@
 package com.liurq.server.service;
 
 import com.liurq.server.model.Illness;
-import com.liurq.server.restful.req.system.hospital.DepartmentIdReq;
+import com.liurq.server.restful.req.hospital.DepartmentIdReq;
 
 import java.util.List;
 

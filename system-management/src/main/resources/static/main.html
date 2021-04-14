@@ -32,7 +32,8 @@
 <script src="/system/js/jquery-params.js"></script>
 <script>
     let header={
-        Authorization:""
+        Authorization:"",
+        "Content-Type" : "application/json;charset=utf-8"
     }
     $(function () {
         header.Authorization = $.query.get("token");
@@ -58,29 +59,51 @@
                 headers:header,
                 url:"/system/server/hospital/selectHospitalByDepartment",
                 type:"post",
-                data:req,
+                data:JSON.stringify(req),
                 success:function (data) {
-                    console.log("aaa")
-                    console.log(data)
                     if (data.rspData == null){
                     }else{
+                    }
+                },error:function (data){
+                    if(data.status == 301){
+                        let rsp = eval('('+data.responseText+')');
+                        if (rsp.rspCode=='-888'){
+                            window.location.href="/system/login.html"
+                        }
+                        if (data.rspCode =='-999'){
+                            alert("权限不足");
+                        }
                     }
                 }
             });
         })
-
+        let getUserInfoReq={
+            token: $.query.get("token"),
+        }
         //进入首页页面初始化
         $.ajax({
             headers:header,
             url:"/system/server/user/getUserInfo",
             type:"post",
+            data:JSON.stringify(getUserInfoReq),
             success:function (data) {
+                console.log(data);
                 if (data.rspData == null){
                     //如果用户没有填写基本信息，则进行填写
                     window.location.href="/system/userInfo.html"+"?token="+header.Authorization;
                 }else{
                     //用户已完善信息，查询首页数据
                     init();
+                }
+            },error:function (data){
+                if(data.status == 301){
+                    let rsp = eval('('+data.responseText+')');
+                    if (rsp.rspCode=='-888'){
+                        window.location.href="/system/login.html"
+                    }
+                    if (data.rspCode =='-999'){
+                        alert("权限不足");
+                    }
                 }
             }
         });
@@ -104,6 +127,16 @@
                         $("#departmentInfo").append(`<div class="departmentItem" data-id="`+departmentInfos[i].departmentId+`">`+departmentInfos[i].departmentName+`</div>`);
                     }
                 }
+            },error:function (data){
+                if(data.status == 301){
+                    let rsp = eval('('+data.responseText+')');
+                    if (rsp.rspCode=='-888'){
+                        window.location.href="/system/login.html"
+                    }
+                    if (data.rspCode =='-999'){
+                        alert("权限不足");
+                    }
+                }
             }
         });
     }
@@ -119,7 +152,7 @@
             headers:header,
             url:"/system/server/hospital/selectHospital",
             type:"post",
-            data: selectHospitalReq,
+            data: JSON.stringify(selectHospitalReq),
             success:function (data) {
                 if (data.rspData != null){
                     let hospitalInfos=data.rspData;
@@ -130,9 +163,21 @@
                                                         </div>`);
                     }
                 }
+            },error:function (data){
+                if(data.status == 301){
+                    let rsp = eval('('+data.responseText+')');
+                    if (rsp.rspCode=='-888'){
+                        window.location.href="/system/login.html"
+                    }
+                    if (data.rspCode =='-999'){
+                        alert("权限不足");
+                    }
+                }
             }
         });
     }
+
+
 </script>
 <style>
     .departmentItem{

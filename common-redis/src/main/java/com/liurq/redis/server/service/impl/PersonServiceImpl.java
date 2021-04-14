@@ -4,7 +4,6 @@ import com.liurq.redis.server.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -71,19 +70,19 @@ public class PersonServiceImpl implements PersonService {
      * @return
      */
     @Override
-    public Object getUser(String token) {
-        return  (Object)redisTemplate.opsForValue().get(personAuthTokenKey + token);
+    public String getUser(String token) {
+        return  (String)redisTemplate.opsForValue().get(personAuthTokenKey + token);
     }
 
     /**
      * 根据token存放用户
      *
-     * @param user
+     * @param userPhone
      * @param token
      * @return
      */
     @Override
-    public void setUser(Object user, String token) {
-        redisTemplate.opsForValue().set(personAuthTokenKey+token,user,7,TimeUnit.DAYS);
+    public void setUser(String userPhone, String token) {
+        redisTemplate.opsForValue().set(personAuthTokenKey+token,userPhone,1,TimeUnit.DAYS);
     }
 }
