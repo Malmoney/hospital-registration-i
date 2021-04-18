@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../css/ModifyHospitalInfo.css">
+    <script src="../js/jquery-1.9.1.js"></script>
+    <link rel="stylesheet" href="../css/hint.css">
+    <script src="../js/jquery-params.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="container">
+    <input type="hidden" class="form-control" id="hospitalId" value="" >
+    <div class="form-group">
+        <label for="image">首页大图：</label>
+        <div class="row">
+            <div class="col-xs-6 col-md-3" id="image">
+                <div id="img-tip-div">请选择大图</div>
+                <a href="javascript:void(0)" onclick="changeImg()" class="thumbnail">
+                    <img id="img-img" src="" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+    <input type="file" style="display: none" name="" id="imageInput" accept=".jpg,.png" onchange="uploadFile()">
+    <div class="form-group">
+        <label for="hospital_name">医院名称：</label>
+        <input type="text" class="form-control" id="hospital_name" readonly placeholder="">
+    </div>
+    <div class="form-group">
+        <label for="hospital_level">医院级别：</label>
+        <input type="text" class="form-control" id="hospital_level" readonly placeholder="">
+    </div>
+    <!-- Single button -->
+    <div class="area-div">
+        <div class="dropdown"><b>所在区域：</b></div>
+        <br>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="province" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span id="prov-span" >请选择省份</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="province-item" aria-labelledby="province">
+            </ul>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="city" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span id="city-span">请选择市</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="city-item" aria-labelledby="city">
+                <li><a href="javascript:void(0)" >请选择市</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="address">详细地址：</label>
+        <input type="text" class="form-control" id="address" placeholder="请输入详细地址">
+    </div>
+    <div class="form-group">
+        <label for="phone">联系方式：</label>
+        <input type="text" class="form-control" id="phone" placeholder="请输入联系方式">
+    </div>
+    <div class="form-group">
+        <label for="remark">简介：</label>
+        <textarea class="form-control" rows="6" id="remark" >
+
+        </textarea>
+    </div>
+    <button type="button" id="submit_button" class="btn btn-primary btn-lg btn-block" onclick="submitInfo()">提交</button>
+</div>
+</body>
+<script src="../js/hint.js"></script>
+<script>
+    let Header={
+        Authorization:"",
+        "Content-Type" : "application/json;charset=utf-8"
+    }
+    let hospitalInfo = {};
+    let province = "";
+    let city = "";
+    let imgUrl = "";
+    let infoId= "";
+    function changeProv(prov){
+        province = prov;
+        $("#prov-span").text(prov);
+        $("#city-span").text("请选择市");
+        city="";
+        getCity(prov);
+    }
+    function changeCity(c){
+        city = c;
+        $("#city-span").text(c);
+    }
+    function getCity(prov){
+        let req={
+            proName:province
+        }
+        $.ajax({
+            headers:Header,
+            url:"/system/server/town/selectCityByProvince",
+            type:"post",
+            data: JSON.stringify(req),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    let arr = data.rspData;
+                    $("#city-item").html("");
+                    for (let i =0;i<arr.length;i++){
+                        $("#city-item").append(`<li><a href="javascript:void(0)" onclick="changeCity('`+arr[i]+`')">`+arr[i]+`</a></li>`);
+                    }
+                }else{
+                }
+            },error:function (data){
+                showHint("获取城市列表失败，请重试!");
+            }
+        })
+    }
+    function changeImg(){
+        $("#imageInput").click();
+    }
+    function uploadFile(){
+        $("#img-tip-div").hide();
+        var req = new FormData();
+        req.append("file",$("#imageInput").prop("files")[0])
+        $.ajax({
+            headers: {token:Header.Authorization},
+            url:"/system/server/file/uploadFile",
+            type:"post",
+            data: req,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    imgUrl = data.rspData;
+                    $("#img-img").attr("src",imgUrl);
+                }else{
+                }
+            },error:function (data){
+                showHint("上传文件失败，请重试!");
+            }
+        })
+    }
+    function submitInfo(){
+        let modifyInfoReq={
+            hospitalId:infoId,
+            address:$("#address").val(),
+            image:imgUrl,
+            hospitalLevel:$("#hospital_level").val(),
+            remark:$("#remark").val(),
+            hospitalPhone:$("#phone").val(),
+            province:province,
+            city:city
+        }
+
+        $.ajax({
+            headers:Header,
+            url:"/system/server/hospital/modifyHospitalInfo",
+            type:"post",
+            data:JSON.stringify(modifyInfoReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    showHint("修改成功!");
+                }else{
+                    showHint("修改失败，请重试!");
+                }
+            },error:function (data){
+                showHint("修改失败，请重试!");
+            }
+        })
+    }
+    $(function (){
+        Header.Authorization = $.query.get("token");
+        infoId = $.query.get("infoId");
+        $.ajax({
+            headers:Header,
+            url:"/system/server/town/selectALlProvince",
+            type:"post",
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    let arr = data.rspData;
+                    for (let i =0;i<arr.length;i++){
+                        $("#province-item").append(`<li><a href="javascript:void(0)" onclick="changeProv('`+arr[i]+`')">`+arr[i]+`</a></li>`);
+                    }
+                }else{
+                }
+            },error:function (data){
+                showHint("获取城市列表失败，请重试!");
+            }
+        })
+
+        let selectHospitalInfoByIdReq={
+            hospitalId:infoId
+        }
+        $.ajax({
+            headers:Header,
+            url:"/system/server/hospital/selectHospitalInfoById",
+            type:"post",
+            data:JSON.stringify(selectHospitalInfoByIdReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    hospitalInfo = data.rspData;
+                    if (hospitalInfo.hospitalImage!= null && hospitalInfo.hospitalImage != ''){
+                        $("#img-img").attr("src",hospitalInfo.hospitalImage);
+                        $("#img-tip-div").hide();
+                        imgUrl =hospitalInfo.hospitalImage;
+                    }
+                    $("#hospital_level").val(hospitalInfo.hospitalLevel);
+                    $("#hospital_name").val(hospitalInfo.hospitalName);
+                    if (hospitalInfo.hospitalProvince != null && hospitalInfo.hospitalProvince != ''){
+                        $("#prov-span").text(hospitalInfo.hospitalProvince);
+                        province = hospitalInfo.hospitalProvince;
+                    }
+                    if (hospitalInfo.hospitalCity != null && hospitalInfo.hospitalCity != ''){
+                        $("#city-span").text(hospitalInfo.hospitalCity);
+                        city = hospitalInfo.hospitalCity;
+                    }
+                    $("#address").val(hospitalInfo.hospitalAddress);
+                    $("#phone").val(hospitalInfo.hospitalPhone);
+                    $("#remark").val(hospitalInfo.remark);
+                }else{
+                }
+            },error:function (data){
+                showHint("获取用户信息失败，请重试!");
+            }
+        })
+    })
+</script>
+</html>

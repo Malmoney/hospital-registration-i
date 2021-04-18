@@ -25,15 +25,15 @@ public class ModifyHospitalInfoReq implements Serializable {
     @NotEmpty
     private String address;
     @NotEmpty
-    private String cityCode;
+    private String province;
+    @NotEmpty
+    private String city;
     @NotEmpty
     private String image;
-    @NotEmpty
     private String longitude;
-    @NotEmpty
     private String latitude;
     @NotEmpty
-    private String hospitalLevelName;
+    private String hospitalLevel;
     @NotEmpty
     private String remark;
     @NotEmpty

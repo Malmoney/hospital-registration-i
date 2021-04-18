@@ -5,19 +5,137 @@
     <title>欢迎使用</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="../css/index.css">
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/hint.css">
     <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/req-header.js"></script>
+    <script src="../js/jquery-params.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div id="container">
-    <div id="menu"></div>
-    <div id="header"></div>
-    <div id="header_bottom"></div>
+    <div id="menu">
+        <div id="title_div">系统后台</div>
+        <ul id="menu_list">
+            <li id="info_li"><div class="glyphicon glyphicon-user"></div><span>修改个人信息</span></li>
+            <li id="account_li"><div class="glyphicon glyphicon-info-sign"></div><span>子账号管理</span></li>
+            <li id="depart_li"><div class="glyphicon glyphicon-th-list"></div><span>科室管理</span></li>
+            <li id="visit_li"><div class="glyphicon glyphicon-eye-open"></div><span>出诊管理</span></li>
+            <li id="pass_li"><div class="glyphicon glyphicon-asterisk"></div><span>修改密码</span></li>
+        </ul>
+    </div>
+    <div id="header">
+        <div class="info_div">
+            <span class="name_span"></span>
+            <span></span>
+            <!-- Split button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-info" id="username_button">shanxiadmin</button>
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">退出登录</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="header_bottom">
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Library</a></li>
+            <li class="active">Data</li>
+        </ol>
+    </div>
     <div id="content_div">
-        <iframe id="content" src="ModifyPassword.html" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+        <iframe id="content" src="" width="100%" height="100%" frameborder="0" scrolling="auto"></iframe>
     </div>
     <div id="footer"></div>
 </div>
 </body>
+<script src="../js/hint.js"></script>
+<script>
+    let header={
+        Authorization:"",
+        "Content-Type" : "application/json;charset=utf-8"
+    }
+    let user=null;
+    let infoUrl="";
+    let accountUrl="";
+    let infoId = "";
+    $(function (){
+        header.Authorization = $.query.get("token");
+        let getUserInfoReq = {
+            token:header.Authorization
+        }
+        $.ajax({
+            headers:header,
+            url:"/system/server/member/getMemberInfo",
+            method:"post",
+            data:JSON.stringify(getUserInfoReq),
+            success:function (data){
+                if (data.rspCode == '0000'&&data.rspData != null){
+                    user = data.rspData;
+                    $("#username_button").text(user.memberName);
+                    infoId = user.infoId;
+                    if(user.type == '0'){
+                        showDoctorMenu();
+                        infoUrl="ModifyDoctorInfo.html?infoId="+user.infoId;
+                    }else if (user.type=='1'){
+                        showHospitalMenu();
+                        accountUrl="HospitalAccountManage.html";
+                        infoUrl="ModifyHospitalInfo.html?infoId="+user.infoId;
+                    }else if (user.type == '9'){
+                        accountUrl="CityAccountManage.html";
+                        showMemberMenu();
+                    }else{
+                        accountUrl="ProvinceAccountManage.html";
+                        showMemberMenu();
+                    }
+                }
+            },error:function (data){
+                showHint("获取用户信息失败，请重试!");
+            }
+        })
+        $("#info_li").click(function () {
+            $("#content").attr("src",infoUrl+"&token="+header.Authorization);
+        });
+        $("#account_li").click(function () {
+            $("#content").attr("src",accountUrl+"?token="+header.Authorization+"&memberId="+user.memberId+"&infoId="+infoId);
+        });
+        $("#depart_li").click(function () {
+            $("#content").attr("src","HospitalDepartment.html"+"?token="+header.Authorization+"&hospitalId="+infoId);
+        });
+        $("#visit_li").click(function () {
+            $("#content").attr("src","DoctorVisit.html"+"?token="+header.Authorization+"&doctorId="+infoId);
+        });
+        $("#pass_li").click(function () {
+            $("#content").attr("src","ModifyPassword.html?token="+header.Authorization+"&memberId="+user.memberId);
+        });
+    })
+    function showHospitalMenu(){
+        $("#info_li").show();
+        $("#account_li").hide();
+        $("#depart_li").show();
+        $("#pass_li").show();
+        $("#account_li").show();
+        $("#depart_li").click();
+        // $("#content").attr("src","ModifyHospitalInfo.html");
+    }
+    function showDoctorMenu(){
+        $("#info_li").show();
+        $("#visit_li").show();
+        $("#account_li").hide();
+        $("#pass_li").show();
+        $("#visit_li").click();
+        // $("#content").attr("src","ModifyDoctorInfo.html");
+    }
+    function showMemberMenu(){
+        $("#info_li").hide();
+        $("#visit_li").hide();
+        $("#account_li").show();
+        $("#pass_li").show();
+        $("#account_li").click();
+        // $("#content").attr("src","CityAccountManage.html");
+    }
+</script>
 </html>

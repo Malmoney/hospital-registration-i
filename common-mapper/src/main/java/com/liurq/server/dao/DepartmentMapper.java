@@ -3,6 +3,8 @@ package com.liurq.server.dao;
 import com.liurq.server.model.Department;
 import com.liurq.server.model.DepartmentExample;
 import java.util.List;
+
+import com.liurq.server.restful.rsp.hospital.SelectDepartmentRsp;
 import org.apache.ibatis.annotations.Param;
 
 public interface DepartmentMapper {
@@ -100,5 +102,12 @@ public interface DepartmentMapper {
      * @return
      */
     List<Department> selectByHospitalId(String hospitalId);
+
+    /**
+     * 查询科室带医院
+     * @param hospitalId
+     * @return
+     */
+    List<SelectDepartmentRsp> selectDepart(String hospitalId);
 
 }

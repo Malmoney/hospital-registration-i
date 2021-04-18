@@ -1,0 +1,23 @@
+#container{
+    width: 90%;
+    padding-left: 150px;
+    padding-top: 50px;
+}
+
+table{
+    text-align: center;
+}
+.bg-primary,.bg-gray{
+    margin-left: 20px;
+    width: 60px;
+    border-radius: 5px;
+    position: relative;
+    left: 38%;
+}
+.bg-gray{
+    background-color: lightslategray;
+    color: white;
+}
+.btn{
+    margin-right: 10px;
+}

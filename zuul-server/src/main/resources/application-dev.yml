@@ -1,0 +1,36 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8769
+zuul:
+  sensitiveHeaders:
+  ignoreSecurityHeaders: false
+  host:
+    connect-timeout-millis: 2000
+    socket-timeout-millis: 2000
+  routes:
+    api-a:
+      path: /system/**
+      serviceId: person-management
+      strip-prefix: false
+  retryable: true
+##hystrix的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
+##Ribbon超时
+##Ribbon超时重试配置
+ribbon:
+  ConnectTimeout: 2000  #毫秒    连接超时时间
+  ReadTimeout: 3000     #毫秒      逻辑处理超时时间
+  OkToRetryOnAllOperations: true    # 是否对所有操作都进行重试
+  MaxAutoRetries: 3     # 对当前实例的最大重试次数(请求服务超时6s则会再请求一次)
+  MaxAutoRetriesNextServer: 2     # 切换实例的最大重试次数(如果还失败就切换下

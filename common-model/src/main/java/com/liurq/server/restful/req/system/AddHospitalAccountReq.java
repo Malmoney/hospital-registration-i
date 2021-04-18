@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import java.util.List;
 public class AddHospitalAccountReq extends CommonAccountReq {
     private static final long serialVersionUID = 3543983360642251364L;
 
+    @NotEmpty
     private String hospitalName;
+    @NotEmpty
     private String hospitalLevel;
     //分院
     private List<AddHospitalAccountReq> childs;

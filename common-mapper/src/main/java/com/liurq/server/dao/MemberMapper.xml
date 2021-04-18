@@ -367,6 +367,26 @@
     select *
     from tb_member a
     where a.member_name = #{username,jdbcType=VARCHAR}
-        and a.status = '0'
   </select>
+  <select id="selectHospitalChildMember" parameterType="string" resultType="com.liurq.server.restful.rsp.hospital.MemberInfoRsp">
+    select distinct
+        a.member_name as userName
+        ,d.doctor_name as doctorName
+        ,de.department_name as departName
+        ,de.department_id as departId
+        ,a.member_id as memberId
+        ,a.status as status
+    from tb_member a
+        left join tb_doctor d on a.info_id = d.doctor_id
+        left join tr_department_doctor dd on dd.doctor_id = d.doctor_id
+        left join tb_department de on de.department_id = dd.department_id
+    where a.type='0'
+        and a.member_parent = #{memberId,jdbcType=VARCHAR}
+    order by a.status
+  </select>
+  <update id="updateMemberStatus" parameterType="string">
+    update tb_member
+    set status = #{status,jdbcType=VARCHAR}
+    where member_id = #{memberId,jdbcType=VARCHAR}
+  </update>
 </mapper>

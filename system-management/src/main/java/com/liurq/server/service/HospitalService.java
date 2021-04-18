@@ -55,4 +55,11 @@ public interface HospitalService {
      */
     RspInfo<String> updateMajorDepartment(MajorDepartmentReq req,String status);
 
+    /**
+     * 查询医院信息
+     * @param hospitalId
+     * @return
+     */
+    RspInfo<Hospital> selectHospitalInfoById(String hospitalId);
+
 }

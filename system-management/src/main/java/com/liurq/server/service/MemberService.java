@@ -1,8 +1,14 @@
 package com.liurq.server.service;
 
+import com.github.pagehelper.PageInfo;
+import com.liurq.server.model.Member;
+import com.liurq.server.restful.req.hospital.SelectMemberReq;
 import com.liurq.server.restful.req.system.*;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.restful.rsp.hospital.AddHospitalAccountRsp;
+import com.liurq.server.restful.rsp.hospital.MemberInfoRsp;
+
+import java.util.List;
 
 /**
  * @Author:hyz
@@ -51,4 +57,31 @@ public interface MemberService {
      * @return
      */
     RspInfo<String> systemLogin(LoginReq req);
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    RspInfo<Member> getMemberInfo(String username);
+
+    /**
+     * 查询子账号
+     * @param req
+     * @return
+     */
+    RspInfo<PageInfo<MemberInfoRsp>> selectHospitalChildMember(SelectMemberReq req);
+
+    /**
+     *  禁用用户
+     * @param memberId
+     * @return
+     */
+    RspInfo<String> banMember(String memberId);
+
+    /**
+     * 解禁用户
+     * @param memberId
+     * @return
+     */
+    RspInfo<String> enableMember(String memberId);
 }

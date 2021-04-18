@@ -93,4 +93,22 @@ public interface TownShipMapper {
      * @mbggenerated Mon Mar 29 15:17:23 CST 2021
      */
     int updateByPrimaryKey(TownShip record);
+
+    /**
+     * 查询所有省份
+     * @return
+     */
+    List<String> selectAllProvince();
+
+    /**
+     * 查询所有省份
+     * @return
+     */
+    List<String> selectAllCity();
+
+    /**
+     * 查询所有省份
+     * @return
+     */
+    List<String> selectCityByProvince(String proName);
 }

@@ -351,4 +351,10 @@
         and hospital_id = #{param1,jdbcType=VARCHAR}
         and status = '0'
   </update>
+  <update id="updateStatus" parameterType="string">
+    update tr_hospital_department
+    set status = #{status,jdbcType=VARCHAR}
+    where  department_id = #{departmentId,jdbcType=VARCHAR}
+      and hospital_id = #{hospitalId,jdbcType=VARCHAR}
+  </update>
 </mapper>

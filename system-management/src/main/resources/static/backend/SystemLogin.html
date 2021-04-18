@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>欢迎使用</title>
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="../css/systemLogin.css">
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
     <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/req-header.js"></script>
+    <script src="../js/jquery-params.js"></script>
+    <script src="../js/params.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/hint.js"></script>
+    <link rel="stylesheet" href="../css/hint.css">
 </head>
 <body>
 <div class="body">
@@ -29,6 +32,7 @@
     </div>
 </div>
 </body>
+
 <script>
     function login(){
         let loginReq={
@@ -36,22 +40,25 @@
             password:$("#password").val()
         }
         $.ajax({
-            headers:reqHeader,
+            headers:header,
             url:"/system/login/sysLogin",
             type:"post",
             data:JSON.stringify(loginReq),
             success:function (data){
                 if (data.rspCode == '0000'){
-                    reqHeader.Authorization=data.rspData;
-                    window.location.href="/system/backend/index.html";
+                    window.location.href="/system/backend/index.html?token="+data.rspData;
+                }else if(data.rspCode == '3001'){
+                    showHint(data.rspDesc);
                 }else{
                     $(".tips").text("用户名或密码错误");
                 }
+            },error:function (data){
+                showHint("未知错误，请重试!");
             }
         })
     }
     $(function (){
-
+        $("#hint").css("left","670px")
     });
 
 </script>

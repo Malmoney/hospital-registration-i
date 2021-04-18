@@ -348,4 +348,21 @@
       name_town = #{nameTown,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectAllProvince" resultType="string">
+    select distinct
+        a.name_prov
+    from tb_town_ship a
+  </select>
+  <select id="selectAllCity" resultType="string">
+    select distinct
+      a.name_city
+    from tb_town_ship a
+  </select>
+
+  <select id="selectCityByProvince" resultType="string">
+    select distinct
+      a.name_city
+    from tb_town_ship a
+    where a.name_prov = #{proName,jdbcType=VARCHAR}
+  </select>
 </mapper>

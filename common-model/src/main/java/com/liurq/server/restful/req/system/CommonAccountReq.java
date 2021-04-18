@@ -20,7 +20,6 @@ public class CommonAccountReq implements Serializable {
 
     @NotEmpty
     private String userName;
-    @NotEmpty
     private String password;
     private String type;
     private String parentId;//账号的管理者的id

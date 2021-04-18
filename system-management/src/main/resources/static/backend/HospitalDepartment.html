@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../css/HospitalDepartment.css">
+    <script src="../js/jquery-1.9.1.js"></script>
+    <script src="../js/jquery-params.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/hint.js"></script>
+    <link rel="stylesheet" href="../css/hint.css">
+</head>
+<body>
+<div id="container">
+    <table class="table table-hover" >
+        <tbody id="depart-list">
+        <tr>
+            <td><b>科室名称</b></td>
+            <td><b>状态</b></th>
+<!--            <td><b>是否主攻</b></th>-->
+            <td><b>操作</b></th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    let hospitalId = "";
+    let Header={
+        Authorization:"",
+        "Content-Type" : "application/json;charset=utf-8"
+    }
+    $(function (){
+        Header.Authorization=$.query.get("token");
+        hospitalId=$.query.get("hospitalId");
+        initDepart();
+    })
+
+    function initDepart(){
+        $("#depart-list").html(`
+        <tr>
+            <td><b>科室名称</b></td>
+            <td><b>状态</b></th>
+            <td><b>操作</b></th>
+        </tr>`);
+        let selectDepartReq ={
+            hospitalId : hospitalId
+        }
+        $.ajax({
+            headers:Header,
+            url:"/system/server/department/selectDepart",
+            type:"post",
+            data:JSON.stringify(selectDepartReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    let arr = data.rspData;
+                    console.log(arr.length)
+                    // $("#depart-item").html("");
+                    for (let i =0;i<arr.length;i++){
+                        let html = `
+                        <tr>
+                            <td>`+arr[i].departmentName+`</td>
+                            <td> <div class="bg-primary">`+arr[i].status+`</div></td>
+                           <td>`;
+                        let end = `</td></tr>`;
+                        let btn=``;
+                        if (arr[i].status =='未开设'){
+                            btn += `<button type="button" class="btn btn-warning btn-sm" onclick="addDepartment('`+arr[i].departmentId+`')">开设</button>`;
+                        }else if (arr[i].status =='正常'){
+                            btn +=`<button type="button" class="btn btn-danger btn-sm" onclick="banDepartment('`+arr[i].departmentId+`')">禁用</button>`;
+                        }else {
+                            btn+=`<button type="button" class="btn btn-success btn-sm" onclick="enableDepartment('`+arr[i].departmentId+`')">启用</button>`;
+                        }
+                        // if (arr[i].isMajor =='否'){
+                        //     btn += `<button type="button" class="btn btn-primary btn-sm">设为主攻</button>`
+                        // }else if(arr[i].isMajor =='是'){
+                        //     btn +=`<button type="button" class="btn btn-danger btn-sm">取消主攻</button>`;
+                        // } <td> <div class="bg-gray">`+arr[i].isMajor+`</div></td>
+                        $("#depart-list").append(html+btn + end);
+                    }
+                }else{
+                }
+            }
+        })
+    }
+    function addDepartment(departId){
+        let addDepartmentReq = {
+            departmentId:departId,
+            hospitalId:hospitalId
+        }
+        $.ajax({
+            headers:Header,
+            url:"/system/server/department/addDepartment",
+            type:"post",
+            data: JSON.stringify(addDepartmentReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    initDepart();
+                }else{
+                }
+            }
+        })
+    }
+    function enableDepartment(departId){
+        let enableDepartmentReq = {
+            departmentId:departId,
+            hospitalId:hospitalId
+        }
+        $.ajax({
+            headers:Header,
+            url:"/system/server/department/enableDepartment",
+            type:"post",
+            data: JSON.stringify(enableDepartmentReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    initDepart();
+                }else{
+                }
+            }
+        })
+    }
+    function banDepartment(departId){
+        let banDepartmentReq = {
+            departmentId:departId,
+            hospitalId:hospitalId
+        }
+        $.ajax({
+            headers:Header,
+            url:"/system/server/department/banDepartment",
+            type:"post",
+            data: JSON.stringify(banDepartmentReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    initDepart();
+                }else{
+                }
+            }
+        })
+    }
+    function setMajor(departId){
+
+    }
+    function removeMajor(departId){
+
+    }
+</script>
+</html>

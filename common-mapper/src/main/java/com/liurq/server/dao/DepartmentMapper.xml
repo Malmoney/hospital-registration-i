@@ -335,8 +335,20 @@
     select distinct
       d.*
     from tr_hospital_department a
-        left join tb_department d on d.department_id = a.hospital_id
+        left join tb_department d on d.department_id = a.department_id
     where a.status = '0'
       and a.hospital_id = #{hospitalId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectDepart" resultType="com.liurq.server.restful.rsp.hospital.SelectDepartmentRsp" parameterType="string">
+    select distinct
+        a.department_id as departmentId
+        ,a.department_name as departmentName
+        ,case when d.status is null then '未开设' when  d.status= '0' then '正常' else '已禁用' end as status
+        ,case when d.is_major is null then '未开设' when  d.is_major= '1' then '是' else '否' end as isMajor
+    from tb_department a
+        left join tr_hospital_department d on d.department_id = a.department_id
+        and d.hospital_id = #{hospitalId,jdbcType=VARCHAR}
+    order by  d.status desc
   </select>
 </mapper>

@@ -35,6 +35,12 @@ public class HospitalController {
         return hospitalService.selectHospital(req);
     }
 
+    @RequestMapping(value = "/selectHospitalInfoById",method = RequestMethod.POST)
+    @ApiOperation(value = "搜索医院信息",notes = "搜索医院信息")
+    public RspInfo<Hospital> selectHospitalInfoById(@RequestBody @Valid HospitalIdReq req){
+        return hospitalService.selectHospitalInfoById(req.getHospitalId());
+    }
+
     @RequestMapping(value = "/selectHospitalByDepartment",method = RequestMethod.POST)
     @ApiOperation(value = "通过科室id搜索医院",notes = "通过科室id搜索医院")
     public RspInfo<PageInfo<SelectHospitalRsp>> selectHospitalByDepartment(@RequestBody @Valid SelectHospitalByDepartmentReq req){
@@ -64,4 +70,5 @@ public class HospitalController {
     public RspInfo<String> removeMajorDepartment(@RequestBody @Valid MajorDepartmentReq req){
         return hospitalService.updateMajorDepartment(req,"0");
     }
+
 }

@@ -1,14 +1,18 @@
 package com.liurq.server.controller.system;
 
-import com.liurq.server.restful.req.system.AddAdminAccountReq;
-import com.liurq.server.restful.req.system.AddDoctorAccountReq;
-import com.liurq.server.restful.req.system.AddHospitalAccountReq;
-import com.liurq.server.restful.req.system.ModifyPasswordReq;
+import com.github.pagehelper.PageInfo;
+import com.liurq.server.feign.PersonRedisFeignClient;
+import com.liurq.server.model.Member;
+import com.liurq.server.restful.req.hospital.SelectMemberReq;
+import com.liurq.server.restful.req.system.*;
+import com.liurq.server.restful.req.user.TokenReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.restful.rsp.hospital.AddHospitalAccountRsp;
+import com.liurq.server.restful.rsp.hospital.MemberInfoRsp;
 import com.liurq.server.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @Author:hyz
@@ -30,7 +35,8 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
-
+    @Autowired
+    private PersonRedisFeignClient personRedisFeignClient;
 
     /**
      * 添加省级管理员
@@ -65,6 +71,10 @@ public class MemberController {
     @RequestMapping(value = "/addHospitalAdmin",method = RequestMethod.POST)
     public RspInfo<String> addHospitalAdmin(@RequestBody @Valid AddHospitalAccountReq req){
         req.setType("1");
+        Member member = memberService.getMemberInfo(req.getUserName()).getRspData();
+        if(ObjectUtils.isEmpty(member)){
+            return RspInfo.fail("3001","用户名已存在");
+        }
         AddHospitalAccountRsp rsp = memberService.addHospitalAccount(req, "0");
         return RspInfo.success("成功");
     }
@@ -104,5 +114,43 @@ public class MemberController {
     @RequestMapping(value = "/modifyPasswordFirstTime",method = RequestMethod.POST)
     public RspInfo<String> modifyPasswordFirstTime(@RequestBody @Valid ModifyPasswordReq req){
         return this.memberService.modifyPasswordFirstTime(req);
+    }
+
+    /**
+     * 首次修改账号密码
+     * @param req
+     * @return
+     */
+    @ApiOperation(value = "获取账号信息",notes = "获取账号信息")
+    @RequestMapping(value = "/getMemberInfo",method = RequestMethod.POST)
+    public RspInfo<Member> getMemberInfo(@RequestBody @Valid TokenReq req){
+        String username = personRedisFeignClient.getUser(req.getToken());
+        if(StringUtils.isEmpty(username)){
+            return RspInfo.fail("获取用户信息失败");
+        }
+        return this.memberService.getMemberInfo(username);
+    }
+
+    /**
+     * 查询子账号
+     * @param req
+     * @return
+     */
+    @ApiOperation(value = "查询子账号",notes = "查询子账号")
+    @RequestMapping(value = "/selectHospitalChildMember",method = RequestMethod.POST)
+    public RspInfo<PageInfo<MemberInfoRsp>> selectHospitalChildMember(@RequestBody @Valid SelectMemberReq req){
+        return this.memberService.selectHospitalChildMember(req);
+    }
+
+    @ApiOperation(value = "禁用账号",notes = "禁用账号")
+    @RequestMapping(value = "/banMember",method = RequestMethod.POST)
+    public RspInfo<String> banMember(@RequestBody @Valid MemberIdReq req){
+        return this.memberService.banMember(req.getMemberId());
+    }
+
+    @ApiOperation(value = "解禁账号",notes = "解禁账号")
+    @RequestMapping(value = "/enableMember",method = RequestMethod.POST)
+    public RspInfo<String> enableMember(@RequestBody @Valid MemberIdReq req){
+        return this.memberService.enableMember(req.getMemberId());
     }
 }

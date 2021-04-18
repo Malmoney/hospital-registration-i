@@ -1,0 +1,35 @@
+#container{
+    width: 90%;
+
+    padding-left: 150px;
+    padding-top: 50px;
+}
+#search{
+    width: 90%;
+    height: 20%;
+}
+
+#depart_item{
+    margin-left: 87px;
+    min-width: 110px;
+    overflow: auto;
+    max-height: 250px;
+}
+.doctorSex_form{
+    width: 20px;
+}
+#addAccount_btn{
+    margin-bottom: 10px;
+}
+.bg-primary,.bg-danger{
+    padding-left: 3px;
+    width: 36px;
+    border-radius: 5px;
+}
+.bg_one{
+    background-color: #2b542c;
+    color: white;
+    padding-left: 3px;
+    width: 80px;
+    border-radius: 5px;
+}

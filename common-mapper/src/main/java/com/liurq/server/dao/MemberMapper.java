@@ -3,6 +3,8 @@ package com.liurq.server.dao;
 import com.liurq.server.model.Member;
 import com.liurq.server.model.MemberExample;
 import java.util.List;
+
+import com.liurq.server.restful.rsp.hospital.MemberInfoRsp;
 import org.apache.ibatis.annotations.Param;
 
 public interface MemberMapper {
@@ -100,4 +102,19 @@ public interface MemberMapper {
      * @return
      */
     Member selectByUserName(String username);
+
+    /**
+     * 查询子账号信息
+     * @param memberId
+     * @return
+     */
+    List<MemberInfoRsp> selectHospitalChildMember(String memberId);
+
+    /**
+     * 更新用户的状态
+     * @param memberId
+     * @param status
+     * @return
+     */
+    int updateMemberStatus(String memberId,String status);
 }

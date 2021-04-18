@@ -12,7 +12,7 @@
 }
 #header_bottom{
     width: 87%;
-    height: 1%;
+    height: 5%;
     float: right;
 }
 #menu{
@@ -23,9 +23,52 @@
 }
 #content_div{
     width: 87%;
-    height: 92%;
+    height: 88%;
     float: right;
 
 }
 #content{
+}
+
+li{
+    list-style: none;
+}
+#menu_list{
+    margin-top: 30px;
+    width: 100%;
+    padding-left: 0;
+    font-size: 17px;
+    color: rgb(204,204,204);
+}
+#menu_list li{
+    height: 60px;
+    width: 100%;
+    line-height: 60px;
+    margin: 0;
+    padding-left: 0;
+    cursor: pointer;
+    display: none;
+}
+.glyphicon{
+    margin-left: 25px;
+    margin-right: 10px;
+}
+#menu_list li:hover{
+    background-color: #1b1b1b;
+}
+#title_div{
+    color: #5e6d82;
+    font-size: 20px;
+    margin-left: 50px;
+    height: 80px;
+    line-height: 80px;
+}
+
+.info_div{
+    float: right;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+.dropdown-menu{
+    min-width: 130px;
 }

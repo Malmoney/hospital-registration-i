@@ -102,7 +102,8 @@ public class HospitalServiceImpl implements HospitalService {
         Hospital hospital = new Hospital();
         hospital.setHospitalId(req.getHospitalId());
         hospital.setHospitalAddress(req.getAddress());
-        hospital.setHospitalCity(req.getCityCode());
+        hospital.setHospitalCity(req.getCity());
+        hospital.setHospitalProvince(req.getProvince());
         hospital.setHospitalImage(req.getImage());
         hospital.setHospitalPhone(req.getHospitalPhone());
         hospital.setStatus("0");
@@ -180,6 +181,17 @@ public class HospitalServiceImpl implements HospitalService {
     public RspInfo<String> updateMajorDepartment(MajorDepartmentReq req, String status) {
         hospitalDepartmentMapper.updateMajorDepartment(req.getHospitalId(),req.getDepartmentId(),status);
         return RspInfo.success("成功");
+    }
+
+    /**
+     * 查询医院信息
+     *
+     * @param hospital
+     * @return
+     */
+    @Override
+    public RspInfo<Hospital> selectHospitalInfoById(String hospitalId) {
+        return RspInfo.success(this.hospitalMapper.selectByPrimaryKey(hospitalId));
     }
 
     /**

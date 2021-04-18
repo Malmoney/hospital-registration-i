@@ -31,12 +31,14 @@ import java.util.Set;
 public class PermissionFilter implements Filter {
     public final static Logger log = LoggerFactory.getLogger(Filter.class);
     private static String[] openUrl;
+    private static String[] whiteHost;
 
     @Autowired
     private PersonRedisFeignClient personRedisFeignClient;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         openUrl =PropertiesUtil.getString(PropertiesUtil.SHIRO_PATH, "anon").split(",");
+        whiteHost =PropertiesUtil.getString(PropertiesUtil.SHIRO_PATH, "whiteHost").split(",");
     }
 
     @Override
@@ -66,8 +68,8 @@ public class PermissionFilter implements Filter {
             log.error("请求类型:"+contentType);
             log.error("请求接口:"+req.getRequestURI().trim());
             log.error("请求报文:"+requestBody);
-            if (isOpenUrl(reqUri)){
-                log.info("放行openUrl："+reqUri);
+            //String remoteHost = (String)req.getHeader("HTTP_X_FORWARDED_FOR");
+            if (isOpenUrl(reqUri) || isWhitHost(req.getRemoteHost())){
                 WrapperedRequest wrapRequest = new WrapperedRequest(
                         (HttpServletRequest) req,requestBody);
                 WrapperedResponse wrapResponse = new WrapperedResponse(
@@ -166,6 +168,7 @@ public class PermissionFilter implements Filter {
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         for (String url : openUrl) {
             if (antPathMatcher.match(url, uri)) {
+                log.info("放行openUrl："+uri);
                 return true;
             }
         }
@@ -178,5 +181,15 @@ public class PermissionFilter implements Filter {
         rspInfo.setRspCode("1001");
         rspInfo.setRspDesc("请登录");
         return rspInfo.toString();
+    }
+
+    private boolean isWhitHost(String host){
+        for (String h:whiteHost){
+            if (host.equals(h)){
+                log.info("放行ip白名单："+host);
+                return true;
+            }
+        }
+        return false;
     }
 }

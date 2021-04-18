@@ -20,7 +20,6 @@ public class ModifyPasswordReq implements Serializable {
 
     @NotEmpty
     private String memberId;
-    @NotEmpty
     private String userName;
     @NotEmpty
     private String password;

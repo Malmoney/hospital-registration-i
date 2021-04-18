@@ -112,4 +112,13 @@ public interface HospitalDepartmentMapper {
      * @return
      */
     int updateMajorDepartment(String hospitalId,String departmentId,String isMajor);
+
+    /**
+     *
+     * @param hospitalId
+     * @param departmentId
+     * @return
+     */
+    int updateStatus(String hospitalId,String departmentId,String status);
+
 }
