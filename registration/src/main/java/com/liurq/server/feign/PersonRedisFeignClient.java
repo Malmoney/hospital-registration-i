@@ -1,21 +1,16 @@
 package com.liurq.server.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.validation.constraints.NotEmpty;
 
 /**
  * @Author:hyz
- * @Date:2021-02-07
+ * @Date:2021-04-20
  * @Desc:
  **/
 @FeignClient(value = "common-redis")
 public interface PersonRedisFeignClient {
-
 
     //设置验证码
     @PostMapping("/redis/person/server/setAuthCode")

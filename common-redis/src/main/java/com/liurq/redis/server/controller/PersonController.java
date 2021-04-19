@@ -54,4 +54,9 @@ public class PersonController {
          this.personService.setUser(userPhone,token);
     }
 
+    @RequestMapping(value = "/removeUser")
+    public void setAuthCode(@RequestParam @NotEmpty String token){
+        this.personService.removeUser(token);
+    }
+
 }

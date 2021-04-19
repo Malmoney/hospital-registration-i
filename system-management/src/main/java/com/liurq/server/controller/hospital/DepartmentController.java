@@ -1,11 +1,14 @@
 package com.liurq.server.controller.hospital;
 
 import com.liurq.server.model.Department;
+import com.liurq.server.model.Hospital;
 import com.liurq.server.restful.req.hospital.DepartmentHospitalReq;
+import com.liurq.server.restful.req.hospital.DoctorIdReq;
 import com.liurq.server.restful.req.hospital.HospitalIdReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.restful.rsp.hospital.SelectDepartmentRsp;
 import com.liurq.server.service.DepartmentService;
+import com.liurq.server.service.DoctorInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private DoctorInfoService doctorInfoService;
+
     @RequestMapping(value = "/selectAllDepartment",method = RequestMethod.POST)
     @ApiOperation(value = "查询所有部门",notes = "查询所有部门")
     public RspInfo<List<Department>> selectAllDepartment(){
@@ -40,6 +46,13 @@ public class DepartmentController {
     @ApiOperation(value = "查询医院下的科室",notes = "查询所有部门")
     public RspInfo<List<Department>> selectDepartByHospitalId(@RequestBody @Valid HospitalIdReq req){
         return departmentService.selectDepartByHospitalId(req.getHospitalId());
+    }
+
+    @RequestMapping(value = "/selectDepartByDoctorId",method = RequestMethod.POST)
+    @ApiOperation(value = "查询医院下的科室",notes = "查询所有部门")
+    public RspInfo<List<Department>> selectDepartByDoctorId(@RequestBody @Valid DoctorIdReq req){
+        Hospital hospital = doctorInfoService.selectHospitalByDoctor(req.getDoctorId());
+        return departmentService.selectDepartByHospitalId(hospital.getHospitalId());
     }
 
     @RequestMapping(value = "/selectDepart",method = RequestMethod.POST)

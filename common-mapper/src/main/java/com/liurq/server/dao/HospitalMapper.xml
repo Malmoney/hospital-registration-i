@@ -671,4 +671,11 @@
         and ty.`status` = '0'
         and h.`status`='0'
   </select>
+  <select id="selectHospitalIdByDoctorId" resultMap="BaseResultMap" parameterType="string">
+    select h.*
+    from tr_department_doctor a
+           left join tb_hospital h on h.hospital_id = a.hospital_id
+    where a.doctor_id = #{doctorId,jdbcType=VARCHAR}
+      and a.deleted = '0'
+  </select>
 </mapper>

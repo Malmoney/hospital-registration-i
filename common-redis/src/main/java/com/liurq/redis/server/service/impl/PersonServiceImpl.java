@@ -85,4 +85,14 @@ public class PersonServiceImpl implements PersonService {
     public void setUser(String userPhone, String token) {
         redisTemplate.opsForValue().set(personAuthTokenKey+token,userPhone,1,TimeUnit.DAYS);
     }
+
+    /**
+     * 移除用户登录信息
+     *
+     * @param token
+     */
+    @Override
+    public void removeUser(String token) {
+        redisTemplate.delete(personAuthTokenKey+token);
+    }
 }

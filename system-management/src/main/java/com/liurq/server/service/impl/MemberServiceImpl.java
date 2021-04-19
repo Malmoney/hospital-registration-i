@@ -2,15 +2,9 @@ package com.liurq.server.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.liurq.server.dao.DepartmentDoctorMapper;
-import com.liurq.server.dao.DoctorMapper;
-import com.liurq.server.dao.HospitalMapper;
-import com.liurq.server.dao.MemberMapper;
+import com.liurq.server.dao.*;
 import com.liurq.server.feign.PersonRedisFeignClient;
-import com.liurq.server.model.DepartmentDoctor;
-import com.liurq.server.model.Doctor;
-import com.liurq.server.model.Hospital;
-import com.liurq.server.model.Member;
+import com.liurq.server.model.*;
 import com.liurq.server.restful.req.hospital.SelectMemberReq;
 import com.liurq.server.restful.req.system.*;
 import com.liurq.server.restful.rsp.RspInfo;
@@ -46,6 +40,8 @@ public class MemberServiceImpl implements MemberService {
     private DepartmentDoctorMapper departmentDoctorMapper;
     @Autowired
     private PersonRedisFeignClient personRedisFeignClient;
+    @Autowired
+    private HospitalDepartmentMapper hospitalDepartmentMapper;
 
     /**
      * 添加管理员用户
@@ -127,6 +123,7 @@ public class MemberServiceImpl implements MemberService {
         if(!ObjectUtils.isEmpty(member)){
             return RspInfo.fail("3001","用户名已存在");
         }
+        Date now = new Date();
         String doctorId = IDUtils.genUUId();
         //添加账号信息
         String memberId = insertMember(req,doctorId);
@@ -142,9 +139,10 @@ public class MemberServiceImpl implements MemberService {
         departmentDoctor.setId(IDUtils.genUUId());
         departmentDoctor.setDoctorId(doctorId);
         departmentDoctor.setDepartmentId(req.getDepartId());
+        departmentDoctor.setHospitalId(req.getHospitalId());
         departmentDoctor.setDeleted("0");
-        departmentDoctor.setCreateDate(new Date());
-        departmentDoctor.setUpdateDate(new Date());
+        departmentDoctor.setCreateDate(now);
+        departmentDoctor.setUpdateDate(now);
         departmentDoctorMapper.insertSelective(departmentDoctor);
 
         return RspInfo.success("成功");

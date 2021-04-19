@@ -34,7 +34,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#">退出登录</a></li>
+                    <li><a href="javascript:void(0)" onclick="logOut()">退出登录</a></li>
                 </ul>
             </div>
         </div>
@@ -62,6 +62,25 @@
     let infoUrl="";
     let accountUrl="";
     let infoId = "";
+
+    function logOut(){
+        let logOutReq={
+            token:header.Authorization
+        }
+        $.ajax({
+            headers:header,
+            url:"/system/login/logout",
+            method:"post",
+            data:JSON.stringify(logOutReq),
+            success:function (data){
+                if (data.rspCode == '0000'&&data.rspData != null){
+                    window.location.href="SystemLogin.html";
+                }
+            },error:function (data){
+                window.location.href="SystemLogin.html";
+            }
+        })
+    }
     $(function (){
         header.Authorization = $.query.get("token");
         let getUserInfoReq = {

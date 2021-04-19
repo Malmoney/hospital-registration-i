@@ -4,6 +4,7 @@ import com.liurq.server.model.Doctor;
 import com.liurq.server.model.DoctorExample;
 import java.util.List;
 
+import com.liurq.server.model.Hospital;
 import com.liurq.server.restful.req.hospital.SelectDoctorReq;
 import com.liurq.server.restful.rsp.hospital.DoctorInfoRsp;
 import com.liurq.server.restful.rsp.hospital.SelectDoctorRsp;
@@ -106,4 +107,5 @@ public interface DoctorMapper {
      * @return
      */
     DoctorInfoRsp selectDoctorInfo(String doctorId);
+
 }

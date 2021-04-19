@@ -35,9 +35,19 @@
 
 <script>
     function login(){
+        let username = $("#username").val();
+        let password = $("#password").val()
+        if (username=='' || username==null){
+            showHint("请输入用户名");
+            return;
+        }
+        if (password=='' || password==null){
+            showHint("请输入密码");
+            return;
+        }
         let loginReq={
-            username:$("#username").val(),
-            password:$("#password").val()
+            username:username,
+            password:password
         }
         $.ajax({
             headers:header,
@@ -59,6 +69,20 @@
     }
     $(function (){
         $("#hint").css("left","670px")
+        $("#password").bind("keydown",function (e){
+            let theEvent = e || window.event;
+            let code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if (code == 13) {
+                login();
+            }
+        })
+        $("#username").bind("keydown",function (e){
+            let theEvent = e || window.event;
+            let code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if (code == 13) {
+                login();
+            }
+        })
     });
 
 </script>

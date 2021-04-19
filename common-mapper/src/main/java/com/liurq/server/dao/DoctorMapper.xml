@@ -475,12 +475,14 @@
     select
         a.doctor_work_age as workAge
          ,a.doctor_level as level
-         ,a.remark as remarl
+         ,a.remark as remark
          ,a.doctor_id as doctorId
          ,a.doctor_name as doctorName
          ,a.doctor_registration_count as regCount
+         ,a.doctor_phone as phone
          ,a.doctor_feedback_rate as feedbackRate
-        ,a.doctor_image as iamge
+        ,a.doctor_image as image
+         ,a.doctor_sex as sex
         ,de.department_name as department
         ,h.hospital_name as hospital
     from tb_doctor a
@@ -490,4 +492,5 @@
     where a.doctor_id = #{doctorId,jdbcType=VARCHAR}
         and tdd.deleted = '0'
   </select>
+
 </mapper>

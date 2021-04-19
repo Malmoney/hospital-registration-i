@@ -6,15 +6,152 @@
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="../css/ModifyDoctorInfo.css">
     <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/params.js"></script>
+    <script src="../js/jquery-params.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/hint.js"></script>
     <link rel="stylesheet" href="../css/hint.css">
 </head>
 <body>
-
+<div id="container">
+    <input type="hidden" class="form-control" id="doctorId" value="" >
+    <div class="form-group">
+        <label for="image">首页大图：</label>
+        <div class="row">
+            <div class="col-xs-6 col-md-3" id="image">
+                <div id="img-tip-div">请选择大图</div>
+                <a href="javascript:void(0)" onclick="changeImg()" class="thumbnail">
+                    <img id="img-img" src="" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+    <input type="file" style="display: none" name="" id="imageInput" accept=".jpg,.png" onchange="uploadFile()">
+    <div class="form-group">
+        <label for="doctor_name">医生姓名：</label>
+        <input type="text" class="form-control" id="doctor_name" readonly placeholder="">
+    </div>
+    <div class="form-group">
+        <label for="doctor_level">职务：</label>
+        <input type="text" class="form-control" id="doctor_level" readonly placeholder="">
+    </div>
+    <!-- Single button -->
+    <div class="info-div">
+        <div class="dropdown"><b>所在科室：</b>
+            <b><span id="depart_span"></span></b>
+        </div>
+    </div>
+    <div class="info-div">
+        <div class="dropdown"><b>性别：</b>
+            <b><span id="sex_span"></span></b>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="doctor_work_age">工龄：</label>
+        <input type="text" class="form-control" id="doctor_work_age" placeholder="请输入工龄">
+    </div>
+    <div class="form-group">
+        <label for="phone">联系方式：</label>
+        <input type="text" class="form-control" id="phone" placeholder="请输入联系方式">
+    </div>
+    <div class="form-group">
+        <label for="remark">简介：</label>
+        <textarea class="form-control" rows="6" id="remark" ></textarea>
+    </div>
+    <button type="button" id="submit_button" class="btn btn-primary btn-lg btn-block" onclick="submitInfo()">提交</button>
+</div>
 </body>
 <script>
+    let Header={
+        Authorization:"",
+        "Content-Type" : "application/json;charset=utf-8"
+    }
+    let imgUrl = "";
+    let doctorId= "";
+    let doctorInfo = {};
+    function changeImg(){
+        $("#imageInput").click();
+    }
+    function uploadFile(){
+        $("#img-tip-div").hide();
+        var req = new FormData();
+        req.append("file",$("#imageInput").prop("files")[0])
+        $.ajax({
+            headers: {token:Header.Authorization},
+            url:"/system/server/file/uploadFile",
+            type:"post",
+            data: req,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    imgUrl = data.rspData;
+                    $("#img-img").attr("src",imgUrl);
+                }else{
+                }
+            },error:function (data){
+                showHint("上传文件失败，请重试!");
+            }
+        })
+    }
+    function submitInfo(){
+        let modifyInfoReq={
+            doctorId:doctorId,
+            doctorWorkAge:$("#doctor_work_age").val(),
+            doctorImage:imgUrl,
+            remark:$("#remark").val(),
+            doctorPhone:$("#phone").val(),
+        }
 
+        $.ajax({
+            headers:Header,
+            url:"/system/server/doctor/modifyDoctorInfo",
+            type:"post",
+            data:JSON.stringify(modifyInfoReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    showHint("修改成功!");
+                }else{
+                    showHint("修改失败，请重试!");
+                }
+            },error:function (data){
+                showHint("修改失败，请重试!");
+            }
+        })
+    }
+    $(function (){
+        Header.Authorization = $.query.get("token");
+        doctorId = $.query.get("infoId");
+
+        let selectDoctorInfoByIdReq={
+            doctorId:doctorId
+        }
+        $.ajax({
+            headers:Header,
+            url:"/system/server/doctor/selectDoctorInfo",
+            type:"post",
+            data:JSON.stringify(selectDoctorInfoByIdReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    doctorInfo = data.rspData;
+                    if (doctorInfo.image!= null && doctorInfo.image != ''){
+                        $("#img-img").attr("src",doctorInfo.image);
+                        $("#img-tip-div").hide();
+                        imgUrl =doctorInfo.image;
+                    }
+                    $("#doctor_level").val(doctorInfo.level);
+                    $("#doctor_name").val(doctorInfo.doctorName);
+                    $("#phone").val(doctorInfo.phone);
+                    $("#sex_span").text(doctorInfo.sex);
+                    $("#doctor_work_age").val(doctorInfo.workAge);
+                    $("#depart_span").text(doctorInfo.department);
+                    $("#remark").val(doctorInfo.remark);
+                }else{
+                }
+            },error:function (data){
+                showHint("获取用户信息失败，请重试!");
+            }
+        })
+    })
 </script>
 </html>

@@ -8,9 +8,9 @@ $(function (){
         </span>
     </div>
 </div>`);
+    $("#hint_close").click(hintHide);
 })
 
-$("#hint_close").click(hintHide);
 function hintHide(){
     $("#hint").hide(200);
 }

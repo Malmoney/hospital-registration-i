@@ -22,8 +22,10 @@ public class DoctorInfoRsp implements Serializable {
     private String remark;
     private String hospital;
     private String workAge;
-    private String dockerId;
-    private String dockerName;
+    private String doctorId;
+    private String doctorName;
     private String regCount;
     private String feedbackRate;
+    private String phone;
+    private String sex;
 }

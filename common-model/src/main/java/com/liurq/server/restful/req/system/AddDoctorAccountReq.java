@@ -25,4 +25,6 @@ public class AddDoctorAccountReq extends CommonAccountReq{
     private String doctorLevel;
     @NotEmpty
     private String departId;
+    @NotEmpty
+    private String hospitalId;
 }

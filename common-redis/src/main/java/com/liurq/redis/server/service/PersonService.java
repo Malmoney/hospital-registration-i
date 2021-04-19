@@ -44,4 +44,10 @@ public interface PersonService {
      * @return
      */
     void setUser(String userPhone, String token);
+
+    /**
+     * 移除用户登录信息
+     * @param token
+     */
+    void removeUser(String token);
 }

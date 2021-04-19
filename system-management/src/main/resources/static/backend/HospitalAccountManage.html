@@ -68,8 +68,13 @@
             <button type="button" id="submit_button" class="btn btn-primary btn-lg btn-block" onclick="submitInfo()">提交</button>
         </div>
     </div>
+    <nav id="page_nav" aria-label="Page navigation">
+        <ul class="pagination">
+        </ul>
+    </nav>
 </div>
 </body>
+<script src="../js/AddAccount.js"></script>
 <script>
     let Header={
         Authorization:"",
@@ -77,22 +82,17 @@
     }
     let memberId = $.query.get("memberId");
     let hospitalId = $.query.get("infoId");
-    let pageSize = 10;
-    let pageNum = 1;
+    let pageSize = 1;
+    let pageNum = 3;
     let doctorDepartId="";
     let doctorSex = "男";
+    let lastPageNum=1;
     $(function (){
         Header.Authorization = $.query.get("token");
         //查询子账号信息
-        $("#addAccount-div-close").click(function (){
-            $("#addAccount_div").hide(200);
-        })
         // $("#container").click(function (){
         //     $("#addAccount_div").hide(200);
         // })
-        $("#addAccount_btn").click(function (){
-            $("#addAccount_div").show(200);
-        })
         selectDepart();
         selectMember();
         $("#hint").css("left","500px");
@@ -120,6 +120,18 @@
             }
         })
     }
+    function changePageNum(pn){
+        if (pn<1){
+            showHint("当前已是第一页");
+            return;
+        }
+        if (pn >= lastPageNum){
+            showHint("当前已是最后一页");
+            return;
+        }
+        pageNum = pn;
+        selectMember();
+    }
 function changeDepart(departId,departName){
     $("#depart_span").text(departName);
     doctorDepartId =departId;
@@ -132,6 +144,7 @@ function changeDepart(departId,departName){
             doctorSex: doctorSex,
             doctorLevel:$("#doctorLevel_form").val(),
             departId: doctorDepartId,
+            hospitalId:hospitalId
         }
         $.ajax({
             headers:Header,
@@ -140,7 +153,7 @@ function changeDepart(departId,departName){
             data:JSON.stringify(addAccountReq),
             success:function (data){
                 if (data.rspCode == '0000'){
-                    hintHide();
+                    AddAccountHide();
                     showHint("添加成功！");
                     selectMember();
                 }else if (data.rspCode == '3001'){
@@ -250,6 +263,25 @@ function changeDepart(departId,departName){
                             btn+=`<button type="button" class="btn btn-danger btn-sm" onclick="banMember('`+arr[i].memberId+`')">禁用</button>`;
                         }
                         $("#member_list").append(html+status+btn + end);
+
+                        //分页按钮
+                        $(".pagination").html("");
+                        let pageArr= data.rspData.navigatepageNums;
+                        let previousStr = `<li>
+                            <a href="javascript:void(0)" onclick="changePageNum('`+data.rspData.prePage+`')" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>`;
+                        let nextStr = `<li>
+                            <a href="javascript:void(0)" onclick="changePageNum('`+data.rspData.nextPage+`')" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>`;
+                        let pageStr = ``;
+                        lastPageNum = data.rspData.navigateLastPage;
+                        for (let i =0 ; i<pageArr.length;i++){
+                            pageStr+=`<li><a href="javascript:void(0)" onclick="changePageNum('`+pageArr[i]+`')">`+pageArr[i]+`</a></li>`;
+                        }
+                        $(".pagination").append(previousStr+pageStr+nextStr);
                     }
                 }else{
                 }

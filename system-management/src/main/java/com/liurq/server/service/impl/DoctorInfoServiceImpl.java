@@ -3,11 +3,9 @@ package com.liurq.server.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liurq.server.dao.DoctorMapper;
+import com.liurq.server.dao.HospitalMapper;
 import com.liurq.server.dao.MajorMapper;
-import com.liurq.server.model.Doctor;
-import com.liurq.server.model.DoctorVisit;
-import com.liurq.server.model.Illness;
-import com.liurq.server.model.Major;
+import com.liurq.server.model.*;
 import com.liurq.server.restful.req.hospital.DoctorIdReq;
 import com.liurq.server.restful.req.hospital.ModifyDoctorInfoReq;
 import com.liurq.server.restful.req.hospital.SelectDoctorReq;
@@ -40,6 +38,8 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
     private DoctorMapper doctorMapper;
     @Autowired
     private MajorMapper majorMapper;
+    @Autowired
+    private HospitalMapper hospitalMapper;
 
     /**
      * 根据条件查询医生信息
@@ -93,21 +93,32 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
         //修改医生主体信息
         Doctor doctor = new Doctor();
         doctor.setDoctorId(req.getDoctorId());
-        doctor.setDoctorSex(req.getDoctorSex());
         doctor.setDoctorWorkAge(req.getDoctorWorkAge());
         doctor.setDoctorFeedbackRate("0");
         doctor.setDoctorRegistrationCount(0);
         doctor.setDoctorImage(req.getDoctorImage());
         doctor.setDoctorPhone(req.getDoctorPhone());
-        doctor.setStatus("0");
+        //doctor.setStatus("0");
         doctor.setCreateDate(now);
         doctor.setUpdateDate(now);
         doctor.setRemark(req.getRemark());
         doctorMapper.updateByPrimaryKeySelective(doctor);
         //修改医生主攻疾病
-        this.updateMajors(req.getMajor(), doctor.getDoctorId());
+        //this.updateMajors(req.getMajor(), doctor.getDoctorId());
 
         return RspInfo.success("成功");
+    }
+
+    /**
+     * 查看医生所属医院
+     *
+     * @param doctorId
+     * @return
+     */
+    @Override
+    public Hospital selectHospitalByDoctor(String doctorId) {
+        Hospital hospital = hospitalMapper.selectHospitalIdByDoctorId(doctorId);
+        return hospital;
     }
 
     /**

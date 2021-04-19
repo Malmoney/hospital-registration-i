@@ -22,7 +22,7 @@ public class SelectMemberReq implements Serializable {
     @NotEmpty
     private String memberId;
 
-    @Min(5)
+    @Min(1)
     @Max(20)
     private int pageSize;
     @Min(1)

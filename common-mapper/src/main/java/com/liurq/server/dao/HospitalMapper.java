@@ -127,4 +127,11 @@ public interface HospitalMapper {
      * @return
      */
     List<SelectHospitalRsp> selectHospitalByDepartment(SelectHospitalByDepartmentReq req);
+
+    /**
+     * 查询医院id
+     * @param doctorId
+     * @return
+     */
+    Hospital selectHospitalIdByDoctorId(String doctorId);
 }

@@ -2,6 +2,7 @@ package com.liurq.server.controller.system;
 
 import com.liurq.server.feign.PersonRedisFeignClient;
 import com.liurq.server.restful.req.system.LoginReq;
+import com.liurq.server.restful.req.user.TokenReq;
 import com.liurq.server.restful.req.user.UserLoginReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.service.MemberService;
@@ -29,6 +30,8 @@ public class SystemLoginController {
 
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private PersonRedisFeignClient personRedisFeignClient;
 
     /**
      * 获取验证码
@@ -39,6 +42,18 @@ public class SystemLoginController {
     @ApiOperation(value = "用户登录",notes = "用户登录")
     public RspInfo<String> userLogin(@RequestBody @Valid LoginReq req) {
         return this.memberService.systemLogin(req);
+    }
+
+    /**
+     * 获取验证码
+     * @param req
+     * @return
+     */
+    @RequestMapping(value = "/logout",method = RequestMethod.POST)
+    @ApiOperation(value = "退出登录",notes = "退出登录")
+    public RspInfo<String> logout(@RequestBody @Valid TokenReq req) {
+        personRedisFeignClient.removeUser(req.getToken());
+        return RspInfo.success("成功");
     }
 
 }

@@ -4,14 +4,94 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="../css/ModifyPassword.css">
+    <link rel="stylesheet" href="../css/DoctorVisit.css">
     <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/params.js"></script>
+    <script src="../js/jquery-params.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/hint.js"></script>
+    <script src="../laydate/laydate.js"></script>
     <link rel="stylesheet" href="../css/hint.css">
+    <link rel="stylesheet" href="../css/panel.css">
 </head>
 <body>
-
+    <div id="container">
+        <button type="button" id="addAccount_btn" class="btn btn-success">新建</button>
+        <div id="addAccount_div">
+            <div id="account_close_div"><span id="addAccount-div-close">X</span></div>
+            <div id="addAccount_form">
+                <div class="form-group">
+                    <label for="day_form">请选择日期：</label>
+                    <input type="text" class="form-control" id="day_form" placeholder="请选择出诊日期">
+                </div>
+                <div class="form-group">
+                    <label for="time_form">出诊时刻：</label>
+                    <input type="text" class="form-control" id="time_form" placeholder="请选择出诊时间范围">
+                </div>
+                <div class="dropdown" style="margin-bottom: 10px">
+                    <b>请选择科室：</b>
+                    <button class="btn btn-default dropdown-toggle" type="button" id="depart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span id="depart_span" >请选择科室</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="depart_item" aria-labelledby="depart">
+                    </ul>
+                    <input type="hidden" id="departId_form" value="">
+                </div>
+                <div class="form-group">
+                    <label for="room_form">房间：</label>
+                    <input type="text" class="form-control" id="room_form" placeholder="请选择出诊房间">
+                </div>
+                <button type="button" id="submit_button" class="btn btn-primary btn-lg btn-block" onclick="submitInfo()">提交</button>
+            </div>
+        </div>
+    </div>
 </body>
+<script src="../js/AddAccount.js"></script>
+<script>
+let doctorId = $.query.get("doctorId");
+let Header={
+    Authorization:"",
+    "Content-Type" : "application/json;charset=utf-8"
+}
+let departId="";
+//日期选择器
+laydate.render({
+    elem: '#day_form'
+});
+laydate.render({
+    elem: '#time_form'
+    ,type: 'time'
+    ,range: true
+});
+$(function (){
+    selectDepart();
+})
+function changeDepart(departId,departName){
+    $("#depart_span").text(departName);
+    departId =departId;
+}
+function selectDepart(){
+    let selectDepartReq={
+        doctorId:doctorId
+    }
+    $.ajax({
+        headers:Header,
+        url:"/system/server/department/selectDepartByDoctorId",
+        type:"post",
+        data:JSON.stringify(selectDepartReq),
+        success:function (data){
+            if (data.rspCode == '0000'){
+                let arr = data.rspData;
+                for (let i = 0;i<arr.length;i++){
+                    $("#depart_item").append(`<li><a href="javascript:void(0)" onclick="changeDepart('`+arr[i].departmentId+`','`+arr[i].departmentName+`')">`+arr[i].departmentName+`</a></li>`)
+                }
+            }else{
+            }
+        },error:function (data){
+            showHint("获取科室信息失败！请重试");
+        }
+    })
+}
+
+</script>
 </html>

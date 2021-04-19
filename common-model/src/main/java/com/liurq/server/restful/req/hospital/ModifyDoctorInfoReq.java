@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
@@ -22,9 +24,8 @@ public class ModifyDoctorInfoReq implements Serializable {
 
     @NotEmpty
     private String doctorId;
-    @NotEmpty
-    private String doctorSex;
-    @NotEmpty
+    @Max(100)
+    @Min(0)
     private int doctorWorkAge;
     @NotEmpty
     private String doctorImage;

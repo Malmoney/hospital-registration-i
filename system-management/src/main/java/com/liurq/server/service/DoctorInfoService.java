@@ -2,6 +2,7 @@ package com.liurq.server.service;
 
 import com.github.pagehelper.PageInfo;
 import com.liurq.server.model.DoctorVisit;
+import com.liurq.server.model.Hospital;
 import com.liurq.server.restful.req.hospital.DoctorIdReq;
 import com.liurq.server.restful.req.hospital.ModifyDoctorInfoReq;
 import com.liurq.server.restful.req.hospital.SelectDoctorReq;
@@ -46,4 +47,11 @@ public interface DoctorInfoService {
      * @return
      */
     RspInfo<String> modifyDoctorInfo(ModifyDoctorInfoReq req);
+
+    /**
+     * 查看医生所属医院
+     * @param doctorId
+     * @return
+     */
+    Hospital selectHospitalByDoctor(String  doctorId);
 }
