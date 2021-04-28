@@ -7,8 +7,10 @@ import com.liurq.server.restful.req.hospital.SelectMemberReq;
 import com.liurq.server.restful.req.system.*;
 import com.liurq.server.restful.req.user.TokenReq;
 import com.liurq.server.restful.rsp.RspInfo;
+import com.liurq.server.restful.rsp.hospital.AccountInfoRsp;
 import com.liurq.server.restful.rsp.hospital.AddHospitalAccountRsp;
-import com.liurq.server.restful.rsp.hospital.MemberInfoRsp;
+import com.liurq.server.restful.rsp.hospital.DoctorMemberInfoRsp;
+import com.liurq.server.restful.rsp.hospital.HospitalMemberInfoRsp;
 import com.liurq.server.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @Author:hyz
@@ -56,8 +57,8 @@ public class MemberController {
      * @return
      */
     @ApiOperation(value = "添加市级管理员账号",notes = "添加市级管理员账号")
-    @RequestMapping(value = "/addCountyAdmin",method = RequestMethod.POST)
-    public RspInfo<String> addCountyAdmin(@RequestBody @Valid AddAdminAccountReq req){
+    @RequestMapping(value = "/addCityAdmin",method = RequestMethod.POST)
+    public RspInfo<String> addCityAdmin(@RequestBody @Valid AddAdminAccountReq req){
         req.setType("8");
         return memberService.addAdminAccount(req);
     }
@@ -72,7 +73,7 @@ public class MemberController {
     public RspInfo<String> addHospitalAdmin(@RequestBody @Valid AddHospitalAccountReq req){
         req.setType("1");
         Member member = memberService.getMemberInfo(req.getUserName()).getRspData();
-        if(ObjectUtils.isEmpty(member)){
+        if(!ObjectUtils.isEmpty(member)){
             return RspInfo.fail("3001","用户名已存在");
         }
         AddHospitalAccountRsp rsp = memberService.addHospitalAccount(req, "0");
@@ -138,8 +139,28 @@ public class MemberController {
      */
     @ApiOperation(value = "查询子账号",notes = "查询子账号")
     @RequestMapping(value = "/selectHospitalChildMember",method = RequestMethod.POST)
-    public RspInfo<PageInfo<MemberInfoRsp>> selectHospitalChildMember(@RequestBody @Valid SelectMemberReq req){
+    public RspInfo<PageInfo<DoctorMemberInfoRsp>> selectHospitalChildMember(@RequestBody @Valid SelectMemberReq req){
         return this.memberService.selectHospitalChildMember(req);
+    }
+    /**
+     * 查询子账号
+     * @param req
+     * @return
+     */
+    @ApiOperation(value = "查询子账号",notes = "查询子账号")
+    @RequestMapping(value = "/selectProvChildMember",method = RequestMethod.POST)
+    public RspInfo<PageInfo<AccountInfoRsp>> selectProvChildMember(@RequestBody @Valid SelectMemberReq req){
+        return this.memberService.selectProvChildMember(req);
+    }
+    /**
+     * 查询子账号
+     * @param req
+     * @return
+     */
+    @ApiOperation(value = "查询城市管理员的子账号",notes = "查询城市管理员的子账号")
+    @RequestMapping(value = "/selectCityChildMember",method = RequestMethod.POST)
+    public RspInfo<PageInfo<HospitalMemberInfoRsp>> selectCityChildMember(@RequestBody @Valid SelectMemberReq req){
+        return this.memberService.selectCityChildMember(req);
     }
 
     @ApiOperation(value = "禁用账号",notes = "禁用账号")

@@ -443,4 +443,22 @@
       bak_code2 = #{bakCode2,jdbcType=VARCHAR}
     where patient_id = #{patientId,jdbcType=VARCHAR}
   </update>
+  <update id="updatePatientStatus" parameterType="string">
+    update tb_user_patient
+    set status = #{status,jdbcType=VARCHAR}
+    where patient_id = #{patientId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectPatientByUserId" resultMap="BaseResultMap" parameterType="string">
+    select distinct
+    *
+    from tb_user_patient a
+    where a.patient_parent_id = #{userId,jdbcType=VARCHAR}
+        and a.status = '0'
+  </select>
+  <select id="selectByRegId" resultMap="BaseResultMap" parameterType="string">
+    select p.*
+    from tb_user_registration  a
+        left join  tb_user_patient p on p.patient_id = a.patient_id
+    where a.id = #{regId,jdbcType=VARCHAR}
+  </select>
 </mapper>

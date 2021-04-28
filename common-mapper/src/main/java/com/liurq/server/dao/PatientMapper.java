@@ -93,4 +93,26 @@ public interface PatientMapper {
      * @mbggenerated Wed Feb 03 19:23:50 CST 2021
      */
     int updateByPrimaryKey(Patient record);
+
+    /**
+     * 修改就诊人状态
+     * @param patientId
+     * @param status
+     * @return
+     */
+    int updatePatientStatus(String patientId,String status);
+
+    /**
+     * 查询用户下的就诊人
+     * @param userId
+     * @return
+     */
+    List<Patient> selectPatientByUserId(String userId);
+
+    /**
+     * 根据挂号id查询就诊人信息
+     * @param regId
+     * @return
+     */
+    Patient selectByRegId(String regId);
 }

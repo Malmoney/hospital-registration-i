@@ -8,8 +8,10 @@ import com.liurq.server.model.*;
 import com.liurq.server.restful.req.hospital.SelectMemberReq;
 import com.liurq.server.restful.req.system.*;
 import com.liurq.server.restful.rsp.RspInfo;
+import com.liurq.server.restful.rsp.hospital.AccountInfoRsp;
 import com.liurq.server.restful.rsp.hospital.AddHospitalAccountRsp;
-import com.liurq.server.restful.rsp.hospital.MemberInfoRsp;
+import com.liurq.server.restful.rsp.hospital.DoctorMemberInfoRsp;
+import com.liurq.server.restful.rsp.hospital.HospitalMemberInfoRsp;
 import com.liurq.server.service.MemberService;
 import com.liurq.util.IDUtils;
 import com.liurq.util.PasswordUtil;
@@ -52,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public RspInfo<String> addAdminAccount(AddAdminAccountReq req) {
         Member member = memberMapper.selectByUserName(req.getUserName());
-        if(ObjectUtils.isEmpty(member)){
+        if(!ObjectUtils.isEmpty(member)){
             return RspInfo.fail("3001","用户名已存在");
         }
         this.insertMember(req,"");
@@ -223,7 +225,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public RspInfo<Member> getMemberInfo(String username) {
         Member member = memberMapper.selectByUserName(username);
-        member.setPassword(null);
+        if(!ObjectUtils.isEmpty(member)){
+            member.setPassword(null);
+        }
         return RspInfo.success(member);
     }
 
@@ -234,13 +238,47 @@ public class MemberServiceImpl implements MemberService {
      * @return
      */
     @Override
-    public RspInfo<PageInfo<MemberInfoRsp>> selectHospitalChildMember(SelectMemberReq req) {
+    public RspInfo<PageInfo<DoctorMemberInfoRsp>> selectHospitalChildMember(SelectMemberReq req) {
         String memberId = req.getMemberId();
         int pageNum = req.getPageNum();
         int pageSize = req.getPageSize();
         PageHelper.startPage(pageNum,pageSize);
-        List<MemberInfoRsp> result = this.memberMapper.selectHospitalChildMember(memberId);
-        PageInfo<MemberInfoRsp> pageInfo = new PageInfo<>(result);
+        List<DoctorMemberInfoRsp> result = this.memberMapper.selectHospitalChildMember(memberId);
+        PageInfo<DoctorMemberInfoRsp> pageInfo = new PageInfo<>(result);
+        return RspInfo.success(pageInfo);
+    }
+
+    /**
+     * 查询子账号
+     *
+     * @param req
+     * @return
+     */
+    @Override
+    public RspInfo<PageInfo<HospitalMemberInfoRsp>> selectCityChildMember(SelectMemberReq req) {
+        String memberId = req.getMemberId();
+        int pageNum = req.getPageNum();
+        int pageSize = req.getPageSize();
+        PageHelper.startPage(pageNum,pageSize);
+        List<HospitalMemberInfoRsp> result = this.memberMapper.selectCityChildMember(memberId);
+        PageInfo<HospitalMemberInfoRsp> pageInfo = new PageInfo<>(result);
+        return RspInfo.success(pageInfo);
+    }
+
+    /**
+     * 查询子账号
+     *
+     * @param req
+     * @return
+     */
+    @Override
+    public RspInfo<PageInfo<AccountInfoRsp>> selectProvChildMember(SelectMemberReq req) {
+        String memberId = req.getMemberId();
+        int pageNum = req.getPageNum();
+        int pageSize = req.getPageSize();
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfoRsp> result = this.memberMapper.selectProvChildMember(memberId);
+        PageInfo<AccountInfoRsp> pageInfo = new PageInfo<>(result);
         return RspInfo.success(pageInfo);
     }
 
@@ -274,7 +312,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = new Member();
         member.setMemberId(memberId);
         member.setMemberName(req.getUserName());
-        member.setPassword(PasswordUtil.getPassword(req.getUserName()+"123456"));
+        member.setPassword(PasswordUtil.getPassword(req.getUserName()));
         member.setMemberParent(req.getParentId());
         member.setType(req.getType());
         //2--待修改初始密码

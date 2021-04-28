@@ -9,13 +9,14 @@
     <script src="../js/jquery-1.9.1.js"></script>
     <script src="../js/jquery-params.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/ApiUrl.js"></script>
 </head>
 <body>
 <div id="container">
     <div id="menu">
         <div id="title_div">系统后台</div>
         <ul id="menu_list">
-            <li id="info_li"><div class="glyphicon glyphicon-user"></div><span>修改个人信息</span></li>
+            <li id="info_li"><div class="glyphicon glyphicon-user"></div><span>修改信息</span></li>
             <li id="account_li"><div class="glyphicon glyphicon-info-sign"></div><span>子账号管理</span></li>
             <li id="depart_li"><div class="glyphicon glyphicon-th-list"></div><span>科室管理</span></li>
             <li id="visit_li"><div class="glyphicon glyphicon-eye-open"></div><span>出诊管理</span></li>
@@ -69,7 +70,7 @@
         }
         $.ajax({
             headers:header,
-            url:"/system/login/logout",
+            url:BaseUrl+"/system/login/logout",
             method:"post",
             data:JSON.stringify(logOutReq),
             success:function (data){
@@ -88,7 +89,7 @@
         }
         $.ajax({
             headers:header,
-            url:"/system/server/member/getMemberInfo",
+            url:BaseUrl+"/system/server/member/getMemberInfo",
             method:"post",
             data:JSON.stringify(getUserInfoReq),
             success:function (data){
@@ -103,10 +104,10 @@
                         showHospitalMenu();
                         accountUrl="HospitalAccountManage.html";
                         infoUrl="ModifyHospitalInfo.html?infoId="+user.infoId;
-                    }else if (user.type == '9'){
+                    }else if (user.type == '8'){
                         accountUrl="CityAccountManage.html";
                         showMemberMenu();
-                    }else{
+                    }else if (user.type == '9'){
                         accountUrl="ProvinceAccountManage.html";
                         showMemberMenu();
                     }

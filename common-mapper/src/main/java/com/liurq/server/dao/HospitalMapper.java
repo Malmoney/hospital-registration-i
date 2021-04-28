@@ -134,4 +134,12 @@ public interface HospitalMapper {
      * @return
      */
     Hospital selectHospitalIdByDoctorId(String doctorId);
+
+    /**
+     * 更新医院状态
+     * @param hospitalId
+     * @param status
+     * @return
+     */
+    int updateHospitalStatus(String hospitalId,String status);
 }

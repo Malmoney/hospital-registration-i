@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/hint.css">
     <script src="../js/jquery-params.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/ApiUrl.js"></script>
 </head>
 <body>
 <div id="container">
@@ -100,7 +101,7 @@
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/town/selectCityByProvince",
+            url:BaseUrl+"/system/server/town/selectCityByProvince",
             type:"post",
             data: JSON.stringify(req),
             success:function (data){
@@ -126,7 +127,7 @@
         req.append("file",$("#imageInput").prop("files")[0])
         $.ajax({
             headers: {token:Header.Authorization},
-            url:"/system/server/file/uploadFile",
+            url:BaseUrl+"/system/server/file/uploadFile",
             type:"post",
             data: req,
             cache: false,
@@ -157,7 +158,7 @@
 
         $.ajax({
             headers:Header,
-            url:"/system/server/hospital/modifyHospitalInfo",
+            url:BaseUrl+"/system/server/hospital/modifyHospitalInfo",
             type:"post",
             data:JSON.stringify(modifyInfoReq),
             success:function (data){
@@ -176,7 +177,7 @@
         infoId = $.query.get("infoId");
         $.ajax({
             headers:Header,
-            url:"/system/server/town/selectALlProvince",
+            url:BaseUrl+"/system/server/town/selectALlProvince",
             type:"post",
             success:function (data){
                 if (data.rspCode == '0000'){
@@ -196,7 +197,7 @@
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/hospital/selectHospitalInfoById",
+            url:BaseUrl+"/system/server/hospital/selectHospitalInfoById",
             type:"post",
             data:JSON.stringify(selectHospitalInfoByIdReq),
             success:function (data){

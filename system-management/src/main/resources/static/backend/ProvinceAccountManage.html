@@ -4,14 +4,212 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="../css/ModifyPassword.css">
+    <link rel="stylesheet" href="../css/ProvinceAccountManage.css">
     <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/params.js"></script>
+    <script src="../js/jquery-params.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/hint.js"></script>
     <link rel="stylesheet" href="../css/hint.css">
+    <script src="../js/ApiUrl.js"></script>
+    <link rel="stylesheet" href="../css/panel.css">
 </head>
 <body>
 
+<div id="container">
+    <div id="search"></div>
+    <button type="button" id="addAccount_btn" class="btn btn-success">新建</button>
+    <table class="table table-hover" >
+        <tbody id="member_list">
+        <tr>
+            <td><b>用户名</b></td>
+            <td><b>状态</b></td>
+            <td><b>操作</b></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="addAccount_div" style="height: 34%;">
+        <div id="account_close_div" style="height: 19%;"><span id="addAccount-div-close">X</span></div>
+        <div id="addAccount_form">
+            <div class="form-group">
+                <label for="userName_form">用户名：</label>
+                <input type="text" class="form-control" id="userName_form" placeholder="请输入登录名">
+            </div>
+            <button type="button" id="submit_button" class="btn btn-primary btn-lg btn-block" onclick="submitInfo()">提交</button>
+        </div>
+    </div>
+    <nav id="page_nav" aria-label="Page navigation">
+        <ul class="pagination">
+        </ul>
+    </nav>
 </body>
+<script src="../js/AddAccount.js"></script>
+<script>
+
+    let Header={
+        Authorization:"",
+        "Content-Type" : "application/json;charset=utf-8"
+    }
+    let memberId = $.query.get("memberId");
+    let pageSize = 10;
+    let pageNum = 1;
+    let lastPageNum=1;
+    $(function (){
+        Header.Authorization = $.query.get("token");
+        selectMember();
+        $("#hint").css("left","500px");
+    })
+
+    function changePageNum(pn){
+        if (pn<1){
+            showHint("当前已是第一页");
+            return;
+        }
+        if (pn >= lastPageNum){
+            showHint("当前已是最后一页");
+            return;
+        }
+        pageNum = pn;
+        selectMember();
+    }
+    function submitInfo(){
+        let addAccountReq={
+            userName: $("#userName_form").val(),
+            parentId: memberId
+        }
+        $.ajax({
+            headers:Header,
+            url:BaseUrl+"/system/server/member/addCityAdmin",
+            type:"post",
+            data:JSON.stringify(addAccountReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    AddAccountHide();
+                    showHint("添加成功！");
+                    selectMember();
+                }else if (data.rspCode == '3001'){
+                    showHint(data.rspDesc);
+                }else{
+
+                }
+            },error:function (data){
+                showHint("添加失败！请重试");
+            }
+        })
+
+    }
+    function banMember(memberId){
+        let banMemberReq = {
+            memberId:memberId
+        }
+        $.ajax({
+            headers:Header,
+            url:BaseUrl+"/system/server/member/banMember",
+            type:"post",
+            data:JSON.stringify(banMemberReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    showHint("操作成功！");
+                    selectMember();
+                }else if (data.rspCode == '3001'){
+                    showHint(data.rspDesc);
+                }else{
+
+                }
+            },error:function (data){
+                showHint("操作失败！请重试");
+            }
+        })
+    }
+    function enableMember(memberId){
+        let enableMemberReq = {
+            memberId:memberId
+        }
+        $.ajax({
+            headers:Header,
+            url:BaseUrl+"/system/server/member/enableMember",
+            type:"post",
+            data:JSON.stringify(enableMemberReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    showHint("操作成功！");
+                    selectMember();
+                }else if (data.rspCode == '3001'){
+                    showHint(data.rspDesc);
+                }else{
+
+                }
+            },error:function (data){
+                showHint("操作失败！请重试");
+            }
+        })
+    }
+    function selectMember(){
+        let selectMemberReq ={
+            memberId : memberId,
+            pageSize:pageSize,
+            pageNum:pageNum
+        }
+        $("#member_list").html(`        <tr>
+            <td><b>用户名</b></td>
+            <td><b>状态</b></td>
+            <td><b>操作</b></td>
+        </tr>`);
+        $.ajax({
+            headers:Header,
+            url:BaseUrl+"/system/server/member/selectProvChildMember",
+            type:"post",
+            data:JSON.stringify(selectMemberReq),
+            success:function (data){
+                if (data.rspCode == '0000'){
+                    let arr = data.rspData.list;
+                    console.log(arr.length)
+                    // $("#member_list").html("");
+                    for (let i =0;i<arr.length;i++){
+                        let html = `
+                        <tr>
+                            <td>`+arr[i].userName+`</td>
+                           `;
+                        let status = "";
+                        let end = `</td></tr>`;
+                        let btn=``;
+                        if (arr[i].status =='0'){
+                            html += `<td><div class="bg-primary">正常</div></td><td>`;
+                            btn += `<button type="button" class="btn btn-danger btn-sm" onclick="banMember('`+arr[i].memberId+`')">禁用</button>`;
+                        }else if (arr[i].status =='1'){
+                            html += `<td><div class="bg-danger">禁用</div></td><td>`;
+                            btn +=`<button type="button" class="btn btn-success btn-sm" onclick="enableMember('`+arr[i].memberId+`')">启用</button>`;
+                        }else if (arr[i].status =='2'){
+                            html += `<td><div class="bg_one">待重置密码</div></td><td>`;
+                            btn +=`<button type="button" class="btn btn-success btn-sm" onclick="banMember('`+arr[i].memberId+`')">禁用</button>`;
+                        }else {
+                            html +=`<td>`;
+                            btn+=`<button type="button" class="btn btn-danger btn-sm" onclick="banMember('`+arr[i].memberId+`')">禁用</button>`;
+                        }
+                        $("#member_list").append(html+status+btn + end);
+
+                        //分页按钮
+                        $(".pagination").html("");
+                        let pageArr= data.rspData.navigatepageNums;
+                        let previousStr = `<li>
+                            <a href="javascript:void(0)" onclick="changePageNum('`+data.rspData.prePage+`')" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>`;
+                        let nextStr = `<li>
+                            <a href="javascript:void(0)" onclick="changePageNum('`+data.rspData.nextPage+`')" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>`;
+                        let pageStr = ``;
+                        lastPageNum = data.rspData.navigateLastPage;
+                        for (let i =0 ; i<pageArr.length;i++){
+                            pageStr+=`<li><a href="javascript:void(0)" onclick="changePageNum('`+pageArr[i]+`')">`+pageArr[i]+`</a></li>`;
+                        }
+                        $(".pagination").append(previousStr+pageStr+nextStr);
+                    }
+                }else{
+                }
+            }
+        })
+    }
+</script>
 </html>

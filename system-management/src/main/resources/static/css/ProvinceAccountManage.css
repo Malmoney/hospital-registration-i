@@ -1,0 +1,29 @@
+#container{
+    width: 90%;
+    padding-left: 150px;
+    padding-top: 50px;
+}
+
+#addAccount_btn{
+    margin-bottom: 10px;
+}
+.bg-primary,.bg-danger{
+    width: 36px;
+    border-radius: 5px;
+    position: relative;
+    left: 132px;
+}
+.bg_one{
+    background-color: #2b542c;
+    color: white;
+    width: 80px;
+    border-radius: 5px;
+    position: relative;
+    left: 200px;
+}
+#page_nav{
+    float: right;
+}
+table{
+    text-align: center;
+}

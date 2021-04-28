@@ -9,6 +9,7 @@
     <script src="../js/jquery-params.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/hint.js"></script>
+    <script src="../js/ApiUrl.js"></script>
     <link rel="stylesheet" href="../css/hint.css">
 </head>
 <body>
@@ -49,7 +50,7 @@
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/department/selectDepart",
+            url:BaseUrl+"/system/server/department/selectDepart",
             type:"post",
             data:JSON.stringify(selectDepartReq),
             success:function (data){
@@ -91,7 +92,7 @@
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/department/addDepartment",
+            url:BaseUrl+"/system/server/department/addDepartment",
             type:"post",
             data: JSON.stringify(addDepartmentReq),
             success:function (data){
@@ -109,7 +110,7 @@
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/department/enableDepartment",
+            url:BaseUrl+"/system/server/department/enableDepartment",
             type:"post",
             data: JSON.stringify(enableDepartmentReq),
             success:function (data){
@@ -127,7 +128,7 @@
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/department/banDepartment",
+            url:BaseUrl+"/system/server/department/banDepartment",
             type:"post",
             data: JSON.stringify(banDepartmentReq),
             success:function (data){

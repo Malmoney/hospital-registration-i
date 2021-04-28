@@ -10,33 +10,79 @@
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/hint.js"></script>
     <script src="../laydate/laydate.js"></script>
+    <script src="../js/ApiUrl.js"></script>
     <link rel="stylesheet" href="../css/hint.css">
     <link rel="stylesheet" href="../css/panel.css">
 </head>
 <body>
     <div id="container">
-        <button type="button" id="addAccount_btn" class="btn btn-success">新建</button>
+        <div id="top_div">
+    <!--    今日出诊    -->
+            <div id="today_visit">
+                <div id="num_div">
+                    <span id="next_span">下一位：</span>
+                    <br>
+                    <span id="num_span">-</span>
+                    <span id="num_hint" style="display: none"></span>
+                </div>
+                <div id="operation_div">
+                    <button type="button" id="call_btn" class="btn btn-success" onclick="callNum()">叫号</button>
+                    <button type="button" id="end_btn" class="btn btn-success" onclick="endNum()" style="display: none">结束</button>
+                    <button type="button" id="pass_btn" class="btn btn-danger" onclick="showPassNumConfirm()">过号</button>
+                </div>
+            </div>
+    <!--   患者信息     -->
+            <div id="patient_info">
+                <span id="now_span">当前患者信息:</span>
+                <div id="info">
+<!--                    <img src="https://hospital-head-image.oss-cn-beijing.aliyuncs.com/head-image/2021/04/19/1618820900868896.jpg" class="img-rounded">-->
+                    <div id="info_item">
+                        <b>姓名：</b><span id="info_name_span"></span><br>
+                        <b>性别：</b><span id="info_sex_span"></span><br>
+                        <b>身份证号：</b><span id="info_idCard_span"></span><br>
+                        <b>号码：</b><span id="info_num_span"></span><br>
+                    </div>
+                    <div class="info_hint">当前未叫号</div>
+                </div>
+            </div>
+        </div>
+<!--   未来七天出诊列表     -->
+        <div id="visit_list">
+            <button type="button" id="addAccount_btn" class="btn btn-success">新建</button>
+            <div id="visit_table">
+                <table class="table table-hover" >
+                    <tr>
+                        <td><b>日期</b></td>
+                        <td><b>时间</b></td>
+                        <td><b>地点</b></td>
+                        <td><b>操作</b></td>
+                    </tr>
+                    <tbody id="visit_item">
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="addAccount_div">
             <div id="account_close_div"><span id="addAccount-div-close">X</span></div>
             <div id="addAccount_form">
                 <div class="form-group">
                     <label for="day_form">请选择日期：</label>
-                    <input type="text" class="form-control" id="day_form" placeholder="请选择出诊日期">
+                    <input type="text" class="form-control" id="day_form" autocomplete="off" placeholder="请选择出诊日期">
                 </div>
                 <div class="form-group">
                     <label for="time_form">出诊时刻：</label>
-                    <input type="text" class="form-control" id="time_form" placeholder="请选择出诊时间范围">
+                    <input type="text" class="form-control" id="time_form" autocomplete="off" placeholder="请选择出诊时间范围">
                 </div>
-                <div class="dropdown" style="margin-bottom: 10px">
-                    <b>请选择科室：</b>
-                    <button class="btn btn-default dropdown-toggle" type="button" id="depart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span id="depart_span" >请选择科室</span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" id="depart_item" aria-labelledby="depart">
-                    </ul>
-                    <input type="hidden" id="departId_form" value="">
-                </div>
+<!--                <div class="dropdown" style="margin-bottom: 10px">-->
+<!--                    <b>请选择科室：</b>-->
+<!--                    <button class="btn btn-default dropdown-toggle" type="button" id="depart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+<!--                        <span id="depart_span" >请选择科室</span>-->
+<!--                        <span class="caret"></span>-->
+<!--                    </button>-->
+<!--                    <ul class="dropdown-menu" id="depart_item" aria-labelledby="depart">-->
+<!--                    </ul>-->
+<!--                    <input type="hidden" id="departId_form" value="">-->
+<!--                </div>-->
                 <div class="form-group">
                     <label for="room_form">房间：</label>
                     <input type="text" class="form-control" id="room_form" placeholder="请选择出诊房间">
@@ -44,6 +90,31 @@
                 <button type="button" id="submit_button" class="btn btn-primary btn-lg btn-block" onclick="submitInfo()">提交</button>
             </div>
         </div>
+        <div id="regList_div">
+            <div id="regList_close_div"><span id="regList-div-close">X</span></div>
+            <div id="regItem_table">
+                <table class="table" >
+                    <tr>
+                        <td><b>号码</b></td>
+                        <td><b>到院时间</b></td>
+                    </tr>
+                    <tbody id="regList_item">
+                    </tbody>
+                </table>
+            </div>
+                <button type="button" id="regList_button" class="btn btn-primary btn-lg btn-block" >关闭</button>
+            </div>
+        <div id="passConfirm_div">
+            <div id="reason_div">
+                <b>请填写过号原因:</b><br>
+                <textarea class="form-control" rows="3" id="reason"></textarea>
+            </div>
+            <div id="reason_btn_div">
+                <button type="button" id="end_cancel_button" class="btn btn-success btn-lg  confirm_btn" onclick="closePassNum()" >取消</button>
+                <button type="button" id="end_do_button" class="btn btn-primary btn-lg  confirm_btn" onclick="passNum()">确认</button>
+            </div>
+        </div>
+    </div>
     </div>
 </body>
 <script src="../js/AddAccount.js"></script>
@@ -54,44 +125,325 @@ let Header={
     "Content-Type" : "application/json;charset=utf-8"
 }
 let departId="";
-//日期选择器
-laydate.render({
-    elem: '#day_form'
-});
-laydate.render({
-    elem: '#time_form'
-    ,type: 'time'
-    ,range: true
-});
+let minDay='';
+let maxDay='';
+
+let nextRegId='';
+let nowRegId='';
+let nextNum='';
+let nowNum='';
+let visitId = '';
 $(function (){
-    selectDepart();
+    Header.Authorization=$.query.get("token");
+    $("#hint").css("left","580px")
+    $("#regList_div").hide();
+    selectDoctorVisitList();
+    selectTodayReg();
+    $("#regList-div-close").click(function (){
+        $("#regList_div").hide(200);
+    })
+    $("#regList_button").click(function (){
+        $("#regList_div").hide(200);
+    })
+
+    Date.prototype.format = function(fmt) {
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate(),                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+    let now = new Date();
+    now.setDate(now.getDate()+1);
+    minDay=now.format("yyyy-MM-dd");
+    now.setDate(now.getDate()+6);
+    maxDay=now.format("yyyy-MM-dd");
+    console.log(minDay);
+
+    //日期选择器
+    laydate.render({
+        elem: '#day_form'
+        ,min: `\'`+minDay+`\'`
+        ,max: `\'`+maxDay+`\'`
+    });
+    laydate.render({
+        elem: '#time_form'
+        ,type: 'time'
+        ,min: '08:00:00'
+        ,max: '18:00:00'
+        ,range: true
+    });
 })
-function changeDepart(departId,departName){
+function changeDepart(depart,departName){
     $("#depart_span").text(departName);
-    departId =departId;
+    departId =depart;
 }
-function selectDepart(){
+function submitInfo(){
+    let day = $("#day_form").val().trim()+" ";
+    let time = $("#time_form").val().trim();
+    if(day == null || day == '' || time==''||time == null){
+        showHint("请选择日期时间");
+        return;
+    }
+    let timeArr = time.split(" - ");
+    let startDate = day+timeArr[0];
+    let endDate = day+timeArr[1];
+    let addVisitReq ={
+        room:$("#room_form").val(),
+        startTime:startDate,
+        endTime:endDate,
+        doctorId:doctorId
+    }
+
+    $.ajax({
+        headers:Header,
+        url:BaseUrl+"/reg/server/visit/addDoctorVisit",
+        type:"post",
+        data:JSON.stringify(addVisitReq),
+        success:function (data){
+            if (data.rspCode == '0000'){
+                showHint("添加成功!");
+                AddAccountHide();
+                selectDoctorVisitList();
+            }else if(data.rspCode == '3001'){
+                showHint("失败,"+data.rspDesc);
+            }else{
+                showHint("添加失败，请重试!");
+            }
+        },error:function (data){
+            showHint("添加失败，请重试!");
+        }
+    })
+}
+function selectRegList(visitId){
+    $("#regList_div").show();
+    let selectRegListReq={
+        visitId:visitId
+    }
+    $.ajax({
+        headers:Header,
+        url:BaseUrl+"/reg/server/visit/selectRegList",
+        type:"post",
+        data:JSON.stringify(selectRegListReq),
+        success:function (data){
+            if (data.rspCode == '0000'){
+                $("#regList_item").html("");
+                let arr = data.rspData;
+                if (arr.length==0){
+                    $("#regList_item").html(`<div class="regList_hint">无数据</div>`);
+                    return;
+                }
+                for (let i = 0;i<arr.length;i++){
+                    $("#regList_item").append(`
+                        <tr>
+                            <td>`+arr[i].num+`</td>
+                            <td>`+arr[i].time+`</td>
+                        </tr>
+                    `)
+                }
+            }else{
+            }
+        },error:function (data){
+            showHint("获取详情失败！请重试");
+        }
+    })
+}
+function selectDoctorVisitList(){
     let selectDepartReq={
         doctorId:doctorId
     }
     $.ajax({
         headers:Header,
-        url:"/system/server/department/selectDepartByDoctorId",
+        url:BaseUrl+"/reg/server/visit/selectDoctorVisitList",
         type:"post",
         data:JSON.stringify(selectDepartReq),
         success:function (data){
             if (data.rspCode == '0000'){
                 let arr = data.rspData;
+                $("#visit_item").html(``);
                 for (let i = 0;i<arr.length;i++){
-                    $("#depart_item").append(`<li><a href="javascript:void(0)" onclick="changeDepart('`+arr[i].departmentId+`','`+arr[i].departmentName+`')">`+arr[i].departmentName+`</a></li>`)
+                    let ht = `<tr>
+                            <td>`+arr[i].date+`</td>
+                            <td>`+arr[i].time+`</td>
+                            <td>`+arr[i].room+`</td>
+                            <td><button type="button" class="btn btn-success btn-sm" onclick="selectRegList('`+arr[i].visitId+`')">查看详情</button></td>
+                        </tr>`;
+                    $("#visit_item").append(ht);
                 }
             }else{
             }
         },error:function (data){
-            showHint("获取科室信息失败！请重试");
+            showHint("查询出诊排班失败！请重试");
+        }
+    })
+}
+function selectTodayReg(){
+    let selectDepartReq={
+        doctorId:doctorId
+    }
+    $.ajax({
+        headers:Header,
+        url:BaseUrl+"/reg/server/reg/selectTodayReg",
+        type:"post",
+        data:JSON.stringify(selectDepartReq),
+        success:function (data){
+            if (data.rspCode == '0000'){
+                if(data.rspData == null){
+                    $("#num_span").html("-");
+                    $(".info_hint").html(`无出诊安排`);
+                    $("#info_hint").show();
+                    $("#info_item").hide();
+                    $("#call_btn").attr("disabled","disabled");
+                    $("#pass_btn").attr("disabled","disabled");
+                }else{
+                    let rsp = data.rspData;
+                    visitId = rsp.visitId;
+                    if (rsp.nextRegId == null || rsp.nextNum ==0){
+                        nextRegId = '';
+                        nextNum = rsp.nextNum;
+                        $("#end_do_button").click(function (){
+                            passNum();
+                            endNum();
+                        });
+                        $("#num_hint").html("当前患者为最后一位");
+                        $("#num_span").hide();
+                        $("#num_hint").show();
+                        $("#call_btn").attr("disabled","disabled");
+                        $("#call_btn").hide();
+                        $("#end_btn").show();
+
+                    }else{
+                        nextRegId = rsp.nextRegId;
+                        nextNum = rsp.nextNum
+                        $("#num_span").html(rsp.nextNum);
+                    }
+                    if (rsp.nowRegId == null){
+                        $("#info_item").hide();
+                        $("#pass_btn").attr("disabled","disabled");
+                    }else{
+                        nowRegId=rsp.nowRegId;
+                        nowNum = rsp.nowNum;
+                        selectPatientInfo(rsp.nowRegId);
+                        $("#info_num_span").html(rsp.nowNum);
+                    }
+                }
+            }else{
+            }
+        },error:function (data){
+            showHint("查询今日挂号失败！请重试");
+        }
+    })
+}
+function selectPatientInfo(regId){
+    let selectPatientInfoReq={
+        regId:regId
+    }
+    $.ajax({
+        headers:Header,
+        url:BaseUrl+"/reg/server/reg/selectPatientIdByRegId",
+        type:"post",
+        data:JSON.stringify(selectPatientInfoReq),
+        success:function (data){
+            if (data.rspCode == '0000'){
+                $("#info_item").show();
+                $(".info_hint").hide();
+                let patient =  data.rspData;
+                $("#info_name_span").html(patient.patientName);
+                $("#info_idCard_span").html(patient.patientIdCard);
+                $("#info_sex_span").html(patient.patientSex);
+            }else{
+            }
+        },error:function (data){
+            showHint("查询当前患者信息失败！请重试");
+        }
+    })
+}
+function callNum(){
+    let callNumReq={
+        visitId:visitId,
+        num:nextNum,
+        nowRegId:nowRegId
+    }
+    $.ajax({
+        headers:Header,
+        url:BaseUrl+"/reg/server/visit/nextNum",
+        type:"post",
+        data:JSON.stringify(callNumReq),
+        success:function (data){
+            if (data.rspCode == '0000'){
+                showHint("成功");
+                selectTodayReg();
+            }else{
+            }
+        },error:function (data){
+            showHint("叫号失败！请重试");
         }
     })
 }
 
+function passNum(){
+    let passNumReq={
+        visitId:visitId,
+        num:nextNum,
+        nowRegId:nowRegId,
+        reason:$("#reason").val()
+    }
+    $.ajax({
+        headers:Header,
+        url:BaseUrl+"/reg/server/visit/passNum",
+        type:"post",
+        data:JSON.stringify(passNumReq),
+        success:function (data){
+            if (data.rspCode == '0000'){
+                showHint("成功");
+                closePassNum();
+                selectTodayReg();
+            }else{
+            }
+        },error:function (data){
+            showHint("过号失败！请重试");
+        }
+    })
+}
+function closePassNum(){
+    $("#passConfirm_div").hide(200);
+}
+function showPassNumConfirm(){
+    $("#passConfirm_div").show(200);
+}
+
+function endNum(){
+    let endNumReq={
+        visitId:visitId
+    }
+    $.ajax({
+        headers:Header,
+        url:BaseUrl+"/reg/server/visit/endVisit",
+        type:"post",
+        data:JSON.stringify(endNumReq),
+        success:function (data){
+            if (data.rspCode == '0000'){
+                showHint("成功");
+                selectTodayReg();
+            }else{
+            }
+        },error:function (data){
+            showHint("结束失败！请重试");
+        }
+    })
+}
 </script>
 </html>

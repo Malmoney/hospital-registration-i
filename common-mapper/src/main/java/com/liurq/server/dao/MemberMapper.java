@@ -4,7 +4,9 @@ import com.liurq.server.model.Member;
 import com.liurq.server.model.MemberExample;
 import java.util.List;
 
-import com.liurq.server.restful.rsp.hospital.MemberInfoRsp;
+import com.liurq.server.restful.rsp.hospital.AccountInfoRsp;
+import com.liurq.server.restful.rsp.hospital.DoctorMemberInfoRsp;
+import com.liurq.server.restful.rsp.hospital.HospitalMemberInfoRsp;
 import org.apache.ibatis.annotations.Param;
 
 public interface MemberMapper {
@@ -108,7 +110,22 @@ public interface MemberMapper {
      * @param memberId
      * @return
      */
-    List<MemberInfoRsp> selectHospitalChildMember(String memberId);
+    List<DoctorMemberInfoRsp> selectHospitalChildMember(String memberId);
+
+    /**
+     * 查询子账号信息
+     * @param memberId
+     * @return
+     */
+    List<HospitalMemberInfoRsp> selectCityChildMember(String memberId);
+
+    /**
+     * 查询子账号信息
+     * @param memberId
+     * @return
+     */
+    List<AccountInfoRsp> selectProvChildMember(String memberId);
+
 
     /**
      * 更新用户的状态

@@ -10,6 +10,7 @@
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/hint.js"></script>
     <link rel="stylesheet" href="../css/hint.css">
+    <script src="../js/ApiUrl.js"></script>
 </head>
 <body>
 <div id="container">
@@ -77,7 +78,7 @@
         req.append("file",$("#imageInput").prop("files")[0])
         $.ajax({
             headers: {token:Header.Authorization},
-            url:"/system/server/file/uploadFile",
+            url:BaseUrl+"/system/server/file/uploadFile",
             type:"post",
             data: req,
             cache: false,
@@ -105,7 +106,7 @@
 
         $.ajax({
             headers:Header,
-            url:"/system/server/doctor/modifyDoctorInfo",
+            url:BaseUrl+"/system/server/doctor/modifyDoctorInfo",
             type:"post",
             data:JSON.stringify(modifyInfoReq),
             success:function (data){
@@ -128,7 +129,7 @@
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/doctor/selectDoctorInfo",
+            url:BaseUrl+"/system/server/doctor/selectDoctorInfo",
             type:"post",
             data:JSON.stringify(selectDoctorInfoByIdReq),
             success:function (data){

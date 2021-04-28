@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode
 @ToString
-public class MemberInfoRsp implements Serializable {
+public class DoctorMemberInfoRsp implements Serializable {
     private static final long serialVersionUID = -6897662713845620914L;
 
     private String userName;

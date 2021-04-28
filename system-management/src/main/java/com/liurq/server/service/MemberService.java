@@ -5,10 +5,10 @@ import com.liurq.server.model.Member;
 import com.liurq.server.restful.req.hospital.SelectMemberReq;
 import com.liurq.server.restful.req.system.*;
 import com.liurq.server.restful.rsp.RspInfo;
+import com.liurq.server.restful.rsp.hospital.AccountInfoRsp;
 import com.liurq.server.restful.rsp.hospital.AddHospitalAccountRsp;
-import com.liurq.server.restful.rsp.hospital.MemberInfoRsp;
-
-import java.util.List;
+import com.liurq.server.restful.rsp.hospital.DoctorMemberInfoRsp;
+import com.liurq.server.restful.rsp.hospital.HospitalMemberInfoRsp;
 
 /**
  * @Author:hyz
@@ -69,7 +69,22 @@ public interface MemberService {
      * @param req
      * @return
      */
-    RspInfo<PageInfo<MemberInfoRsp>> selectHospitalChildMember(SelectMemberReq req);
+    RspInfo<PageInfo<DoctorMemberInfoRsp>> selectHospitalChildMember(SelectMemberReq req);
+
+    /**
+     * 查询子账号
+     * @param req
+     * @return
+     */
+    RspInfo<PageInfo<HospitalMemberInfoRsp>> selectCityChildMember(SelectMemberReq req);
+
+    /**
+     * 查询子账号
+     * @param req
+     * @return
+     */
+    RspInfo<PageInfo<AccountInfoRsp>> selectProvChildMember(SelectMemberReq req);
+
 
     /**
      *  禁用用户

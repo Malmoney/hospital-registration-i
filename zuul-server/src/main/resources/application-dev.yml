@@ -15,7 +15,11 @@ zuul:
       path: /system/**
       serviceId: person-management
       strip-prefix: false
-  retryable: true
+    api-b:
+      path: /reg/**
+      serviceId: registration
+      strip-prefix: false
+  retryable: false
 ##hystrix的超时时间
 hystrix:
   command:
@@ -31,6 +35,6 @@ hystrix:
 ribbon:
   ConnectTimeout: 2000  #毫秒    连接超时时间
   ReadTimeout: 3000     #毫秒      逻辑处理超时时间
-  OkToRetryOnAllOperations: true    # 是否对所有操作都进行重试
-  MaxAutoRetries: 3     # 对当前实例的最大重试次数(请求服务超时6s则会再请求一次)
-  MaxAutoRetriesNextServer: 2     # 切换实例的最大重试次数(如果还失败就切换下
+  OkToRetryOnAllOperations: false    # 是否对所有操作都进行重试
+  MaxAutoRetries: 0     # 对当前实例的最大重试次数(请求服务超时6s则会再请求一次)
+  MaxAutoRetriesNextServer: 0     # 切换实例的最大重试次数(如果还失败就切换下

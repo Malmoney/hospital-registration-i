@@ -678,4 +678,9 @@
     where a.doctor_id = #{doctorId,jdbcType=VARCHAR}
       and a.deleted = '0'
   </select>
+  <update id="updateHospitalStatus" parameterType="string">
+    update tb_hospital
+    set status = #{status,jdbcType=VARCHAR}
+    where hospital_id = #{hospitalId,jdbcType=VARCHAR}
+  </update>
 </mapper>

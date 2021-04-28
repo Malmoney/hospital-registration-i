@@ -11,6 +11,7 @@
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/hint.js"></script>
     <link rel="stylesheet" href="../css/hint.css">
+    <script src="../js/ApiUrl.js"></script>
 </head>
 <body>
 <div class="body">
@@ -51,7 +52,7 @@
         }
         $.ajax({
             headers:header,
-            url:"/system/login/sysLogin",
+            url:BaseUrl+"/system/login/sysLogin",
             type:"post",
             data:JSON.stringify(loginReq),
             success:function (data){

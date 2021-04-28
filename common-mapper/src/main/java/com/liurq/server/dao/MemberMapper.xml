@@ -368,7 +368,7 @@
     from tb_member a
     where a.member_name = #{username,jdbcType=VARCHAR}
   </select>
-  <select id="selectHospitalChildMember" parameterType="string" resultType="com.liurq.server.restful.rsp.hospital.MemberInfoRsp">
+  <select id="selectHospitalChildMember" parameterType="string" resultType="com.liurq.server.restful.rsp.hospital.DoctorMemberInfoRsp">
     select distinct
         a.member_name as userName
         ,d.doctor_name as doctorName
@@ -382,6 +382,29 @@
         left join tb_department de on de.department_id = dd.department_id
     where a.type='0'
         and a.member_parent = #{memberId,jdbcType=VARCHAR}
+    order by a.status
+  </select>
+  <select id="selectCityChildMember" parameterType="string" resultType="com.liurq.server.restful.rsp.hospital.HospitalMemberInfoRsp">
+    select distinct
+      a.member_name as userName
+                  ,d.hospital_name as hospitalName
+                  ,a.member_id as memberId
+                  ,d.hospital_level as hospitalLevel
+                  ,a.status as status
+    from tb_member a
+           left join tb_hospital d on a.info_id = d.hospital_id
+    where a.type='1'
+      and a.member_parent = #{memberId,jdbcType=VARCHAR}
+    order by a.status
+  </select>
+  <select id="selectProvChildMember" parameterType="string" resultType="com.liurq.server.restful.rsp.hospital.AccountInfoRsp">
+    select distinct
+      a.member_name as userName
+                  ,a.status as status
+                  ,a.member_id as memberId
+    from tb_member a
+    where a.type='8'
+      and a.member_parent = #{memberId,jdbcType=VARCHAR}
     order by a.status
   </select>
   <update id="updateMemberStatus" parameterType="string">

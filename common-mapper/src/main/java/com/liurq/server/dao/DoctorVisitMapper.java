@@ -2,7 +2,11 @@ package com.liurq.server.dao;
 
 import com.liurq.server.model.DoctorVisit;
 import com.liurq.server.model.DoctorVisitExample;
+
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface DoctorVisitMapper {
@@ -93,4 +97,39 @@ public interface DoctorVisitMapper {
      * @mbggenerated Wed Feb 03 19:23:50 CST 2021
      */
     int updateByPrimaryKey(DoctorVisit record);
+
+    /**
+     * 查询医生指定日期的出诊
+     * @param param
+     * @return
+     */
+    DoctorVisit selectVisitByStartTime(Map<String,Object> param);
+
+    /**
+     * 查询挂号详情
+     * @param doctorId
+     * @return
+     */
+    List<DoctorVisit> selectVisitList(String doctorId);
+
+    /**
+     * 查询已经挂号的号码
+     * @param visitId
+     * @return
+     */
+    List<Integer> selectVisitNum(String visitId);
+
+    /**
+     * 查询医生当前挂号
+     * @param param
+     * @return
+     */
+    DoctorVisit selectNowVisit(Map<String,Object> param);
+
+    /**
+     * 查询医生的出诊安排
+     * @param doctorId
+     * @return
+     */
+    List<DoctorVisit> selectDoctorVisitList(String doctorId, Date startDate);
 }

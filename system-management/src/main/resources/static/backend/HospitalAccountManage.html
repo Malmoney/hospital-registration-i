@@ -9,6 +9,7 @@
     <script src="../js/jquery-params.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/hint.js"></script>
+    <script src="../js/ApiUrl.js"></script>
     <link rel="stylesheet" href="../css/hint.css">
     <link rel="stylesheet" href="../css/panel.css">
 </head>
@@ -82,8 +83,8 @@
     }
     let memberId = $.query.get("memberId");
     let hospitalId = $.query.get("infoId");
-    let pageSize = 1;
-    let pageNum = 3;
+    let pageSize = 10;
+    let pageNum = 1;
     let doctorDepartId="";
     let doctorSex = "男";
     let lastPageNum=1;
@@ -104,7 +105,7 @@
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/department/selectDepartByHospitalId",
+            url:BaseUrl+"/system/server/department/selectDepartByHospitalId",
             type:"post",
             data:JSON.stringify(selectDepartReq),
             success:function (data){
@@ -148,7 +149,7 @@ function changeDepart(departId,departName){
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/member/addDoctorAccount",
+            url:BaseUrl+"/system/server/member/addDoctorAccount",
             type:"post",
             data:JSON.stringify(addAccountReq),
             success:function (data){
@@ -176,7 +177,7 @@ function changeDepart(departId,departName){
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/member/banMember",
+            url:BaseUrl+"/system/server/member/banMember",
             type:"post",
             data:JSON.stringify(banMemberReq),
             success:function (data){
@@ -199,7 +200,7 @@ function changeDepart(departId,departName){
         }
         $.ajax({
             headers:Header,
-            url:"/system/server/member/enableMember",
+            url:BaseUrl+"/system/server/member/enableMember",
             type:"post",
             data:JSON.stringify(enableMemberReq),
             success:function (data){
@@ -231,7 +232,7 @@ function changeDepart(departId,departName){
         </tr>`);
         $.ajax({
             headers:Header,
-            url:"/system/server/member/selectHospitalChildMember",
+            url:BaseUrl+"/system/server/member/selectHospitalChildMember",
             type:"post",
             data:JSON.stringify(selectMemberReq),
             success:function (data){

@@ -1,6 +1,7 @@
 package com.liurq.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -13,7 +14,8 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @Date:2021-04-19
  * @Desc:
  **/
-public class SwaggerConfig {
+@Configuration
+public class RegSwaggerConfig {
 
     @Bean
     public Docket createRestServerApi() {
