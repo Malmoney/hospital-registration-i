@@ -1,10 +1,7 @@
 package com.liurq.server.controller.hospital;
 
 import com.github.pagehelper.PageInfo;
-import com.liurq.server.restful.req.hospital.DoctorIdReq;
-import com.liurq.server.restful.req.hospital.ModifyDoctorInfoReq;
-import com.liurq.server.restful.req.hospital.ModifyHospitalInfoReq;
-import com.liurq.server.restful.req.hospital.SelectDoctorReq;
+import com.liurq.server.restful.req.hospital.*;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.restful.rsp.hospital.DoctorInfoRsp;
 import com.liurq.server.restful.rsp.hospital.SelectDoctorRsp;
@@ -36,6 +33,12 @@ public class DoctorInfoController {
     @ApiOperation(value = "搜索医生",notes = "搜索医生")
     public RspInfo<PageInfo<SelectDoctorRsp>> selectDoctor(@RequestBody @Valid SelectDoctorReq req){
         return doctorInfoService.selectDoctor(req);
+    }
+
+    @RequestMapping(value = "/selectVisitDoctor",method = RequestMethod.POST)
+    @ApiOperation(value = "搜索有出诊的医生",notes = "搜索有出诊的医生")
+    public RspInfo<PageInfo<SelectDoctorRsp>> selectVisitDoctor(@RequestBody @Valid SelectVisitDoctorReq req){
+        return doctorInfoService.selectVisitDoctor(req);
     }
 
     @RequestMapping(value = "/selectDoctorInfo",method = RequestMethod.POST)

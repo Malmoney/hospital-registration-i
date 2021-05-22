@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.liurq.server.model.Hospital;
 import com.liurq.server.restful.req.hospital.SelectDoctorReq;
+import com.liurq.server.restful.req.hospital.SelectVisitDoctorReq;
 import com.liurq.server.restful.rsp.hospital.DoctorInfoRsp;
 import com.liurq.server.restful.rsp.hospital.SelectDoctorRsp;
 import org.apache.ibatis.annotations.Param;
@@ -101,11 +102,14 @@ public interface DoctorMapper {
 
     List<SelectDoctorRsp> selectDoctor(SelectDoctorReq req);
 
+    List<SelectDoctorRsp> selectVisitDoctor(SelectVisitDoctorReq req);
+
     /**
      * 查询
      * @param doctorId
      * @return
      */
     DoctorInfoRsp selectDoctorInfo(String doctorId);
+
 
 }

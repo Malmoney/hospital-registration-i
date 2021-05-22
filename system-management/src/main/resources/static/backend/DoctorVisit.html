@@ -384,6 +384,7 @@ function callNum(){
         data:JSON.stringify(callNumReq),
         success:function (data){
             if (data.rspCode == '0000'){
+                $("#pass_btn").removeAttr("disabled");
                 showHint("成功");
                 selectTodayReg();
             }else{
@@ -437,6 +438,7 @@ function endNum(){
         success:function (data){
             if (data.rspCode == '0000'){
                 showHint("成功");
+                $("#end_btn").attr("disabled","disabled");
                 selectTodayReg();
             }else{
             }

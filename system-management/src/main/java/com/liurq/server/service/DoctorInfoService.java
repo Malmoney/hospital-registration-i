@@ -6,6 +6,7 @@ import com.liurq.server.model.Hospital;
 import com.liurq.server.restful.req.hospital.DoctorIdReq;
 import com.liurq.server.restful.req.hospital.ModifyDoctorInfoReq;
 import com.liurq.server.restful.req.hospital.SelectDoctorReq;
+import com.liurq.server.restful.req.hospital.SelectVisitDoctorReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.restful.rsp.hospital.DoctorInfoRsp;
 import com.liurq.server.restful.rsp.hospital.DoctorVisitRsp;
@@ -26,6 +27,13 @@ public interface DoctorInfoService {
      * @return
      */
     RspInfo<PageInfo<SelectDoctorRsp>>  selectDoctor(SelectDoctorReq req);
+
+    /**
+     * 根据条件查询医生信息
+     * @param req
+     * @return
+     */
+    RspInfo<PageInfo<SelectDoctorRsp>>  selectVisitDoctor(SelectVisitDoctorReq req);
 
     /**
      * 根据id查询医生的出诊信息

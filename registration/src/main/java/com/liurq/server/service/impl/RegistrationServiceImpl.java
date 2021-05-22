@@ -49,6 +49,11 @@ public class RegistrationServiceImpl implements RegistrationService {
      */
     @Override
     public RspInfo<String> userRegistration(UserRegistrationReq req) {
+        //查询就诊人的挂号
+        UserRegistration o = this.userRegistrationMapper.selectUserRegByPatientId(req.getPatientId(), req.getVisitId());
+        if (!ObjectUtils.isEmpty(o)){
+            return RspInfo.fail("501","不可重复挂号！");
+        }
         Date now = new Date();
         UserRegistration userRegistration = new UserRegistration();
         String regId = IDUtils.genUUId();

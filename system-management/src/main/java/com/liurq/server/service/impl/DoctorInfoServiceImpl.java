@@ -9,6 +9,7 @@ import com.liurq.server.model.*;
 import com.liurq.server.restful.req.hospital.DoctorIdReq;
 import com.liurq.server.restful.req.hospital.ModifyDoctorInfoReq;
 import com.liurq.server.restful.req.hospital.SelectDoctorReq;
+import com.liurq.server.restful.req.hospital.SelectVisitDoctorReq;
 import com.liurq.server.restful.rsp.RspInfo;
 import com.liurq.server.restful.rsp.hospital.DoctorInfoRsp;
 import com.liurq.server.restful.rsp.hospital.DoctorVisitRsp;
@@ -51,6 +52,23 @@ public class DoctorInfoServiceImpl implements DoctorInfoService {
     public RspInfo<PageInfo<SelectDoctorRsp>> selectDoctor(@Valid SelectDoctorReq req) {
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<SelectDoctorRsp> result = doctorMapper.selectDoctor(req);
+        if (ObjectUtils.isEmpty(result)){
+            result = new ArrayList<>();
+        }
+        PageInfo<SelectDoctorRsp> pageInfo = new PageInfo<>(result);
+        return RspInfo.success(pageInfo);
+    }
+
+    /**
+     * 根据条件查询医生信息
+     *
+     * @param req
+     * @return
+     */
+    @Override
+    public RspInfo<PageInfo<SelectDoctorRsp>> selectVisitDoctor(SelectVisitDoctorReq req) {
+        PageHelper.startPage(req.getPageNum(),req.getPageSize());
+        List<SelectDoctorRsp> result = doctorMapper.selectVisitDoctor(req);
         if (ObjectUtils.isEmpty(result)){
             result = new ArrayList<>();
         }

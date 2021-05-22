@@ -141,4 +141,12 @@ public interface UserRegistrationMapper {
      * @return
      */
     List<VisitItem> selectRegList(String visitId);
+
+    /**
+     * 根据就诊人和出诊id查询
+     * @param patientId
+     * @param visitId
+     * @return
+     */
+    UserRegistration selectUserRegByPatientId(String patientId,String visitId);
 }

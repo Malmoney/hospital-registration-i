@@ -450,9 +450,9 @@
   
   <select id="selectDoctor" parameterType="com.liurq.server.restful.req.hospital.SelectDoctorReq" resultMap="SelectDoctorMap">
     select
-        d.*
-        ,de.*
-        ,hos.*
+    d.*
+    ,de.*
+    ,hos.*
     from tb_doctor d
         left Join tr_department_doctor ded on ded.doctor_id = d.doctor_id
         LEFT JOIN tb_department de on de.department_id = ded.department_id
@@ -467,9 +467,44 @@
     <if test="departmentId != null and departmentId !='' ">
       and de.department_id = #{departmentId,jdbcType=VARCHAR}
     </if>
+    <if test="hospitalId != null and hospitalId !='' ">
+      and hos.hospital_id = #{hospitalId,jdbcType=VARCHAR}
+    </if>
     <if test="city != null and city !='' ">
       and hos.hospital_city = #{city,jdbcType=VARCHAR}
     </if>
+  </select>
+
+  <select id="selectVisitDoctor" parameterType="com.liurq.server.restful.req.hospital.SelectDoctorReq" resultMap="SelectDoctorMap">
+    select
+    d.*
+    ,de.department_name
+    ,de.department_id
+    ,de.department_image
+    ,hos.hospital_name
+    ,hos.hospital_id
+    ,hos.hospital_address
+    ,hos.hospital_image
+    ,hos.hospital_level
+    ,hos.hospital_level_name
+    ,hos.hospital_phone
+    ,hos.parent_id
+    from tb_doctor d
+    left Join tr_department_doctor ded on ded.doctor_id = d.doctor_id
+    LEFT JOIN tb_department de on de.department_id = ded.department_id
+    LEFT JOIN tb_hospital hos on hos.hospital_id = ded.hospital_id
+    right join tb_doctor_visit vi on vi.doctor_id = d.doctor_id and vi.visit_start_date > now()
+    where d.`status` = '0'
+        and ded.deleted ='0'
+        and de.`status`='0'
+        and hos.`status`='0'
+    <if test="departmentId != null and departmentId !='' ">
+      and de.department_id = #{departmentId,jdbcType=VARCHAR}
+    </if>
+    <if test="hospitalId != null and hospitalId !='' ">
+      and hos.hospital_id = #{hospitalId,jdbcType=VARCHAR}
+    </if>
+    group by d.doctor_id
   </select>
   <select id="selectDoctorInfo" parameterType="string" resultType="com.liurq.server.restful.rsp.hospital.DoctorInfoRsp">
     select

@@ -481,4 +481,11 @@
     where a.visit_id = #{visitId,jdbcType=VARCHAR}
     order by a.num
   </select>
+  <select id="selectUserRegByPatientId" parameterType="string" resultMap="BaseResultMap">
+    select
+        *
+    from tb_user_registration a
+    where a.visit_id = #{visitId,jdbcType=VARCHAR}
+        and a.patient_id = #{patientId,jdbcType=VARCHAR}
+  </select>
 </mapper>

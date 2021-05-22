@@ -9,7 +9,7 @@
     width: 20%;
     height: 44%;
     position: absolute;
-    top: 24%;
+    top: 33%;
     left: 40%;
     background-color: rgba(0,255,255,.7);
     border-radius: 5px;
@@ -32,4 +32,12 @@
     height: 30px;
     margin-left: 10%;
     color: red;
+}
+.Title{
+    font-size: 40px;
+    color: black;
+    font-weight: 400;
+    position: absolute;
+    top: 18%;
+    left: 37%;
 }
